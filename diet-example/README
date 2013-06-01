@@ -1,0 +1,32 @@
+Source:
+org.neos.casestudies.diet - Package for data and utilty class for Diet Demo
+org.neos.casestudies.diet.ui - Package for various GUI panels. Each can be execute separately for development and debugging
+org.neos.casestudies.sudoku - Package for Sudoku demo (Show how to submit a job that use binary input - must use Base64 encoding) 
+org.neos.client - Client API for submitting job to NEOS
+org.neos.examples - Simple client application that utilize NEOS client API
+org.neos.gams - API for manipulating GAMS data (input/output)
+
+Getting Start:
+1. See org.neos.examples.Simple.Panel.java for hello world NEOS application. Look in submitJob() method to see the process of submitting job to NEOS.
+2. See org.neos.casestudies.diet.DietMain.java for command-line version of Diet case study. You should start coding command-line version before writing GUI part.
+3. Start creating Java GUI components (JPanel). See package org.neos.casestudies.diet.ui for components of Diet problem. Each class has main method, so it can be run independently to see the result.
+4. Combine various components into a single one. Finally, create a wrapper class so that it can be run as an applet.
+
+Resources:
+key	- key for signing jar file
+*.html  - html for displaying applet in browser
+DietJar.jardesc - When execute this file inside Eclipse, it will automatically create Diet java from src folder
+signjar.bat - [Windows] Create signed version of Diet.jar. Only signed version of applet can be used inside a web browser*
+signjar.sh - Unix version of the above file.
+			 Make sure that jarsigner is in your path variable.
+ 
+Guides and Tutorial:
+Java Swing
+	http://download.oracle.com/javase/tutorial/uiswing/components/index.html
+
+A Visual Guide to Swing Components
+	http://download.oracle.com/javase/tutorial/ui/features/components.html 
+
+Eclipse (Recommended Java IDE)
+	- http://eclipsetutorial.sourceforge.net/totalbeginner.html
+	- Jar file can be created easily using Eclipse wizard.   

@@ -1,0 +1,435 @@
+     
+GAMS Rev 236  LEX-LEI 23.6.0 x86_64/Linux              02/28/11 01:19:37 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1   
+   2   
+   3  Set f food /Bro1, Car2, Cel3, Cor4, Let5, Pep6, Pot7, Tof65, Chi66, Spa9,
+       Tom10, App11, Ban12, Gra13, Kiw14, Ora15, Bag16, Brd17, Brd18, Cki19, Pi
+      e20, Cki21, But22, Che23, Mil24, Mil25, Ski26, Egg27, Egg28, Bol29, Fra30
+      , Ham31, Kie32, Cap34, Che35, Cor36, Rai37, Ric38, Spe39, Oat40, Mal41, P
+      iz42, Tac43, Ham44, Hot45, Cou46, Ric47, Mac48, Pnu49, Por50, Sar51, Wtt5
+      2, Pop53, Pot54, Pre55, Tor56, Chi57, Spl58, Veg59, New60, Tom61, New62, 
+      Crm63, Bea64 /;
+   4  Set fs(f) food selected /Bro1, Car2, Cel3, Cor4, Let5, Pep6, Pot7, Tof65,
+       Chi66, Spa9, Tom10, App11, Ban12, Gra13, Kiw14, Ora15, Bag16, Brd17, Brd
+      18, Cki19, Pie20 /;
+   5  Set n nutrient /Calories, Cholesterol, Total_Fat, Sodium, Carbohydrates, 
+      Dietary_Fiber, Protein, Vit_A, Vit_C, Calcium, Iron /;
+   6  Set ns(n) nutrient selected /Calories, Cholesterol, Total_Fat, Sodium, Ca
+      rbohydrates, Dietary_Fiber, Protein, Vit_A, Vit_C, Calcium, Iron /;
+   7  Parameter f_min(fs)  /
+   8  Bro1 0
+   9  Car2 0
+  10  Cel3 0
+  11  Cor4 0
+  12  Let5 0
+  13  Pep6 0
+  14  Pot7 0
+  15  Tof65 0
+  16  Chi66 0
+  17  Spa9 0
+  18  Tom10 0
+  19  App11 0
+  20  Ban12 0
+  21  Gra13 0
+  22  Kiw14 0
+  23  Ora15 0
+  24  Bag16 0
+  25  Brd17 0
+  26  Brd18 0
+  27  Cki19 0
+  28  Pie20 0
+  29   /;
+  30  Parameter f_max(fs)  /
+  31  Bro1 10
+  32  Car2 10
+  33  Cel3 10
+  34  Cor4 10
+  35  Let5 10
+  36  Pep6 10
+  37  Pot7 10
+  38  Tof65 10
+  39  Chi66 10
+  40  Spa9 10
+  41  Tom10 10
+  42  App11 10
+  43  Ban12 10
+  44  Gra13 10
+  45  Kiw14 10
+  46  Ora15 10
+  47  Bag16 10
+  48  Brd17 10
+  49  Brd18 10
+  50  Cki19 10
+  51  Pie20 10
+  52   /;
+  53  Parameter n_min(ns)  /
+  54  Calories 2000
+  55  Cholesterol 0
+  56  Total_Fat 0
+  57  Sodium 0
+  58  Carbohydrates 0
+  59  Dietary_Fiber 25
+  60  Protein 50
+  61  Vit_A 5000
+  62  Vit_C 50
+  63  Calcium 800
+  64  Iron 10
+  65   /;
+  66  Parameter n_max(ns)  /
+  67  Calories 2250
+  68  Cholesterol 300
+  69  Total_Fat 65
+  70  Sodium 2400
+  71  Carbohydrates 300
+  72  Dietary_Fiber 100
+  73  Protein 100
+  74  Vit_A 50000
+  75  Vit_C 20000
+  76  Calcium 1600
+  77  Iron 30
+  78   /;
+  79  Parameter price(fs)  /
+  80  Bro1 0.16
+  81  Car2 0.07
+  82  Cel3 0.04
+  83  Cor4 0.18
+  84  Let5 0.02
+  85  Pep6 0.53
+  86  Pot7 0.06
+  87  Tof65 0.31
+  88  Chi66 0.84
+  89  Spa9 0.78
+  90  Tom10 0.27
+  91  App11 0.24
+  92  Ban12 0.15
+  93  Gra13 0.32
+  94  Kiw14 0.49
+  95  Ora15 0.15
+  96  Bag16 0.16
+  97  Brd17 0.05
+  98  Brd18 0.06
+  99  Cki19 0.09
+ 100  Pie20 0.16
+ 101   /;
+ 102  Table nut(n,f) nutritive value of foods
+ 103                        Bro1         Car2         Cel3         Cor4        
+       Let5         Pep6         Pot7        Tof65        Chi66         Spa9   
+           Tom10        App11        Ban12        Gra13        Kiw14        Ora
+      15        Bag16        Brd17        Brd18        Cki19        Pie20      
+        Cki21        But22        Che23        Mil24        Mil25        Ski26 
+             Egg27        Egg28        Bol29        Fra30        Ham31        K
+      ie32        Cap34        Che35        Cor36        Rai37        Ric38    
+          Spe39        Oat40        Mal41        Piz42        Tac43        Ham4
+      4        Hot45        Cou46        Ric47        Mac48        Pnu49       
+       Por50        Sar51        Wtt52        Pop53        Pot54        Pre55  
+            Tor56        Chi57        Spl58        Veg59        New60        To
+      m61        New62        Crm63        Bea64
+ 104       Calories         73.8         23.7          6.4         72.2        
+        2.6         20.0        171.5         88.2        277.4        358.2   
+            25.8         81.4        104.9         15.1         46.4         61
+      .6         78.0         65.0         65.0         81.0         67.2      
+         78.1         35.8        112.7        149.9        121.2         85.5 
+              74.5         99.6         56.4        141.8         37.1         
+      80.6        119.6        111.0        110.5        115.1        112.2    
+          110.8        145.1        607.2        181.0        369.4        275.
+      0        242.1        100.8        102.7         98.7        188.5       
+       710.8         49.9        115.6        108.3        139.2        108.0  
+            142.0        150.1        184.8        158.1        175.7        17
+      0.7        163.7        203.4        172.0
+ 105    Cholesterol          0.0          0.0          0.0          0.0        
+        0.0          0.0          0.0          0.0        129.9          0.0   
+             0.0          0.0          0.0          0.0          0.0          0
+      .0          0.0          0.0          0.0          0.0          0.0      
+          5.1         10.9         29.4         33.2         18.3          4.4 
+             211.5        211.2         28.1         27.4         13.3         
+      17.4          0.0          0.0          0.0          0.0          0.0    
+            0.0          0.0          0.0         14.2         56.4         42.
+      8         44.1          0.0          0.0          0.0          0.0       
+       105.1         34.1         35.7          0.0          0.0          0.0  
+              0.0         12.3          7.2         10.0         10.0          
+      0.0         22.3         19.8          2.5
+ 106      Total_Fat          0.8          0.1          0.1          0.6        
+        0.0          0.1          0.2          5.5         10.8         12.3   
+             0.4          0.5          0.5          0.1          0.3          0
+      .2          0.5          1.0          1.0          3.3          3.1      
+          4.5          4.1          9.3          8.1          4.7          0.4 
+               5.0          7.3          4.3         12.8          1.4         
+       7.1          2.6          1.8          0.1          0.7          0.2    
+            0.1          2.3          1.5          7.0         20.6         10.
+      2         14.5          0.1          0.2          0.5         16.0       
+        72.2          2.7          2.1          1.2          9.2          1.0  
+              7.4          4.6          4.0          3.8          5.0          
+      3.8          6.6         13.6          5.9
+ 107         Sodium         68.2         19.2         34.8          2.5        
+        1.8          1.5         15.2          8.1        125.6       1237.1   
+            11.1          0.0          1.1          0.5          3.8          0
+      .0        151.4        134.5        132.5         68.9         75.4      
+         57.8         41.3        173.7        119.6        121.8        126.2 
+             140.0        168.0        248.9        461.7        405.1        2
+      79.8        213.3        307.6        290.5        204.4        340.8    
+          265.5          2.3         16.5        267.0        802.0        563.
+      9        670.3          4.5          0.8          0.7        155.5       
+        38.4        121.2        333.2          1.1        212.6        486.2  
+            149.7       1862.2        964.8       1915.1       1864.9       174
+      4.4        992.0       1076.3        951.3
+ 108  Carbohydrates         13.6          5.6          1.5         17.1        
+        0.4          4.8         39.9          2.2          0.0         58.3   
+             5.7         21.0         26.7          4.1         11.3         15
+      .4         15.1         12.4         11.8         12.4          9.6      
+          9.3          0.0          0.4         11.4         11.7         11.9 
+               0.6          1.3          0.3          0.8          0.3         
+       0.6         23.0         19.6         24.5         27.9         24.8    
+           21.3         25.3        128.2         19.9         26.7         32.
+      7         18.0         20.9         22.3         19.8          6.9       
+         0.0          0.0          0.0         22.1         15.0         22.5  
+             17.8         18.7         26.8         20.4         21.8         3
+      3.2         16.6         15.0         22.8
+ 109  Dietary_Fiber          8.5          1.6          0.7          2.0        
+        0.3          1.3          3.2          1.4          0.0         11.6   
+             1.4          3.7          2.7          0.2          2.6          3
+      .1          0.6          1.3          1.1          0.6          0.5      
+          0.0          0.0          0.0          0.0          0.0          0.0 
+               0.0          0.0          0.0          0.0          0.0         
+       0.0          0.5          2.0          0.7          4.0          0.4    
+            0.7          4.0          0.0          0.0          0.0          0.
+      0          0.0          1.3          0.3          0.9          2.1       
+         0.0          0.0          0.0          4.3          1.2          0.9  
+              1.8          1.5          4.1          4.0          1.5          
+      1.0          1.5          0.5          8.6
+ 110        Protein          8.0          0.6          0.3          2.5        
+        0.2          0.7          3.7          9.4         42.2          8.2   
+             1.0          0.3          1.2          0.2          0.8          1
+      .2          3.0          2.2          2.3          1.1          0.5      
+          0.9          0.0          7.0          8.0          8.1          8.4 
+               6.2          6.7          3.9          5.4          5.5         
+       3.4          1.4          4.3          2.3          4.0          1.9    
+            5.6          6.1         17.3         10.1         20.7         13.
+      6         10.4          3.4          2.1          3.3          7.7       
+        13.8          5.9         22.7          3.4          2.2          2.6  
+              2.0          7.9         11.1         11.2         10.9          
+      4.1          9.5          6.1          7.9
+ 111          Vit_A       5867.4      15471.0         53.6        106.6        
+       66.0        467.7          0.0         98.6         77.4       3055.2   
+           766.3         73.1         92.3         24.0        133.0        268
+      .6          0.0          0.0          0.0          2.9         35.2      
+        101.8        152.9        296.5        307.4        500.2        499.8 
+             316.0        409.2          0.0          0.0          0.0         
+       0.0         40.6       1252.2       1252.2       1250.2       1252.2    
+         1252.2         37.4          0.0        281.9        855.0        126.
+      3          0.0          0.0          0.0          0.0          0.0       
+        14.7         53.8         68.0         55.6         61.5          0.0  
+             55.6       1308.7       4872.0       3785.1         20.1       139
+      3.0        163.7        153.8        888.0
+ 112          Vit_C        160.2          5.1          2.8          5.2        
+        0.8         66.1         15.6          0.1          0.0         27.9   
+            23.5          7.9         10.4          1.0         74.5         69
+      .7          0.0          0.0          0.0          0.1          0.9      
+          0.0          0.0          0.0          2.3          2.3          2.4 
+               0.0          0.1          0.0         10.8          7.4         
+       5.5          0.0         15.1         15.1          0.0         15.1    
+           15.1          0.0          0.0          1.6          2.2          2.
+      6          0.1          0.0          0.0          0.0          0.0       
+         0.0          0.0          0.0          0.0          9.6          0.0  
+              0.0          0.0          7.0          4.8          4.8        13
+      3.0          3.5          2.2          1.5
+ 113        Calcium        159.0         14.9         16.0          3.3        
+        3.8          6.7         22.7        121.8         21.9         80.2   
+             6.2          9.7          6.8          3.4         19.8         52
+      .4         21.0         10.8         26.2          6.7          3.1      
+          6.2          1.2        202.0        291.3        296.7        302.3 
+              24.5         42.6         23.8          9.0          2.0         
+      11.4          4.8         48.6          0.9         12.9          4.0    
+            8.2         18.7         23.1         64.6        220.6         51.
+      4         23.5          7.2          7.9          4.9         13.1       
+        59.9         91.7          3.4          2.8         14.2         10.2  
+             43.7         27.1         33.6         32.6         82.8         2
+      7.6        186.0        178.6         81.0
+ 114           Iron          2.3          0.3          0.2          0.3        
+        0.1          0.3          4.3          6.2          1.8          2.3   
+             0.6          0.2          0.4          0.1          0.3          0
+      .1          1.0          0.7          0.8          0.5          0.1      
+          0.4          0.0          0.2          0.1          0.1          0.1 
+               0.7          0.7          0.4          0.6          0.2         
+       0.4          7.5          4.5          1.8         16.8          1.8    
+            4.5          1.6         47.2          0.9          2.4          2.
+      5          2.3          0.3          0.9          1.0          0.6       
+         0.4          0.7          0.5          0.8          0.5          1.2  
+              0.4          1.5          2.1          2.2          2.8          
+      3.5          1.5          0.6          2.0
+ 115  ;
+ 116   
+ 117   
+ 118  Variable x(fs)  dollars of food f to be purchased daily   (dollars);
+ 119   
+ 120  x.up(fs) = f_max(fs);
+ 121  x.lo(fs) = f_min(fs);
+ 122   
+ 123  Free     Variable cost  total food bill                           (dollar
+      s);
+ 124   
+ 125   
+ 126  Equations
+ 127  nut_lo(ns) nutrient balance lo (units)
+ 128  nut_hi(ns) nutrient balance hi (units)
+ 129  cb    cost balance  (dollars) ;
+ 130   
+ 131  nut_lo(ns)..
+ 132           sum(fs, nut(ns,fs)*x(fs)) =g= n_min(ns);
+ 133  nut_hi(ns)..
+ 134           sum(fs, nut(ns,fs)*x(fs)) =l= n_max(ns);
+ 135  cb..
+ 136           cost =e= sum(fs, x(fs) * price(fs) );
+ 137   
+ 138  model diet /all/;
+ 139   
+ 140  solve diet using lp minimize cost;
+ 141   
+ 142   
+
+
+COMPILATION TIME     =        0.002 SECONDS      3 Mb  LEX236-236 Nov  4, 2010
+GAMS Rev 236  LEX-LEI 23.6.0 x86_64/Linux              02/28/11 01:19:37 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Model Statistics    SOLVE diet Using LP From line 140
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           3     SINGLE EQUATIONS           23
+BLOCKS OF VARIABLES           2     SINGLE VARIABLES           22
+NON ZERO ELEMENTS           418
+
+
+GENERATION TIME      =        0.001 SECONDS      4 Mb  LEX236-236 Nov  4, 2010
+
+
+EXECUTION TIME       =        0.001 SECONDS      4 Mb  LEX236-236 Nov  4, 2010
+GAMS Rev 236  LEX-LEI 23.6.0 x86_64/Linux              02/28/11 01:19:37 Page 3
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+Solution Report     SOLVE diet Using LP From line 140
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   diet                OBJECTIVE  cost
+     TYPE    LP                  DIRECTION  MINIMIZE
+     SOLVER  MINOS               FROM LINE  140
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE                2.7115
+
+ RESOURCE USAGE, LIMIT          0.003      1000.000
+ ITERATION COUNT, LIMIT        41    2000000000
+
+GAMS/MINOS       BETA  6Nov10 23.6.0 LEX 21006.21007 LEI x86_64/Linux
+M I N O S  5.51     (Jun 2004)
+
+    GAMS/MINOS 5.51, Large Scale Nonlinear Solver
+    B. A. Murtagh, University of New South Wales
+    P. E. Gill, University of California at San Diego,
+    W. Murray, M. A. Saunders, and M. H. Wright,
+    Systems Optimization Laboratory, Stanford University
+
+ Work space allocated           --    0.84 Mb
+
+ EXIT - Optimal Solution found, objective:        2.711496
+
+
+---- EQU nut_lo  nutrient balance lo (units)
+
+                 LOWER     LEVEL     UPPER    MARGINAL
+
+Calories       2000.000  2000.000     +INF      0.003      
+Cholesterol        .       56.769     +INF       .         
+Total_Fat          .       59.510     +INF       .         
+Sodium             .     2400.000     +INF       .         
+Carbohydrates      .      300.000     +INF       .         
+Dietary_Fiber    25.000    35.206     +INF       .         
+Protein          50.000    84.518     +INF       .         
+Vit_A          5000.000  9000.790     +INF       .         
+Vit_C            50.000   246.557     +INF       .         
+Calcium         800.000   800.000     +INF  6.4760E-4      
+Iron             10.000    30.000     +INF       .         
+
+---- EQU nut_hi  nutrient balance hi (units)
+
+                 LOWER     LEVEL     UPPER    MARGINAL
+
+Calories          -INF   2000.000  2250.000      .         
+Cholesterol       -INF     56.769   300.000      .         
+Total_Fat         -INF     59.510    65.000      .         
+Sodium            -INF   2400.000  2400.000 -5.519E-5      
+Carbohydrates     -INF    300.000   300.000    -0.012      
+Dietary_Fiber     -INF     35.206   100.000      .         
+Protein           -INF     84.518   100.000      .         
+Vit_A             -INF   9000.790 50000.000      .         
+Vit_C             -INF    246.557 20000.000      .         
+Calcium           -INF    800.000  1600.000      .         
+Iron              -INF     30.000    30.000    -0.001      
+
+                       LOWER     LEVEL     UPPER    MARGINAL
+
+---- EQU cb              .         .         .        1.000      
+
+  cb  cost balance  (dollars)
+
+---- VAR x  dollars of food f to be purchased daily   (dollars)
+
+         LOWER     LEVEL     UPPER    MARGINAL
+
+Bro1       .        1.496    10.000      .         
+Car2       .         .       10.000     0.056      
+Cel3       .         .       10.000     0.030      
+Cor4       .         .       10.000     0.160      
+Let5       .         .       10.000     0.015      
+Pep6       .         .       10.000     0.522      
+Pot7       .        0.368    10.000      .         
+Tof65      .        1.628    10.000      .         
+Chi66      .        0.437    10.000      .         
+Spa9       .         .       10.000     0.400      
+Tom10      .         .       10.000     0.256      
+App11      .         .       10.000     0.233      
+Ban12      .         .       10.000     0.141      
+Gra13      .         .       10.000     0.320      
+Kiw14      .         .       10.000     0.470      
+Ora15      .         .       10.000     0.110      
+Bag16      .         .       10.000     0.097      
+Brd17      .        1.564    10.000      .         
+Brd18      .       10.000    10.000    -0.007      
+Cki19      .       10.000    10.000    -0.009      
+Pie20      .         .       10.000     0.072      
+
+                       LOWER     LEVEL     UPPER    MARGINAL
+
+---- VAR cost           -INF      2.711     +INF       .         
+
+  cost  total food bill                           (dollars)
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+
+
+EXECUTION TIME       =        0.000 SECONDS      2 Mb  LEX236-236 Nov  4, 2010
+
+
+USER: NEOS Server                                    G100907:1412AS-LNX
+      University of Wisconsin-Madison                            DC8499
+      License for teaching and research at degree granting institutions
+
+**** ************* BETA release
+**** GAMS Base Module BETA  6Nov10 23.6.0 LEX 21006.21007 LEI x86_64/Linux     
+                                                                               
+**** ************* BETA release
+
+
+**** FILE SUMMARY
+
+Input      /scratch/neos/solver/jobs/2269593/gams.mod
+Output     /scratch/neos/solver/jobs/2269593/solve.out
