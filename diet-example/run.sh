@@ -1,6 +1,8 @@
-javac -classpath "./slib/xmlrpc-common-3.1.3.jar;./slib/xmlrpc-client-3.1.3.jar;" src/org/neos/examples/SimplePanel.java src/org/neos/examples/SimpleApplet.java
-mv src/org/neos/examples/SimplePanel.class SimplePanel.class
-mv src/org/neos/examples/SimpleApplet.class SimpleApplet.class
+# Platform-independent, but uses Bash
+EXAMPLE=org/neos/examples
+EXAMPLE_SRC=src/$EXAMPLE
 
-jar cvf SimplePanel.jar SimpleApplet.class SimplePanel.class
-jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed -signedjar SignedDiet.jar SimplePanel.jar jarkey
+javac -Xlint:unchecked -classpath "./slib/xmlrpc-common-3.1.3.jar;./slib/xmlrpc-client-3.1.3.jar;" $EXAMPLE_SRC/SimplePanel.java $EXAMPLE_SRC/SimpleApplet.java
+
+jar cvf SimplePanel.jar $EXAMPLE_SRC resources
+jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed -signedjar SignedPanel.jar SimplePanel.jar jarkey
