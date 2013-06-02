@@ -21,13 +21,9 @@ import org.neos.casestudies.diet.Nutrient;
 public class DataUtils {
 
     /**
-     * Input data for nutrients
+     * Input data for nutrients and food
      */
     public static final String NUTRIENTS = "resources/nutrients.conf";
-
-    /**
-     * Input data for food
-     */
     public static final String FOOD = "resources/food.conf";
 
     /**
@@ -36,13 +32,9 @@ public class DataUtils {
     public static final String MODEL = "resources/dietgams.mod";
 
     /**
-     * Example output for feasible problem, for testing
+     * Example output for feasible / infeasible problem, for testing
      */
     public static final String FEASIBLE = "resources/feasible.txt";
-
-    /**
-     * Example output for infeasible problem, for testing
-     */
     public static final String INFEASIBLE = "resources/infeasible.txt";
 
     public static final int APPLICATION_MODE = 0;
@@ -52,16 +44,13 @@ public class DataUtils {
 
     private int mode;
 
-    private DataUtils() {
-
-    }
+    private DataUtils() {}
 
     public static DataUtils getInstance(int mode) {
 	if (self == null) {
 	    self = new DataUtils();
 	    self.mode = mode;
 	}
-
 	return self;
     }
 
@@ -73,8 +62,7 @@ public class DataUtils {
 	try {
 	    Reader reader;
 	    if (mode == APPLET_MODE)
-		reader = new InputStreamReader(
-					       DataUtils.class.getResourceAsStream("/" + FOOD));
+		reader = new InputStreamReader(DataUtils.class.getResourceAsStream("/" + FOOD));
 	    else
 		reader = new FileReader(FOOD);
 
@@ -104,14 +92,9 @@ public class DataUtils {
 		}
 		foodList.add(food);
 	    }
-	} catch (FileNotFoundException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
+	} catch (FileNotFoundException e) { e.printStackTrace();
+	} catch (IOException e) { e.printStackTrace();
 	}
-
 	return foodList;
     }
 
@@ -121,11 +104,9 @@ public class DataUtils {
 	String line;
 	BufferedReader in;
 	try {
-
 	    Reader reader;
 	    if (mode == APPLET_MODE)
-		reader = new InputStreamReader(
-					       DataUtils.class.getResourceAsStream("/" + NUTRIENTS));
+		reader = new InputStreamReader(DataUtils.class.getResourceAsStream("/" + NUTRIENTS));
 	    else
 		reader = new FileReader(NUTRIENTS);
 
