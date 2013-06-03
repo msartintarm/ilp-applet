@@ -110,15 +110,15 @@ public class FoodSelectionPanel extends JPanel {
 			case 0:
 				return food.isSelected();
 			case 1:
-				return food.getLongName();
+				return food.longName;
 			case 2:
-				return food.getServingSize();
+				return food.servingSize;
 			case 3:
 				return food.cost;
 			case 4:
-				return food.getMin();
+				return food.min;
 			case 5:
-				return food.getMax();
+				return food.max;
 			default:
 				return null;
 			}

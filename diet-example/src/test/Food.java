@@ -22,9 +22,9 @@ public class Food implements Serializable {
     public static final int DEFAULT_MAX = 10;
 
     public String cost;
-    private String shortName;
-    private String longName;
-    private String servingSize;
+    public String shortName;
+    public String longName;
+    public String servingSize;
 
     private SolutionRow row;
 
@@ -32,8 +32,8 @@ public class Food implements Serializable {
 
     private HashMap<String, String> nutrientMap = new HashMap<String, String>();
 
-    private Integer min = DEFAULT_MIN;
-    private Integer max = DEFAULT_MAX;
+    public Integer min = DEFAULT_MIN;
+    public Integer max = DEFAULT_MAX;
 
     public void addNutrient(String nutrient, String value) {
 	nutrientMap.put(nutrient, value);
