@@ -1,10 +1,10 @@
-package org.neos.casestudies.diet;
+package test;
 
 import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
 
-import org.neos.casestudies.diet.ui.DietPanel;
-import org.neos.client.FileUtils;
+import test.DietPanel;
+import test.FileUtils;
 
 /**
  * Applet version of the Diet demo

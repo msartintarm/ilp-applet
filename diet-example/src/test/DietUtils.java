@@ -1,4 +1,4 @@
-package org.neos.casestudies.diet;
+package test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
