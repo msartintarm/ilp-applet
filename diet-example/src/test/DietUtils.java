@@ -125,9 +125,9 @@ public class DietUtils {
 	    foodDomain.addValue(food.getShortName());
 	    if (food.isSelected()) {
 		foodSelect.addValue(food.getShortName());
-		f_min.add(food.getShortName(), food.getMin().toString());
-		f_max.add(food.getShortName(), food.getMax().toString());
-		price.add(food.getShortName(), food.getCost().toString());
+		f_min.add(food.shortName, food.min.toString());
+		f_max.add(food.shortName, food.max.toString());
+		price.add(food.shortName, food.cost.toString());
 	    }
 	}
 
