@@ -4,7 +4,7 @@ import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
 
 import test.DietPanel;
-import test.FileUtils;
+import org.neos.client.FileUtils;
 
 /**
  * Applet version of the Diet demo
