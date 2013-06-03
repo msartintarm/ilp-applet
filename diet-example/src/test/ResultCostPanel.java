@@ -95,17 +95,17 @@ public class ResultCostPanel extends JPanel {
 	    Food food = foodList.get(row);
 	    switch (col) {
 	    case 0:
-		return food.getLongName();
+		return food.longName;
 
 	    case 1:
-		return food.getSolutionRow().getLevel();
+		return food.row.getLevel();
 	    case 2:
 		double buy,
 		    cost,
 		    totalCost;
 		try {
-		    cost = Double.parseDouble(food.getCost());
-		    totalCost = cost * food.getSolutionRow().getLevel();
+		    cost = Double.parseDouble(food.cost);
+		    totalCost = cost * food.row.getLevel();
 		} catch (NumberFormatException e) {
 		    buy = cost = totalCost = 0;
 		}
