@@ -16,11 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.apache.xmlrpc.XmlRpcException;
-import test.DataUtils;
-import test.DietUtils;
-import test.Food;
-import test.JobStat;
-import test.Nutrient;
 import org.neos.client.FileUtils;
 import org.neos.client.NeosJobXml;
 import org.neos.client.NeosXmlRpcClient;

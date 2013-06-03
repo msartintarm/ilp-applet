@@ -114,7 +114,7 @@ public class FoodSelectionPanel extends JPanel {
 			case 2:
 				return food.getServingSize();
 			case 3:
-				return food.getCost();
+				return food.cost;
 			case 4:
 				return food.getMin();
 			case 5:

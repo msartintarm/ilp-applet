@@ -9,12 +9,19 @@ import org.neos.gams.SolutionRow;
  * Object for storing food constraints and its activity returned from running the model
  * @author Thawan Kooburat
  *
+ *
+ * This is being rewritten to be more struct-like, because the values do not
+ *  depend upon each other. See the following:
+ * http://stackoverflow.com/questions/36701/struct-like-objects-in-java
+ * - Params will be public
+ * - Getters / setters will be dropped
+ * -- msartintarm@gmail.com
  */
 public class Food implements Serializable {
     public static final int DEFAULT_MIN = 0;
     public static final int DEFAULT_MAX = 10;
 
-    private String cost;
+    public String cost;
     private String shortName;
     private String longName;
     private String servingSize;
