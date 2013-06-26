@@ -3,7 +3,24 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.neos.client.NeosJobXml;
 import org.neos.client.NeosXmlRpcClient;
 import org.neos.client.ResultReceiver;
+import org.neos.client.ResultCallback;
 
+class NeosResponse implements ResultCallback {
+
+    public void handleJobInfo (int job_num, String passwd) {
+	System.out.println("Job " + job_num + " submitted. Password: " + passwd);
+    }
+    public void handleFinalResult (String results) {
+	System.out.println("Result follows:\n " + results);
+    }
+}
+
+/*
+  Temporary main class designed to test the NEOS server's capability.
+  - The giant string represents a complete GAMS model of a spatial architecture.
+  - Success here means another giant string (a solution) will be returned from the server.
+  Next step: think about duplicating this in Javascript?
+*/  
 public class Neos {
 
     static final String the_model = 
@@ -138,7 +155,7 @@ public class Neos {
 
 	// Package file into server-sending format
 	// .. first by turning it into XML ..
-	NeosJobXml the_job = new NeosJobXml("category", "CPLEX", "GAMS");
+	NeosJobXml the_job = new NeosJobXml("milp", "scip", "CPLEX");
 	the_job.addParam("model", the_model);
 	// .. and then by putting the XML in a vector.
 	Vector<String> the_params = new Vector<String>();
@@ -146,11 +163,26 @@ public class Neos {
 
 	NeosXmlRpcClient the_client = new NeosXmlRpcClient("www.neos-server.org", "3332");
 
+	Object[] solvers;
 	Object[] results;
 
 	try {
 	    // Connect to server
 	    the_client.connect();
+
+	    Vector<String> solver_params = new Vector<String>();
+	    solver_params.add("milp");
+	    // Print out all the solvers we can use in MILP.
+	    solvers = (Object[])the_client.execute("listSolversInCategory",
+						   solver_params,
+						   5000);
+	    System.out.println("Solvers usable with \"milp\". Solver / input language.");
+	    for(int i = 0; i < solvers.length; ++i) {
+		System.out.print(solvers[i] + " ");
+	    }
+	    System.out.print("\n");
+	    System.out.print(the_params.toString());
+
 	    // Submit to NEOS, waiting 5 secs for job ID / password
 	    results = (Object[])the_client.execute("submitJob",
 						    the_params,
@@ -159,17 +191,18 @@ public class Neos {
 	    String job_pass = (String) results[1];
 	    System.out.println("submitted. Job number: " + job_num + ", job password: " + job_pass);
 
+	    NeosResponse the_response = new NeosResponse(); // implements an asynchronous interface
+
+	    // This class will handle callback in its own thread. I think it checks every 100 ms.
+	    ResultReceiver receiver = new ResultReceiver(the_client, the_response, job_num, job_pass);
+	    receiver.start();
+
+	    // Boom goes the dynamite.
+
 	} catch (XmlRpcException e) {
 	    System.err.println("Uh-oh.. error! " + e);
 	}
-
-
     }
 }
-
-
-
-
-
 
 
