@@ -155,7 +155,7 @@ public class Neos {
 
 	// Package file into server-sending format
 	// .. first by turning it into XML ..
-	NeosJobXml the_job = new NeosJobXml("milp", "scip", "CPLEX");
+	NeosJobXml the_job = new NeosJobXml("milp", "scip", "GAMS");
 	the_job.addParam("model", the_model);
 	// .. and then by putting the XML in a vector.
 	Vector<String> the_params = new Vector<String>();
