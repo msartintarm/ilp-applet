@@ -64,7 +64,7 @@ public class DietUtils {
 	    //Try to find matching nutrient and update its data
 	    for (Nutrient nut : nutList) {
 		if (nut.getName().equals(loRow.getIndex(0))) {
-					
+		    
 		    //Combine 2 tables into one table for display
 		    Double[] dualCostTable = new Double[5];
 		    // lower dual
@@ -111,7 +111,6 @@ public class DietUtils {
      */
     public static String generateData(List<Food> foods,
 				      List<Nutrient> nutrients, String model) {
-	StringBuffer data = new StringBuffer();
 
 	// Food set and params
 	Set foodDomain = new Set("f", "food");
@@ -147,7 +146,9 @@ public class DietUtils {
 	    }
 	}
 
-	// Create data portion of model
+	// Create and return data portion of model
+	StringBuffer data = new StringBuffer();
+
 	data.append(foodDomain.toString());
 	data.append(foodSelect.toString());
 

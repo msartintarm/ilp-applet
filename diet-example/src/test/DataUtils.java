@@ -29,8 +29,8 @@ public class DataUtils {
     /**
      * Static part of the model
      */
-    public static final String MODEL = "resources/dietgams.mod";
-
+    public static final String MODEL = "scheduler/simple-model.gms";
+ 
     /**
      * Example output for feasible / infeasible problem, for testing
      */
@@ -150,7 +150,7 @@ public class DataUtils {
 	    Reader reader;
 	    if (mode == APPLET_MODE)
 		reader = new InputStreamReader(
-					       DataUtils.class.getResourceAsStream("/" + fileName));
+		    DataUtils.class.getResourceAsStream("/" + fileName));
 	    else
 		reader = new FileReader(fileName);
 
