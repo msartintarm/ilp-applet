@@ -1,4 +1,4 @@
-Solvers usable with "milp". Solver / input language.
+Solvers usable with "milp". Solver : input language.
 Cbc:AMPL Cbc:GAMS Cbc:MPS feaspump:AMPL feaspump:CPLEX feaspump:MPS Glpk:GAMS Gurobi:AMPL Gurobi:GAMS Gurobi:MPS MINTO:AMPL MOSEK:GAMS qsopt_ex:AMPL qsopt_ex:LP qsopt_ex:MPS scip:AMPL scip:CPLEX scip:GAMS scip:MPS scip:OSIL scip:ZIMPL SYMPHONY:MPS XpressMP:AMPL XpressMP:GAMS XpressMP:MOSEL XpressMP:MPS 
 [<document>
 <category>milp</category>
@@ -110,13 +110,35 @@ model problem2 "Constrains service interval to <= 1"
 solve problem2 using mip minimizing LAT;
 
 
+file outfile / "solution.lst" /;
+outfile.pc=8;
+outfile.pw=4096;
+put outfile;
+
+put "Vertex : Node  Mapping" /
+loop(v,
+    put v.tl ":";
+    loop((n)$(Mvn.l(v,n)<>0),
+        put n.tl
+    );
+    put /
+);
+
+put / "Edge : Link  Mapping" /
+loop(e,
+    put e.tl ":"
+    loop((l)$(Mel.l(e,l)<>0),
+        put l.tl
+    );
+    put /
+);
 
 ]]>
 </model>
-</document>]submitted. Job number: 686294, job password: NUCHWMcm
-Job 686294 submitted. Password: NUCHWMcm
+</document>]submitted. Job number: 686303, job password: zLxbptEI
+Job 686303 submitted. Password: zLxbptEI
 Result follows:
- GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:25:10 Page 1
+ GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:37:08 Page 1
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 C o m p i l a t i o n
 
@@ -124,7 +146,7 @@ C o m p i l a t i o n
 
 
 COMPILATION TIME     =        0.001 SECONDS      3 Mb  LEX240-240 Feb 14, 2013
-GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:25:10 Page 2
+GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:37:08 Page 2
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE problem1 Using MIP From line 93
 
@@ -136,11 +158,11 @@ BLOCKS OF VARIABLES           7     SINGLE VARIABLES          169
 NON ZERO ELEMENTS           507     DISCRETE VARIABLES        148
 
 
-GENERATION TIME      =        0.002 SECONDS      4 Mb  LEX240-240 Feb 14, 2013
+GENERATION TIME      =        0.003 SECONDS      4 Mb  LEX240-240 Feb 14, 2013
 
 
-EXECUTION TIME       =        0.002 SECONDS      4 Mb  LEX240-240 Feb 14, 2013
-GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:25:10 Page 3
+EXECUTION TIME       =        0.003 SECONDS      4 Mb  LEX240-240 Feb 14, 2013
+GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:37:08 Page 3
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE problem1 Using MIP From line 93
 
@@ -540,7 +562,7 @@ n8      .        1.000     +INF       EPS
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
-GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:25:10 Page 4
+GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:37:08 Page 4
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Model Statistics    SOLVE problem2 Using MIP From line 108
 
@@ -552,11 +574,11 @@ BLOCKS OF VARIABLES           7     SINGLE VARIABLES          169
 NON ZERO ELEMENTS           508     DISCRETE VARIABLES        148
 
 
-GENERATION TIME      =        0.002 SECONDS      3 Mb  LEX240-240 Feb 14, 2013
+GENERATION TIME      =        0.003 SECONDS      3 Mb  LEX240-240 Feb 14, 2013
 
 
-EXECUTION TIME       =        0.003 SECONDS      3 Mb  LEX240-240 Feb 14, 2013
-GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:25:10 Page 5
+EXECUTION TIME       =        0.005 SECONDS      3 Mb  LEX240-240 Feb 14, 2013
+GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:37:08 Page 5
 G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
 Solution Report     SOLVE problem2 Using MIP From line 108
 
@@ -571,7 +593,7 @@ Solution Report     SOLVE problem2 Using MIP From line 108
 **** MODEL STATUS      8 Integer Solution          
 **** OBJECTIVE VALUE               12.0000
 
- RESOURCE USAGE, LIMIT          0.010      1000.000
+ RESOURCE USAGE, LIMIT          0.020      1000.000
  ITERATION COUNT, LIMIT         0    2000000000
 
 SCIP             Feb 14, 2013 24.0.2 LEX 38380.38394 LEG x86_64/Linux         
@@ -962,9 +984,17 @@ n8      .        1.000     +INF       EPS
 **** REPORT SUMMARY :        0     NONOPT
                              0 INFEASIBLE
                              0  UNBOUNDED
+GAMS Rev 240  LEX-LEG 24.0.2 x86_64/Linux              06/26/13 18:37:08 Page 6
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
 
 
-EXECUTION TIME       =        0.001 SECONDS      2 Mb  LEX240-240 Feb 14, 2013
+**** REPORT FILE SUMMARY
+
+outfile /scratch/neos/solver/jobs/686303/solution.lst
+
+
+EXECUTION TIME       =        0.001 SECONDS      3 Mb  LEX240-240 Feb 14, 2013
 
 
 USER: NEOS Server                                    G100907:1412AS-LNX
@@ -974,6 +1004,6 @@ USER: NEOS Server                                    G100907:1412AS-LNX
 
 **** FILE SUMMARY
 
-Input      /scratch/neos/solver/jobs/686294/MODEL.gms
-Output     /scratch/neos/solver/jobs/686294/solve.out
+Input      /scratch/neos/solver/jobs/686303/MODEL.gms
+Output     /scratch/neos/solver/jobs/686303/solve.out
 

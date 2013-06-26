@@ -153,40 +153,37 @@ public class Neos {
 
     public static void main(String[] args) {
 
-	// Package file into server-sending format
+	// Package 'file' into server-sending format
 	// .. first by turning it into XML ..
 	NeosJobXml the_job = new NeosJobXml("milp", "scip", "GAMS");
 	the_job.addParam("model", the_model);
-	// .. and then by putting the XML in a vector.
+	// .. and then by putting the XML into a vector.
 	Vector<String> the_params = new Vector<String>();
 	the_params.add(the_job.toXMLString());
 
 	NeosXmlRpcClient the_client = new NeosXmlRpcClient("www.neos-server.org", "3332");
 
-	Object[] solvers;
-	Object[] results;
-
 	try {
 	    // Connect to server
 	    the_client.connect();
 
+	    // Print out all the solvers we can use in MILP.
 	    Vector<String> solver_params = new Vector<String>();
 	    solver_params.add("milp");
-	    // Print out all the solvers we can use in MILP.
-	    solvers = (Object[])the_client.execute("listSolversInCategory",
-						   solver_params,
-						   5000);
-	    System.out.println("Solvers usable with \"milp\". Solver / input language.");
+	    Object[] solvers = (Object[])the_client.execute("listSolversInCategory",
+							    solver_params,
+							    5000);
+	    System.out.println("Solvers usable with \"milp\". Solver : input language.");
 	    for(int i = 0; i < solvers.length; ++i) {
 		System.out.print(solvers[i] + " ");
 	    }
 	    System.out.print("\n");
 	    System.out.print(the_params.toString());
 
-	    // Submit to NEOS, waiting 5 secs for job ID / password
-	    results = (Object[])the_client.execute("submitJob",
-						    the_params,
-						   5000);
+	    // Submit job to NEOS, with a 5 sec timeoue for job ID / password
+	    Object[] results = (Object[])the_client.execute("submitJob",
+							    the_params,
+							    5000);
 	    Integer job_num = (Integer) results[0];
 	    String job_pass = (String) results[1];
 	    System.out.println("submitted. Job number: " + job_num + ", job password: " + job_pass);
