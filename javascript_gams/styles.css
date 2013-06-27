@@ -1,0 +1,141 @@
+h1 {
+    font-size: 23px;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    text-align: center;
+}
+h2 { text-align: center; }
+
+thead { color: green; }
+tbody { color: blue; }
+
+a:link {text-decoration: none; }
+a:visited {color: #880000; }
+a:active {color: red; }
+a:hover {text-decoration: underline; color: red;}
+
+p.description {
+    font-size: 18px;
+    text-align: justify;
+    margin-left: 5%;
+}
+
+p.selection {
+    font-size: 18px;
+    text-align: center;
+    margin-left: 5%;
+    font-style: italic;
+}
+
+body {
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #eeeeee;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    padding: 1% 5% 0% 5%;
+}
+
+div.main {
+    display: inline-block;
+    position: relative;
+    width:100%;
+    text-align: justify;
+    background-color: #eeeeee;
+    border-style: inset;
+    border-width: 5px;
+    border-color: #999999;
+}
+ 
+div.space {
+    position: relative;
+    width: 71%;
+    margin: 0% 0% 0% 27%;
+    height: 4px;
+    background-color: #000000;
+}
+
+div.padDiv {
+    display: absolute;
+    width: 94%;
+    margin: 0px;
+    padding: 20px 3%;
+}
+
+div.title { 
+    position: relative;
+    width:90%;
+    display: block;
+    float: left;
+    margin: 17px 17px;
+    font-size: 23px;
+    text-align: center; 
+    color: #111144;
+}
+
+input.button_add {
+    width:100%;
+    background-color: transparent; /* make the button transparent */
+    border: none;           /* assuming we don't want any borders */
+    cursor: pointer;        /* make the cursor like hovering over an <a> element */
+    vertical-align: middle; /* align the text vertically centered */
+    font-size: inherit;
+    text-align: inherit;
+    color: inherit;
+}
+
+div#header {
+    width: 100%;
+    height: 120px; 
+    border-width: 2px;
+    border-bottom-style: solid;
+    border-color: #333333;
+    margin-bottom: 0px;
+    color: #abcabc; 
+    padding: 6px 0px;
+    text-align:right;
+    line-height:1px;
+}
+
+div#footer {
+    width: 100%;
+    border-width: 2px;
+    border-top-style: solid;
+    border-color: #333333;
+    background: url('graphics/panorama.jpg') no-repeat;
+    background-size: 105% 800%;
+    color: #123123; 
+    height: 21px;
+    text-align:right;
+    margin: 0px;
+    background-color: #000000;
+}
+
+
+div.one_third{
+    height:85%;
+    width:33%;
+    float:left;
+    text-align:center;
+    line-height:200%;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+}
+ 
+div.one_half{
+    height:85%;
+    width:49%;
+    float:left;
+    text-align:center;
+    line-height:200%;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+}
+
+
+div#wrap {
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #ffffff;
+}
