@@ -1,5 +1,5 @@
 import java.util.Vector;
-import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc;
 import org.neos.client.NeosJobXml;
 import org.neos.client.NeosXmlRpcClient;
 import org.neos.client.ResultReceiver;
@@ -14,6 +14,7 @@ class NeosResponse implements ResultCallback {
 	System.out.println("Result follows:\n " + results);
     }
 }
+
 
 /*
   Temporary main class designed to test the NEOS server's capability.

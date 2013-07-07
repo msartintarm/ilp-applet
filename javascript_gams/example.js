@@ -32,9 +32,9 @@ function turn_into_xml(input_string) {
 function send_to_neos() {
 
     // We are going to submit a job.
-    var the_request = new XmlRpcRequest("http://www.neos-server.org:3332", "submitJob");
+    var the_request = new XmlRpcRequest("http://www.neos-dev-1.neos-server.org:3332", "submitJob");
 //    var the_request = new XmlRpcRequest("http://neos-1.chtc.wisc.edu:3332", "submitJob");
-//    the_request.crossDomain = true;
+    the_request.crossDomain = true;
 //    the_request.withCredentials = true;
 //    the_request.setHeader("Origin", "192.168.1.118");
 //    the_request.setHeader("Access-Control-Request-Method", "POST");
