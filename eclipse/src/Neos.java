@@ -42,14 +42,7 @@ public class Neos extends Applet {
 	Timer the_timer;
 
     String readFile (String path, Charset method) {
-/*    	try {
-			byte[] encoded = Files.readAllBytes(Paths.get(path));
-			return method.decode(ByteBuffer.wrap(encoded)).toString();
-    	} catch (IOException e) {
-			System.err.println("Error reading file. " + e);
-			return null;
-    	}	
-  */
+
     	try {
     		BufferedReader input = new BufferedReader (
     				new InputStreamReader(
@@ -134,7 +127,7 @@ public class Neos extends Applet {
 	    	
 	    	Integer the_offset = 0;
 	    	Integer poll_count = 0;
-	    	long start_time = System.nanoTime() / 1000000000;    
+	    	long start_time = System.nanoTime();    
 	    	// ... the code being measured ...    
 	    	public void actionPerformed(ActionEvent evt) {
 	    		if((++poll_count) == 5) {
@@ -153,7 +146,7 @@ public class Neos extends Applet {
 							the_result = (new String((byte[]) results2));
 
 						}
-				    	long elapsed_time = (System.nanoTime() / 1000000000) - start_time;
+				    	long elapsed_time = (System.nanoTime() - start_time / 1000000000);
 						System.out.println("Solver status: " + the_result + ", time elapsed: " + elapsed_time + " sec.");
 						js_dashboard.eval("update_status('" + the_result + "', " + elapsed_time + ");");
 					} catch (XmlRpcException e) {
