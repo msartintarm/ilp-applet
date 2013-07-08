@@ -26,8 +26,17 @@ function turn_into_xml(input_string) {
     return the_xml;
 }
 
+function update_status(result, elapsed) {
+    solver_status.innerHTML = "" + result + ", " + elapsed + " seconds elapsed.";
 
 
+}
+
+function show_file(the_file) {
+    input_file.innerHTML = the_file;
+
+
+}
 
 function send_to_neos() {
 
