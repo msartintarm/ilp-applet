@@ -1,6 +1,0 @@
-
-Sets n nutrients / Calories, Cholesterol, Total_Fat, Sodium, Carbohydrates, Dietary_Fiber, Protein, Vit_A, Vit_C, Calcium, Iron  /;
-
-Set f foods     / Bro1, Car2, Cel3, Cor4, Let5, Pep6, Pot7, Tof65, Chi66, Spa9, Tom10, App11, Ban12, Gra13, Kiw14, Ora15, Bag16, Brd17, Brd18, Cki19, Pie20, Cki21, But22, Che23, Mil24, Mil25, Ski26, Egg27, Egg28, Bol29, Fra30, Ham31, Kie32, Cap34, Che35, Cor36, Rai37, Ric38, Spe39, Oat40, Mal41, Piz42, Tac43, Ham44, Hot45, Cou46, Ric47, Mac48, Pnu49, Por50, Sar51, Wtt52, Pop53, Pot54, Pre55, Tor56, Chi57, Spl58, Veg59, New60, Tom61, New62, Crm63, Bea64 /;
-
-Set ns(n) nutrients selected  / Calories, Cholesterol, Total_Fat, Sodium, Carbohydrates, Dietary_Fiber, Protein, Vit_A, Vit_C, Calcium, Iron  /;

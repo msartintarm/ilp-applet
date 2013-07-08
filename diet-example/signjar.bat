@@ -1,1 +1,0 @@
-jarsigner -keystore key\keystore -storepass qawsed -keypass qawsed -signedjar SignedDiet.jar Diet.jar jarkey
