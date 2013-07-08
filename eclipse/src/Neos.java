@@ -2,10 +2,7 @@ import java.util.Vector;
 import java.applet.Applet;
 import java.awt.event.*;
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javax.swing.Timer;
 
@@ -84,12 +81,15 @@ public class Neos extends Applet {
     }
     public void start() {
 
+    	final String the_model = readFile("input_model.gms");
+    	send_to_neos(the_model);
+    }
     	
-//		js_dashboard.eval("show_file(\\\"" + the_model + "\\\");");
+	public void send_to_neos(String the_model) {
+		js_dashboard.call("show_file", new Object[] {the_model} );
     	// Package 'file' into server-sending format
     	// .. first by turning it into XML ..
     	NeosJobXml the_job = new NeosJobXml("milp", "Gurobi", "GAMS");
-    	final String the_model = readFile("input_model.gms");
     	the_job.addParam("model", the_model);
     	// .. and then by putting the XML into a vector.
     	Vector<String> the_params = new Vector<String>();

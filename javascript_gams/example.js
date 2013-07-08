@@ -34,8 +34,10 @@ function update_status(result, elapsed) {
 
 function show_file(the_file) {
     input_file.innerHTML = the_file;
+}
 
-
+function send_to_applet() {
+    the_applet.send_to_neos(input_file.innerHTML);
 }
 
 function send_to_neos() {
