@@ -1,11 +1,13 @@
 var hardware_loaded = false;
 
-function hardware_describe(hardware_num) {
+var case3 = {};
+
+case3.describe = function(hardware_num) {
 
     if(hardware_loaded === true) return;
 
-    var hw_title = document.getElementById("hardware_title");
-    var hw_describe = document.getElementById("hardware_describe");
+    var hw_title = document.getElementById("case3_title");
+    var hw_describe = document.getElementById("case3_describe");
     switch(hardware_num) {
     case 1:
 	hw_title.innerHTML = "Simple Architecture";
@@ -26,7 +28,7 @@ A spatial architecture that demonstrates a general set of spatial mapping respon
 	break;
     default: break;
     }
-}
+};
 
 function select_own_cfg() {
     var own_cfg = document.getElementById('own_cfg');
@@ -35,18 +37,18 @@ function select_own_cfg() {
     own_cfg.innerHTML = filename.substr(filename.lastIndexOf('\\') + 1);
     own_cfg.disabled = false;
     own_cfg.selected = true;
-}
+};
 
-function hardware_load(hardware_num) {
+case3.load = function(hardware_num) {
 
     if(hardware_loaded === false) {
-	hardware_describe(hardware_num);
-	document.getElementById("hardware_content").style.display = "inline-block";
+	case3.describe(hardware_num);
+	document.getElementById("case3_content").style.display = "inline-block";
 	hardware_loaded = true;	
     }
 
-    var hw_title = document.getElementById("hardware_title");
-    var hw_describe = document.getElementById("hardware_describe");
+    var hw_title = document.getElementById("case3_title");
+    var hw_describe = document.getElementById("case3_describe");
     var upload_file = document.getElementById("upload_file");
     switch(hardware_num) {
     case 1:
