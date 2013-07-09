@@ -43,24 +43,25 @@ static String job_pass = "-1";
 
 static JSObject js_dashboard;
 
-Timer the_timer;
+static Timer the_timer;
 
 String readFile(String path) {
 
   try {
-    BufferedReader input = new BufferedReader(new InputStreamReader(getClass()
-        .getResourceAsStream("/" + path)));
+    BufferedReader input = new BufferedReader(
+                           new InputStreamReader(
+                           getClass().getResourceAsStream("/" + path)));
     String the_data = "";
     String the_line;
 
     while ((the_line = input.readLine()) != null) {
-	the_data += the_line + "\n";
+      the_data += the_line + "\n";
     }
 
     input.close();
     return the_data;
   } catch (IOException e) {
-      System.err.println("Error reading file.. " + e);
+      System.err.println("Error reading file.. " + e.toString());
       return null;
   }
 }
@@ -68,6 +69,29 @@ String readFile(String path) {
 String js_model = "";
 boolean js_submitted = false;
 
+// Load a string from a couple files.
+// The way the files are stitched into a single model is very case 3 - specific.
+// Check case 3's 'run-gams.sh' for a command-line version of this selector.
+public void JSload(String arch, String software_file, String hardware_file) {
+
+  final String root = "case3/";
+  
+  js_model  = readFile(root + arch + "/kind.gms");
+  js_model += readFile(root + arch + "/SW-DAG/" + software_file);
+  js_model += readFile(root + arch + "/HW-GRAPH/" + hardware_file);
+  js_model += readFile(root + "shared/gen-variables.gms");
+  js_model += readFile(root + "shared/gen-constants.gms");
+  js_model += readFile(root + arch + "constraints/constraints.gms");
+  js_model += readFile(root + "shared/output-schedule.gms");
+
+  // Show the user (using Javascript) the model they specified.
+  js_show_file(js_model);
+  js_submitted = true;
+}
+
+// Called from Javascript, using the string in its text box.
+// It cannot invoke the method directly due to sandboxing, so instead
+// it will change a variable, which is monitored by a Java thread.
 public void JSsubmit(String the_model) {
   js_model = the_model;
   js_submitted = true;
@@ -219,39 +243,39 @@ public boolean sendToNeos(String the_model) {
   job_name = (Integer) results[0];
   job_pass = (String) results[1];
 
-  NeosResponse the_response = new NeosResponse(); // implements an asynchronous
-                                                  // interface
+  NeosResponse the_response = new NeosResponse(); // Asynchronous
 
-  ActionListener taskPerformer = new ActionListener() {
-    Integer the_offset = 0;
+  ActionListener solution_monitor = new ActionListener() {
     Integer poll_count = 0;
-    long start_time = System.nanoTime();
+    long start = System.nanoTime();
 
     // ... the code being measured ...
     @Override
     public void actionPerformed(ActionEvent evt) {
       // Every 5 seconds, check the solver status.
       if ((++poll_count % 5) == 0) {
-        String the_result = jobStatus(the_client, job_name, job_pass);
-        long elapsed_time = (System.nanoTime() - start_time) / 1000000000;
-        System.out.println("Solver status: " + the_result
-            + ", time elapsed: " + elapsed_time + " sec.");
-        js_dashboard.call("update_status", new Object[] { 
-            the_result, elapsed_time });
-        // js_dashboard.eval("update_status('" + the_result + "', " +
-        // elapsed_time + ");");
+        String result = jobStatus(the_client, job_name, job_pass);
+        long elapsed = (System.nanoTime() - start) / 1000000000;
+        System.out.println("Solver status: " + result
+            + ", time elapsed: " + elapsed + " sec.");
+        js_dashboard.call("update_status", new Object[] { result, elapsed });
+        
+        // Is solver still running ..?
+        if(!result.equals("Running")) the_timer.stop();
+        
       } else {
-        String the_result = getSolverOutput(the_client, job_name, job_pass);
-        if (the_result.length() > 2) {
-          System.out.println("\nIntermediate results: \n" + the_result
-              + "\n. Offset " + the_offset);
+        String result = getSolverOutput(the_client, job_name, job_pass);
+        long elapsed = (System.nanoTime() - start) / 1000000000;
+        js_dashboard.call("update_status", new Object[] { result, elapsed });
+        if (result.length() > 2) {
+          System.out.println("\nIntermediate results: \n" + result);
         }
       }
     }
   };
   
   int delay = 2000; // milliseconds
-  the_timer = new Timer(delay, taskPerformer);
+  the_timer = new Timer(delay, solution_monitor);
   the_timer.start();
 
   // This class will handle callback in its own thread. I think it checks every
