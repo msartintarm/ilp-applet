@@ -37,7 +37,8 @@ function show_file(the_file) {
 }
 
 function send_to_applet() {
-    the_applet.send_to_neos(input_file.innerHTML);
+    var the_applet = document.getElementById("the_applet");
+    the_applet.JSsubmit(input_file.innerHTML);
 }
 
 function send_to_neos() {

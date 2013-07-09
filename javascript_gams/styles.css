@@ -55,7 +55,6 @@ div.space {
 }
 
 div.padDiv {
-    display: absolute;
     width: 94%;
     margin: 0px;
     padding: 20px 3%;

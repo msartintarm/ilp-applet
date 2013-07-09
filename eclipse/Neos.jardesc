@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
     <jar path="Neos/Neos.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/Neos/Neos.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Neos/Neos.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
-    <manifest generateManifest="false" mainClassHandleIdentifier="=Neos/src&lt;{Neos.java[Neos" manifestLocation="/Neos/manifest_eclipse.txt" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+    <manifest generateManifest="false" mainClassHandleIdentifier="=Neos/src&lt;NeosClient{Neos.java[Neos" manifestLocation="/Neos/manifest_eclipse.txt" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
         <sealing sealJar="false">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
-        <file path="/Neos/org/jcommon-1.0.16.jar"/>
-        <file path="/Neos/org/xmlrpc-common-3.1.3.jar"/>
         <javaElement handleIdentifier="=Neos/src&lt;org.neos.client"/>
-        <javaElement handleIdentifier="=Neos/src&lt;"/>
         <file path="/Neos/input_model.gms"/>
-        <file path="/Neos/org/jfreechart-1.0.13.jar"/>
-        <file path="/Neos/org/xmlrpc-client-3.1.3.jar"/>
-        <file path="/Neos/org/ws-commons-util-1.0.2.jar"/>
-        <file path="/Neos/org/commons-logging-1.1.jar"/>
+        <javaElement handleIdentifier="=Neos/src&lt;"/>
         <file path="/Neos/.classpath"/>
+        <javaElement handleIdentifier="=Neos/src&lt;NeosClient"/>
     </selectedElements>
 </jardesc>
