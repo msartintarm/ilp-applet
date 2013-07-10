@@ -17,3 +17,4 @@ Uses code described in _A General Constraint-centric Scheduling Framework for Sp
 ###Links
 - [NEOS developer guide](http://www.neos-guide.org/content/java-developer-guide)
 - [Example website](http://neos-dev-1.neos-server.org/guide/?q=node/27)
+- [Great link talking about using hiden Java applets](http://windyroad.com.au/2006/08/14/reintroducing-javascript-and-hidden-applets-jaha/)
