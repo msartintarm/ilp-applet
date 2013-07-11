@@ -101,15 +101,15 @@ public void JSsubmit(String the_model) {
 @Override
 public void init() {
   js_dashboard = JSObject.getWindow(this);
+  js_case3 = (JSObject) js_dashboard.getMember("case3");
+  js_case3.call("submit_toggle", null);
 }
 
 @Override
 //Called when applet has finished loading.
 public void start() {
-
-  js_show_file(readFile("input_model.gms"));
   
-//Sets up delay to check for JS model
+  //Sets up delay to check for JS model
   ActionListener watch_submission = new ActionListener() {
     public void actionPerformed(ActionEvent evt) {
       if(js_submitted == false) return;
@@ -243,11 +243,36 @@ public boolean sendToNeos(String the_model) {
   job_name = (Integer) results[0];
   job_pass = (String) results[1];
 
-  NeosResponse the_response = new NeosResponse(); // Asynchronous
+  js_case3.call("submit_toggle", null);
 
   ActionListener solution_monitor = new ActionListener() {
     Integer poll_count = 0;
     long start = System.nanoTime();
+    boolean solution_found = false;
+    
+    void monitorJobStatus() {
+      String result = jobStatus(the_client, job_name, job_pass);
+      long elapsed = (System.nanoTime() - start) / 1000000000;
+      String solver_status = "Solver status: " + result
+          + ", time elapsed: " + elapsed + " sec.";
+      System.out.println(solver_status);
+      js_dashboard.call("update_status", new Object[] { solver_status });
+      
+      // Is solver still running ..? If not, let's get a solution.
+      if(result.equals("Done")) {
+	  //  js_case3.call("submit_toggle", null);
+        this.solution_found = true;
+        monitorJobOutput();
+      }
+    }
+
+    void monitorJobOutput() {
+      String result = getSolverOutput(the_client, job_name, job_pass);
+      if (result.length() > 2) {
+        System.out.println("\nIntermediate results: \n" + result);
+        js_dashboard.call("update_output", new Object[] { result });
+      }
+    }
 
     // ... the code being measured ...
     @Override

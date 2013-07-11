@@ -22,28 +22,26 @@ Trusted-Library: true\nCodebase: "*"\nPermissions: all-permissions\n'
 
 pushd eclipse >> /dev/null
 
-# Create Java classes
-javac -classpath $JAVA_CLASS_PATH $JAVA_FILES
 # Create manifests
 echo -e $MANIFEST_FILE >& manifest_eclipse.txt
 echo -e $MANIFEST_GENERAL >& manifest_general.txt
-
-# Zip classes, manifest, and external jars into one file
-jar cfm Neos.jar manifest_eclipse.txt $JAVA_CLASSES $OTHER_FILES
-
 # Add entries to manifest for other files
 for JAR in $THE_JARS; do
     cp ${JAR/slib/slib-old} $JAR
     jar ufm $JAR manifest_general.txt
 done
 
+# Create Java classes
+javac -classpath $JAVA_CLASS_PATH $JAVA_FILES
+# Zip classes, manifest, and external jars into one file
+jar cfm Neos.jar manifest_eclipse.txt $JAVA_CLASSES $OTHER_FILES
+
 # Sign the JARs
 pushd ..
-for JAR in $THE_JARS; do
+for JAR in $THE_JARS Neos.jar; do
     echo $JAR
     jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed eclipse/$JAR jarkey
 done
-jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed eclipse/Neos.jar jarkey
 popd
 
 
