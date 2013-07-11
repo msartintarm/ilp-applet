@@ -1,0 +1,1 @@
+set K "Type of Node" /Input,Output,Add,Sub,Mul,UDiv,SDiv,URem,SRem,IMax,IMin,SMax,SMin,FAdd,FSub,FMul,FDiv,FRem,Sqrt,FSin,FCos,FMax,FMin,SExt,Shl,LShr,AShr,And,Or,Xor,PHI,Ternary,Copy,ICmpEQ,ICmpNE,ICmpUGT,ICmpUGE,ICmpULT,ICmpULE,ICmpSGT,ICmpSGE,ICmpSLT,ICmpSLE,FCmpOEQ,FCmpONE,FCmpOGT,FCmpOGE,FCmpOLT,FCmpOLE/

@@ -1,0 +1,4 @@
+Old Formulation of timing constraints:
+*old formulation
+*t1_timing_1(e,v)$Gve(v,e)..         Tv(v) =e= Tv(v) + delta(e) + sum(l$kindL('rrL',l), Mel(e,l));
+*t1_timing_2(e,v)$Gev(e,v)..         =g= Te(e); 

@@ -1,0 +1,4 @@
+parallelmode -1
+probe 2
+heurfreq 1
+mipstart 1

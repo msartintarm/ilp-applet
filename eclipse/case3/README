@@ -1,0 +1,71 @@
+       Welcome to the ILP Scheduling Interface Guide!
+
+------------------------- Configuration ------------------------
+
+- Before you begin, one important config option is needed : your 
+  GAMS executable is probably in a different location than ours.
+
+- Open up the script 'run-gams.sh' for editing. Right at the top, 
+  set the environment variable 'GAMS' to point to the path of a 
+  valid GAMS executable. 
+
+- Run the script (`./run-gams.sh`), and it will tell you if the
+  executable cannot be found.
+
+-------------------------- How to Use -------------------------
+  
+- Running the scheduler requires two maps as input: a hardware
+  graph, and a software graph. Scheduling will link the two.
+
+- The script is your friend - use it to help find what 
+  graphs you can use!
+
+ [user@linux.pc] (1)$ ./run-gams
+
+- Running the script without any arguments will print a list of
+  the hardware graphs available. 
+- They are sorted by architecture, and located in the folder 
+  [ARCH]/HW-GRAPH .
+
+ [user@linux.pc] (2)$ ./run-gams -h simple_graph.gms
+
+- Specifying a hardware graph will cause the script to realize
+  which architecture you mean (the same name as the encompassing
+  folder). It will print a list of the software graphs available.
+
+ [user@linux.pc] (3)$ ./run-gams -h simple_graph.gms -g simpleDAG.gms
+
+- The script will load the graphs, grab the constraints, 
+  and invoke GAMS!
+
+--------------------- Understanding Output --------------------
+  
+  (All files created by GAMS, and referred to here, 
+  are in the folder 'work/')
+
+- GAMS loads a master file 'solve.gms', that includes files with all other
+  sets, constraints, and variables (both general and arch-specific)
+  by absolute paths. 
+
+- When GAMS begins, it will print output to log.txt.
+  It will continuously update if GAMS does not terminate immediately.
+
+- When GAMS ends, one of two things can happen:
+  1) Compilation fails. We catch this and inform you.
+   - Search for the string '****' in 'solve.lst' to find where it failed.
+  2) GAMS will complete. 
+   - A solution, if found, will be in 'solution.lst'.
+   - Check 'solve.lst' to see how GAMS solved the problem.
+     This is especially useful in seeing why a solution failed.
+
+-------- How To Add an Architecture in Two Simple Steps -------
+
+- First, add the name of the arch to environment variable 'ARCHS' in the
+  configuration options.
+
+- Next, imitate an existing folder heirarchy, using the arch name as the root:
+ [user@linux.pc] (3)$ cp -r Simple [ARCH]
+
+--------------------------------------------------------------
+Send an email to tjn@cs.wisc.edu or msartintarm@wisc.edu with any questions,
+ and happy coding!

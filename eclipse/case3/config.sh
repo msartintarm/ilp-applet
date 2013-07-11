@@ -1,0 +1,4 @@
+export HARDWARE_CFG=""
+export HARDWARE_CFG="DySER"
+export HARDWARE_CFG="DySER"
+export HARDWARE_CFG="TRIPS"
