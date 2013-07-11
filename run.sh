@@ -3,11 +3,11 @@
 set -e
 
 JAVA_CLASS_PATH="\
-./slib/commons-logging-1.1.jar;\
-./slib/xmlrpc-client-3.1.3.jar;\
-./slib/xmlrpc-common-3.1.3.jar;\
-./slib/plugin.jar;\
-./slib/ws-commons-util-1.0.2.jar;"
+./slib/commons-logging-1.1.jar:\
+./slib/xmlrpc-client-3.1.3.jar:\
+./slib/xmlrpc-common-3.1.3.jar:\
+./slib/plugin.jar:\
+./slib/ws-commons-util-1.0.2.jar:"
 
 JAVA_FILES="\
 NeosClient/*.java \
@@ -18,7 +18,7 @@ case3 "
 
 # Substring replacement
 JAVA_CLASSES=${JAVA_FILES//"java"/"class"}
-THE_JARS=${JAVA_CLASS_PATH//";"/" "}
+THE_JARS=${JAVA_CLASS_PATH//":"/" "}
 
 MANIFEST_FILE='Manifest-Version: 1.0\nTrusted-Library: true\nMain-Class: NeosClient.Neos\nCreated-By: Michael Sartin-Tarm\nCodebase: "*"\nPermissions: all-permissions\nClass-Path: '$THE_JARS'\n'
 
