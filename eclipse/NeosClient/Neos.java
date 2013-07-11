@@ -10,7 +10,6 @@ import javax.swing.Timer;
 import org.apache.xmlrpc.XmlRpcException;
 import org.neos.client.NeosJobXml;
 import org.neos.client.NeosXmlRpcClient;
-import org.neos.client.ResultReceiver;
 import org.neos.client.ResultCallback;
 
 import netscape.javascript.*;
@@ -42,29 +41,9 @@ static Integer job_name = -1;
 static String job_pass = "-1";
 
 static JSObject js_dashboard;
+static JSObject js_case3;
 
 static Timer the_timer;
-
-String readFile(String path) {
-
-  try {
-    BufferedReader input = new BufferedReader(
-                           new InputStreamReader(
-                           getClass().getResourceAsStream("/" + path)));
-    String the_data = "";
-    String the_line;
-
-    while ((the_line = input.readLine()) != null) {
-      the_data += the_line + "\n";
-    }
-
-    input.close();
-    return the_data;
-  } catch (IOException e) {
-      System.err.println("Error reading file.. " + e.toString());
-      return null;
-  }
-}
 
 String js_model = "";
 boolean js_submitted = false;
@@ -80,13 +59,11 @@ public void JSload(String arch, String software_file, String hardware_file) {
   js_model += readFile(root + arch + "/SW-DAG/" + software_file);
   js_model += readFile(root + arch + "/HW-GRAPH/" + hardware_file);
   js_model += readFile(root + "shared/gen-variables.gms");
-  js_model += readFile(root + "shared/gen-constants.gms");
-  js_model += readFile(root + arch + "constraints/constraints.gms");
-  js_model += readFile(root + "shared/output-schedule.gms");
+  js_model += readFile(root + "shared/gen-constraints.gms");
+  js_model += readFile(root + arch + "/constraints/constraints.gms");
 
   // Show the user (using Javascript) the model they specified.
   js_show_file(js_model);
-  js_submitted = true;
 }
 
 // Called from Javascript, using the string in its text box.
@@ -106,14 +83,15 @@ public void init() {
 }
 
 @Override
-//Called when applet has finished loading.
+// Called when applet has finished loading.
+// Here we init a timer to check for JS updates.
 public void start() {
   
   //Sets up delay to check for JS model
   ActionListener watch_submission = new ActionListener() {
     public void actionPerformed(ActionEvent evt) {
-      if(js_submitted == false) return;
-      js_submitted = false; // reset our flag
+      if(js_submitted != false) js_submitted = false; // reset our flag
+      else return;
       sendToNeos(js_model);
     }
   };
@@ -122,9 +100,7 @@ public void start() {
   the_timer = new Timer(delay, watch_submission);
   the_timer.start();
 
-  
-  
-//  sendToNeos(the_model);
+  js_case3.call("submit_toggle", null);
 }
 
 void js_show_file(String the_text) {
@@ -195,15 +171,15 @@ int saved_offset = 0;
  * Gets output of the solver since last call. Keeps an internal offset
  *   to accomplish this.
  */
-final String getSolverOutput(final NeosXmlRpcClient the_client, 
-    Integer the_user, String the_pass) {
+final String getSolverOutput(
+    final NeosXmlRpcClient client, Integer user, String pass) {
 
   Vector params = new Vector(3);
-  params.add(job_name);
-  params.add(job_pass);
+  params.add(user);
+  params.add(pass);
   params.add(saved_offset);
   try {
-    Object[] result = (Object[]) the_client.execute(
+    Object[] result = (Object[]) client.execute(
         "getIntermediateResultsNonBlocking", params, 10000);
     saved_offset = (Integer) result[1];
     if (result[0] instanceof String) return (String) result[0];
@@ -211,6 +187,26 @@ final String getSolverOutput(final NeosXmlRpcClient the_client,
 
   } catch (XmlRpcException e) {
     System.err.println("Solver output query failed. " + e.toString());
+    return null;
+  }
+}
+/**
+ * Gets the final solution of the problem. Will return an empty
+ * string if one doesn't exist.
+ */
+final String getSolution(
+    final NeosXmlRpcClient client, Integer user, String pass) {
+
+  Vector params = new Vector(2);
+  params.add(user);
+  params.add(pass);
+  try {
+    Object result = (Object) client.execute(
+        "getFinalResultsNonBlocking", params, 10000);
+    if (result instanceof String) return (String) result;
+    else return new String((byte[]) result);
+  } catch (XmlRpcException e) {
+    System.err.println("Solver solution query failed. " + e.toString());
     return null;
   }
 }
@@ -256,7 +252,7 @@ public boolean sendToNeos(String the_model) {
       String solver_status = "Solver status: " + result
           + ", time elapsed: " + elapsed + " sec.";
       System.out.println(solver_status);
-      js_dashboard.call("update_status", new Object[] { solver_status });
+      js_dashboard.call("update_element", new Object[] { "solver_status", solver_status });
       
       // Is solver still running ..? If not, let's get a solution.
       if(result.equals("Done")) {
@@ -270,30 +266,27 @@ public boolean sendToNeos(String the_model) {
       String result = getSolverOutput(the_client, job_name, job_pass);
       if (result.length() > 2) {
         System.out.println("\nIntermediate results: \n" + result);
-        js_dashboard.call("update_output", new Object[] { result });
+        js_dashboard.call("update_element", new Object[] { "solver_output", result });
       }
     }
 
-    // ... the code being measured ...
-    @Override
+    void getJobSolution() {
+      String result = getSolution(the_client, job_name, job_pass);
+      if (result.length() > 2) {
+        System.out.println("\nFinalresults: \n" + result);
+        js_dashboard.call("update_element", new Object[] { "solver_solution", result });
+      }
+      // Now that we have a solution, we can stop polling the server.
+      the_timer.stop();
+    }
+    
     public void actionPerformed(ActionEvent evt) {
-      // Every 5 seconds, check the solver status.
-      if ((++poll_count % 5) == 0) {
-        String result = jobStatus(the_client, job_name, job_pass);
-        long elapsed = (System.nanoTime() - start) / 1000000000;
-        System.out.println("Solver status: " + result
-            + ", time elapsed: " + elapsed + " sec.");
-        js_dashboard.call("update_status", new Object[] { result, elapsed });
-        
-        // Is solver still running ..?
-        if(!result.equals("Running")) the_timer.stop();
-        
+      if (this.solution_found == true) { getJobSolution();
       } else {
-        String result = getSolverOutput(the_client, job_name, job_pass);
-        long elapsed = (System.nanoTime() - start) / 1000000000;
-        js_dashboard.call("update_status", new Object[] { result, elapsed });
-        if (result.length() > 2) {
-          System.out.println("\nIntermediate results: \n" + result);
+        monitorJobStatus();
+        // Every 10 seconds, check the solver output.
+        if ((++poll_count % 5) == 0) {
+          monitorJobOutput();
         }
       }
     }
@@ -301,22 +294,45 @@ public boolean sendToNeos(String the_model) {
   
   int delay = 2000; // milliseconds
   the_timer = new Timer(delay, solution_monitor);
+  the_timer.setInitialDelay(0);
   the_timer.start();
 
   // This class will handle callback in its own thread. I think it checks every
   // 100 ms.
-  ResultReceiver receiver = new ResultReceiver(
-      the_client, the_response, job_name, job_pass);
-  receiver.start();
+//  ResultReceiver receiver = new ResultReceiver(
+  //    the_client, the_response, job_name, job_pass);
+  //receiver.start();
 
   return true; // Boom goes the dynamite.
 }
 
 @Override
-public void stop() {
-}
+public void stop() {}
 
-public static void main(String[] args) {
+public static void main(String[] args) {}
+
+String readFile(String path) {
+
+  try {
+    BufferedReader input = new BufferedReader(
+                           new InputStreamReader(
+                           getClass().getResourceAsStream("/" + path)));
+    String the_data = "";
+    String the_line;
+
+    while ((the_line = input.readLine()) != null) {
+      the_data += the_line + "\n";
+    }
+
+    input.close();
+    return the_data;
+  } catch (IOException e) {
+    System.err.println("Error reading file " + path + ": " + e.toString());
+    return null;
+  } catch (NullPointerException e) {
+    System.err.println("File " + path + " doesn't exist: " + e.toString());
+    return null;
+  }
 }
 
 }

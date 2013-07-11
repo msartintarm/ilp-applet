@@ -26,10 +26,8 @@ function turn_into_xml(input_string) {
     return the_xml;
 }
 
-function update_status(result, elapsed) {
-    solver_status.innerHTML = "" + result + ", " + elapsed + " seconds elapsed.";
-
-
+function update_element(element, result) {
+    document.getElementById(element).innerHTML = result;
 }
 
 function show_file(the_file) {

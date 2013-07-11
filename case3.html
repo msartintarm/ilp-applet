@@ -23,24 +23,29 @@
 
       <div class="padDiv"> 
         <div class='main'>
-          <div class="title" id="title2">
-            <div class="one_half">
-	      <table style="width:100%;">
-		<h2>Case Study 3:<br/>Spatial Architecture Scheduling</h2>
-		<p class="description">
-		  Hardware specialization has emerged as an important way to sustain 
-		  performance improvements of microprocessors to address transistor energy 
-		  efficiency challenges and general purpose processing's inefficiencies. 
-		  The <i> spatial architecture</i> paradigm is to map large regions of computation to the hardware,
-		  as a static scheduler integrated into the compilation toolchain. The resultant mappings
-		  affect execution latency, and exploitable throughput, of the program - hence it is 
-		  advantageous to use a scheduler that takes these factors into account. <br/>
-		  In ILP, the properties common to spatial architectures are broken into
-		  a set of constraints encompassing <i>responsibilities</i> of the
-		  generalized scheduler. Several architectures have additional responsibilities in addition
-		  to the common set. All responsibilities are factored into a single linear objective
-		  function, which is minimized. The solver cuts off when a solution is within 10% of optimality.
-		</p>
+	  <h2>Case Study 3:<br/>Spatial Architecture Scheduling</h2>
+
+<!--  Since the applet will be embedded in the page itself, we don't need this description. (Double-check this)
+	  <p class="description">
+	    Hardware specialization has emerged as an important way to sustain 
+	    performance improvements of microprocessors to address transistor energy 
+	    efficiency challenges and general purpose processing's inefficiencies. 
+	    The <i> spatial architecture</i> paradigm is to map large regions of computation to the hardware,
+	    as a static scheduler integrated into the compilation toolchain. The resultant mappings
+	    affect execution latency, and exploitable throughput, of the program - hence it is 
+	    advantageous to use a scheduler that takes these factors into account. <br/>
+	    In ILP, the properties common to spatial architectures are broken into
+	    a set of constraints encompassing <i>responsibilities</i> of the
+	    generalized scheduler. Several architectures have additional responsibilities in addition
+	    to the common set. All responsibilities are factored into a single linear objective
+	    function, which is minimized. The solver cuts off when a solution is within 10% of optimality.
+	  </p>
+-->
+	  <p class="description" style="text-align:center;">
+	    <i>Select an architecture (mouse-over for description).</i>
+	  </p>
+
+	      <table style="width:100%;text-align:center;">
 
 		<thead><tr>
 		    <th><button onmouseover="case3.describe(1)" 
@@ -53,16 +58,21 @@
 				onclick="case3.load(4)">TRIPS</button></th>
 		</tr></thead>
 	      </table>
-              <div id="case3_description">
+              <div id="case3_description" style="text-align:center;">
 		<h3 id="case3_title"></h3>
 		<p id="case3_describe" style="font-size:20px;"></p>
 	      </div>
+
+            <div class="one_half"><br/>
               <div id="case3_content" style="display:none;">
-		<div class="one_third" id="hw_files"></div>
-		<div class="one_third" id="sw_files"></div>
-		<div class="one_third" id="upload_file"></div>
+		<div id="hw_files"></div><br/>
+		<div id="sw_files"></div><br/>
+		<div id="upload_file"></div>
 		<div style="position:relative; float:left; width:100%; padding-top:10px;">
-		  <button align="center" style="font-size:20px;">Submit job to NEOS server!</button>
+		  <button align="center" style="font-size:20px; width:100%;" 
+			  onclick="case3.load_from_java();">Display File On Right</button><br/>
+		  <button align="center" style="font-size:20px; width:100%;" id="submit_button"
+			  onclick="case3.submit_from_java();">Submit job to NEOS!</button>
 		</div>
 	      </div>
             </div>
@@ -71,18 +81,28 @@
 
 	    <div class="one_half" style="text-align:center;">
 	      <h4 style="margin-left:50px;">File to be loaded:</h4>
-	      <textarea id="input_file" style="width:100%;margin-left:50px;" rows="40" columns="90">
+	      <textarea id="input_file" style="width:100%;margin-left:10px;font-size:9pt;" 
+			rows="15">
 	      </textarea>
 	    </div>
 
-	    <div style="width:100%; padding-top:10px; text-align:center;">
-	      <button onclick="send_to_applet();">Find a solution!</button>
-	      <br/>
-	      <textarea id="solver_status"></textarea>
+	    <div style="width:100%; padding-top:10px; text-align:center;float:left;">
+	      <div class="one_third">
+		Solver Status:<br/>
+		<textarea id="solver_status" style="width:95%;" rows="12"></textarea>
+	      </div>
+	      <div class="one_third">
+		Solver Output:<br/>
+		<textarea id="solver_output" style="width:95%;" rows="12"></textarea>
+	      </div>
+	      <div class="one_third">
+		Solution:<br/>
+		<textarea id="solver_solution" style="width:95%;" rows="12"></textarea>
+	      </div>
 	    </div>
 	    <object type="application/x-java-applet" 
-		    height="10" width="100" id="the_applet">
-	      <param name="codebase" value="eclipse">
+		    height="0" width="0" id="the_applet" >
+	      <param name="codebase" value="eclipse/">
 	      <param name="archive" value="Neos.jar,
 					   slib/commons-logging-1.1.jar, 
 					   slib/xmlrpc-common-3.1.3.jar, 
@@ -90,10 +110,10 @@
 					   slib/ws-commons-util-1.0.2.jar,
 					   slib/plugin.jar"/>
 	      <param name="code" value="NeosClient/Neos.class"/>
+	      <param name="mayscript" value="true"/>
 	      Java applet failed to load!
 	    </object>
 
-	  </div>
 	</div>
       </div>
     </div>

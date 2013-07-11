@@ -1,19 +1,24 @@
+#!/bin/bash
 # Platform-independent, but uses Bash
+set -e
 
-THE_CLASS_PATH="\
-./diet-example/slib/xmlrpc-common-3.1.3.jar;\
-./diet-example/slib/xmlrpc-client-3.1.3.jar;\
-./diet-example/slib/ws-commons-util-1.0.2.jar;"
+JAVA_CLASS_PATH="\
+./slib/commons-logging-1.1.jar;\
+./slib/xmlrpc-client-3.1.3.jar;\
+./slib/xmlrpc-common-3.1.3.jar;\
+./slib/plugin.jar;\
+./slib/ws-commons-util-1.0.2.jar;"
 
 JAVA_FILES="\
 NeosClient/*.java \
 org/neos/client/*.java "
 
-THE_CLASSES=${THE_FILES%.$java}.$class
+OTHER_FILES="\
+case3 "
 
-javac -classpath $THE_CLASS_PATH $THE_FILES &&
-jar cvfm Neos.jar manifest.txt $THE_CLASSES &&
-java -classpath $THE_CLASS_PATH Neos >& out.txt
+# Substring replacement
+JAVA_CLASSES=${JAVA_FILES//"java"/"class"}
+THE_JARS=${JAVA_CLASS_PATH//";"/" "}
 
 MANIFEST_FILE='Manifest-Version: 1.0\nTrusted-Library: true\nMain-Class: NeosClient.Neos\nCreated-By: Michael Sartin-Tarm\nCodebase: "*"\nPermissions: all-permissions\nClass-Path: '$THE_JARS'\n'
 

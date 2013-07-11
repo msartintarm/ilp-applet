@@ -1,6 +1,7 @@
 var hardware_loaded = false;
 
 var case3 = {};
+case3.arch = "";
 
 case3.describe = function(hardware_num) {
 
@@ -52,33 +53,106 @@ case3.load = function(hardware_num) {
     var upload_file = document.getElementById("upload_file");
     switch(hardware_num) {
     case 1:
-	hw_files.innerHTML="Two hardware graphs.<br/>\
-<select id='hw_file' size='2'>\
+	case3.arch = "Simple";
+	hw_files.innerHTML="One hardware graph.<br/>\
+<select id='hw_file' size='1'>\
   <option value='simple_graph.gms' selected>simple_graph.gms</option>\
-  <option value='simple_graph2.gms'>simple_graph2.gms</option>\
 </select><br/>\
 <button>View raw file.</button>";
-	sw_files.innerHTML="Three software DAGs.<br/>\
+	sw_files.innerHTML="One software DAG.<br/>\
 <select id='sw_file' size='2'>\
-  <option value='simpleCFG.gms' selected>simpleCFG.gms</option>\
-  <option value='simpleCFG2.gms'>simpleCFG2.gms</option>\
-  <option value='simpleCFG3.gms'>simpleCFG3.gms</option>\
+  <option value='simpleDAG.gms' selected>simpleDAG.gms</option>\
   <option id='own_cfg' value='ownCFG.gms' disabled> Own CFG</option>\
 </select><br/>\
 <button>View raw file.</button>";
-	upload_file.innerHTML="Or, specify an input DAG.<br/>\
-<input name='to_upload' id='upload_file_input' type='file' />\
-<button onclick='select_own_cfg()'>Upload</button>";
 	break;
     case 2:
-	hw_describe.innerHTML = "Two hardware graphs, and three provided software DAGs.";
+	case3.arch = "DySER";
+	hw_files.innerHTML="One hardware graph.<br/>\
+<select id='hw_file' size='1'>\
+  <option value='dyser_model.gms' selected>dyser_model.gms</option>\
+</select><br/>\
+<button>View raw file.</button>";
+	sw_files.innerHTML="One software DAG.<br/>\
+<select id='sw_file' size='2'>\
+  <option value='dyser_pdg.gms' selected>dyser_pdg.gms</option>\
+  <option id='own_cfg' value='ownCFG.gms' disabled> Own CFG</option>\
+</select><br/>\
+<button>View raw file.</button>";
 	break;
     case 3:
-	hw_describe.innerHTML = "Three hardware graphs, and four provided software DAGs.";
+	case3.arch = "PLUG";
+	hw_files.innerHTML="One hardware graph.<br/>\
+<select id='hw_file' size='1'>\
+  <option value='PLUG4x4.gms' selected>PLUG4x4.gms</option>\
+</select><br/>\
+<button>View raw file.</button>";
+	sw_files.innerHTML="One software DAG.<br/>\
+<select id='sw_file' size='2'>\
+  <option value='plug_ethane.gms' selected>plug_ethane.gms</option>\
+  <option id='own_cfg' value='ownCFG.gms' disabled> Own CFG</option>\
+</select><br/>\
+<button>View raw file.</button>";
 	break;
     case 4:
-	hw_describe.innerHTML = "Four hardware graphs, and five provided software DAGs.";
+	case3.arch = "TRIPS";
+	hw_files.innerHTML="One hardware graph.<br/>\
+<select id='hw_file' size='1'>\
+  <option value='trips4x4.gms' selected>trips4x4.gms</option>\
+</select><br/>\
+<button>View raw file.</button>";
+	sw_files.innerHTML="One software DAG.<br/>\
+<select id='sw_file' size='2'>\
+  <option value='tripsDAG-small.gms' selected>tripsDAG-small.gms</option>\
+  <option value='tripsDAG-too-large.gms' selected>tripsDAG-too-large.gms</option>\
+  <option id='own_cfg' value='ownCFG.gms' disabled> Own CFG</option>\
+</select><br/>\
+<button>View raw file.</button>";
 	break;
     default: break;
     }
-}
+    upload_file.innerHTML="Or, specify an input DAG.<br/>\
+<input name='to_upload' id='upload_file_input' type='file' style='float:left;'/><br/>\
+<button onclick='select_own_cfg()' style='float:left;'>Upload..</button>";
+
+};
+
+/**
+ * Figures out which software and hardware DAGs are selected.
+ * Then, sends the model to load on the right.
+ */
+case3.load_from_java = function() {
+
+    var the_applet = document.getElementById("the_applet");
+    var sw_select = document.getElementById("sw_file");
+    var sw_file = sw_select.options[sw_select.selectedIndex].text;
+    var hw_select = document.getElementById("hw_file");
+    var hw_file = hw_select.options[hw_select.selectedIndex].text;
+    the_applet.JSload(case3.arch, sw_file, hw_file);
+};
+
+/**
+ * Figures out which software and hardware DAGs are selected.
+ * Then, sends the model to load on the right.
+ */
+case3.submit_from_java = function() {
+
+    var the_applet = document.getElementById("the_applet");
+    var input_file = document.getElementById("input_file");
+    the_applet.JSsubmit(input_file.innerHTML);
+};
+
+case3.submit_toggle = function() {
+
+    var active_text = "Submit job to NEOS!";
+    var inactive_text = "NEOS working..";
+    var submit_button = document.getElementById("submit_button");
+    
+    if(submit_button.disabled !== true) {
+	submit_button.disabled = true;
+	submit_button.innerHTML = inactive_text;
+    } else {
+	submit_button.disabled = false;
+	submit_button.innerHTML = active_text;
+    }
+};
