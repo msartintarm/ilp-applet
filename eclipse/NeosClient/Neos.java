@@ -327,7 +327,9 @@ public boolean sendToNeos(String the_model) {
     }
     
     public void actionPerformed(ActionEvent evt) {
-      if (this.solution_found == true) { getJobSolution();
+      if (this.solution_found == true) { 
+	  getJobSolution();
+	  js_dashboard.call("submit_toggle", null);
       } else {
         monitorJobStatus();
         // Every 10 seconds, check the solver output.
