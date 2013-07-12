@@ -51,36 +51,40 @@ String js_model = "";
 boolean js_submitted = false;
 
 // Construct a GAMS string for case 2.
-    public void JSload2(Integer num_1, Integer num_2, char model_type) {
+// If we hae 'i' classes of services:
+// Service[3*i] = number of services
+// Service[3*i + 1] = mem usage
+// Service[3*i + 2] = cpu usage
+    public void JSload2(char model_type, String[] services, String[] machines) {
 
 	switch(model_type) {
 	case 'S': // SSAP
-	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
-	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
+	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += readFile("case2/SSAP.gms");
 	    break;
 	case 'W': // WSAP
-	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
-	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
+	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += "parameter numS(S);\n";
-	    js_model += "numS(S)=$i/5;\n";
+	    js_model += "numS(S)=" + Integer.valueOf(services[0]) + "/5;\n";
 	    js_model += readFile("case2/WSAP.gms");
 	    break;
 	case 'T': // TSAP
-	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
-	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
+	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += "parameter numS(S);\n";
 	    js_model += "Set T /t1*t8/;\n";
-	    js_model += "numS(S)=" + num_2 + "/5;\n";
+	    js_model += "numS(S)=" + Integer.valueOf(machines[0]) + "/5;\n";
 	    js_model += readFile("case2/TSAP.gms");
 	    break;
 	case 'I': // ISAP
-	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
-	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
+	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += "parameter numS(S);\n";
 	    js_model += "Set T /t1*t1/;\n";
-	    js_model += "numS(S)=" + (num_2 / num_1) + ";\n";
-	    js_model += "numS(s1)=numS(s1)+" + (num_2 % num_1) + ";\n";
+	    js_model += "numS(S)=" + (Integer.valueOf(machines[0]) / Integer.valueOf(services[0])) + ";\n";
+	    js_model += "numS(s1)=numS(s1)+" + (Integer.valueOf(machines[0]) % Integer.valueOf(services[0])) + ";\n";
 	    js_model += readFile("case2/ISAP.gms");
 	    break;
 	}
@@ -115,7 +119,7 @@ public void JSsubmit(String the_model) {
 // Here this gets references to HTML DOM / JS objects.
 public void init() {
   js_dashboard = JSObject.getWindow(this);
-  js_case3 = (JSObject) js_dashboard.getMember("case3");
+  //  js_case3 = (JSObject) js_dashboard.getMember("case3");
 }
 
 @Override
@@ -159,7 +163,7 @@ public void start() {
     System.out.print("\n");
 
   // Ready to go.. toggle submit button.
-  js_case3.call("submit_toggle", null);
+  js_dashboard.call("submit_toggle", null);
 }
 
 void js_show_file(String the_text) {
@@ -278,7 +282,7 @@ public boolean sendToNeos(String the_model) {
   job_name = (Integer) results[0];
   job_pass = (String) results[1];
 
-  js_case3.call("submit_toggle", null);
+  js_dashboard.call("submit_toggle", null);
 
   ActionListener solution_monitor = new ActionListener() {
     Integer poll_count = 0;

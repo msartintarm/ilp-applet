@@ -2,6 +2,8 @@ var hardware_loaded = false;
 
 var case2 = {};
 
+case2.model = 'X';
+
 case2.describe = function(hardware_num) {
 
     if(hardware_loaded === true) return;
@@ -49,15 +51,6 @@ These are used in ISAP as a constraint denoting a minimum acceptable QoS threshh
     }
 }
 
-function select_own_cfg() {
-    var own_cfg = document.getElementById('own_cfg');
-    var filename = document.getElementById('upload_file_input').value;
-    own_cfg.value = filename;
-    own_cfg.innerHTML = filename.substr(filename.lastIndexOf('\\') + 1);
-    own_cfg.disabled = false;
-    own_cfg.selected = true;
-}
-
 case2.load = function(hardware_num) {
 
     if(hardware_loaded === false) {
@@ -68,39 +61,51 @@ case2.load = function(hardware_num) {
 
     var hw_title = document.getElementById("case2_title");
     var hw_describe = document.getElementById("case2_describe");
+    var services = document.getElementById("services");
     switch(hardware_num) {
     case 1:
-		services.innerHTML="Specify resource usage of services.<br/>";
-		add_service();
-		machines.innerHTML="Specify resources of machines.<br/>";
-		add_machine();
-		break;
+	case2.model = 'S';
+	services.innerHTML="Specify resource usage of services.<br/>";
+	add_service();
+	machines.innerHTML="Specify resources of machines.<br/>";
+	add_machine();
+	break;
     case 2:
-		services.innerHTML="Specify resource usage of services.<br/>";
-		add_service();
-		machines.innerHTML="Specify resources of machines.<br/>";
-		add_machine();
-		break;
+	case2.model = 'W';
+	services.innerHTML="Specify resource usage of services.<br/>";
+	add_service();
+	machines.innerHTML="Specify resources of machines.<br/>";
+	add_machine();
+	break;
     case 3:
-		services.innerHTML="Specify resource usage of services.<br/>";
-		add_service();
-		machines.innerHTML="Specify resources of machines.<br/>";
-		add_machine();
-		additional_params.innerHTML="Specify number of time periods over which to divide variance: \
+	case2.model = 'T';
+	services.innerHTML="Specify resource usage of services.<br/>";
+	add_service();
+	machines.innerHTML="Specify resources of machines.<br/>";
+	add_machine();
+	additional_params.innerHTML="Specify number of time periods over which to divide variance: \
 <input type='text' value='4' size='3'></input> time periods.";
-		break;
+	break;
     case 4:
-		hw_describe.innerHTML = "Four hardware graphs, and five provided software DAGs.";
-		break;
+	case2.model = 'I';
+	hw_describe.innerHTML = "Four hardware graphs, and five provided software DAGs.";
+	break;
     default: break;
     }
 }
 
+/**
+ * Add Case 2 services with 3 params: number of services, mem usage, CPU usage
+ * Give unique ID that can be looked up later.
+ */
+case2.services = 0;
 function add_service() {
-		services.innerHTML += "\
-<input type='text' value='100' size='3'></input> services with \
-<input type='text' id='mem' value='4.00' size='3'></input> GB / \
-<input type='text' value='0.75' size='3'></input> CPU %<br/>";
+    var services = document.getElementById("services");
+    services.innerHTML += "\
+<input type='text' id='service_num" + case2.services +  "' value='100' size='3'></input> services with \
+<input type='text' id='service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / \
+<input type='text' id='service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
+    case2.services ++;
 }
 
 function add_timed_service() {
@@ -110,9 +115,61 @@ function add_timed_service() {
 <input type='text' value='0.75' size='3'></input> CPU %<br/>";
 }
 
+case2.machines = 0;
 function add_machine() {
+    var machines = document.getElementById("machines");
 		machines.innerHTML += "\
-<input type='text' value='2' size='3'></input> machines with \
-<input type='text' id='mem' value='16.0' size='3'></input> GB / \
-<input type='text' value='1.00' size='3'></input> GHz <br/>";
+<input type='text' id='machine_num" + case2.machines +  "' value='2' size='3'></input> machines with \
+<input type='text' id='machine_mem" + case2.machines +  "' value='16.0' size='3'></input> GB / \
+<input type='text' id='machine_cpu" + case2.machines +  "' value='1.00' size='3'></input> GHz <br/>";
+    case2.machines ++;
 }
+
+/**
+ * Finds what the user has specified for all machines / services.
+ * Creates two arrays of doubles.
+ * Then, gives the data to the Java applet. It will pass the model back to JS, shown on the right.
+ */
+case2.load_from_java = function() {
+
+    var services = [];
+    var machines = [];
+    var i;
+    for(i = 0; i < case2.services; ++i) {
+	services.push(document.getElementById("service_num" + i).value);
+	services.push(document.getElementById("service_mem" + i).value);
+	services.push(document.getElementById("service_cpu" + i).value);
+    }
+    for(i = 0; i < case2.machines; ++i) {
+	machines.push(document.getElementById("machine_num" + i).value);
+	machines.push(document.getElementById("machine_mem" + i).value);
+	machines.push(document.getElementById("machine_cpu" + i).value);
+    }
+
+    the_applet.JSload2(case2.model, services, machines);
+};
+
+/**
+ * Sends the model to load on the right.
+ */
+case2.submit_from_java = function() {
+
+    var the_applet = document.getElementById("the_applet");
+    var input_file = document.getElementById("input_file");
+    the_applet.JSsubmit(input_file.innerHTML);
+};
+
+case2.submit_toggle = function() {
+
+    var active_text = "Submit job to NEOS!";
+    var inactive_text = "NEOS working..";
+    var submit_button = document.getElementById("submit_button");
+    
+    if(submit_button.disabled !== true) {
+	submit_button.disabled = true;
+	submit_button.innerHTML = inactive_text;
+    } else {
+	submit_button.disabled = false;
+	submit_button.innerHTML = active_text;
+    }
+};

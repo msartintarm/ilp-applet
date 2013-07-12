@@ -132,8 +132,7 @@ case3.load_from_java = function() {
 };
 
 /**
- * Figures out which software and hardware DAGs are selected.
- * Then, sends the model to load on the right.
+ * Sends the model to load on the right.
  */
 case3.submit_from_java = function() {
 

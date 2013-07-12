@@ -8,34 +8,43 @@
     <link rel='stylesheet' type='text/css' href='styles.css'/>
     <link rel='icon' type='image/x-icon' href='./favicon.ico'/>
     <script src='case2.js' type='text/javascript'></script>
-
+    <script src="example.js" type="text/javascript"></script> 
   </head>
 
   <body>
-    <div id='wrap'>
-      <div id='header'>
-        <div class='one_third'>Work</div>
-        <div class='one_third'>In</div>
-        <div class='one_third'>Progress</div>
-      </div>
 
+    <object type="application/x-java-applet" 
+	    height="1" width="1" id="the_applet">
+      <param name="codebase" value="eclipse/" />
+      <param name="archive" value="Neos.jar,
+				   slib/commons-logging-1.1.jar, 
+				   slib/xmlrpc-common-3.1.3.jar, 
+				   slib/xmlrpc-client-3.1.3.jar, 
+				   slib/ws-commons-util-1.0.2.jar,
+				   slib/plugin.jar" />
+      <param name="code" value="NeosClient/Neos.class" />
+      <param name="mayscript" value="true" />
+      Java applet failed to load!
+    </object>
+
+    <div id='wrap'>
       <div class="padDiv"> 
         <div class='main'>
-          <div class="title" id="title2">            
-	    <table style="width:100%;">
-	      <h2>Case Study 2:</br>Data-Center Service Allocation</h2>
-	      <p class="description">
+
+	    <h2>Case Study 2:<br/>Data-Center Service Allocation</h2>
+	    <p class="description">
 Data-center resource managers are centralized software components which
 manage the execution of a large number of services. Co-locating multiple services on a
 machine could degrade performance, and hence it is critical for the resource manager to
-utilize information upon services and machines in effectively allocating machine resources. </br>
+utilize information upon services and machines in effectively allocating machine resources. <br/>
 In ILP, the problem is to statically determine the best co-locations of services on servers
 for resource requirements and service-level agreements to be satisfied. 
-	      </p>
-	      <p class="selection">
+	    </p>
+	    <p class="selection">
 Select from the following resource management models (mouse over for description).
-	      </p>
+	    </p>
 
+	    <table style="width:100%; text-align:center;">
 	      <thead><tr>
 		  <th><button onmouseover="case2.describe(1)" 
 			      onclick="case2.load(1)">SSAP</button></th>
@@ -47,32 +56,59 @@ Select from the following resource management models (mouse over for description
 			      onclick="case2.load(4)">ISAP</button></th>
 	      </tr></thead>
 	    </table>
-        <div id="case2_description">
+            <div id="case2_description">
 	      <h3 id="case2_title"></h3>
-	      <p id="case2_describe" style="font-size:20px;"></p>
+	      <p id="case2_describe" style="font-size:18px;"></p>
 	    </div>
-        <div id="case2_content" style="display:none;">
-	      <div class="one_half">
-			<div id="services"></div>
-			<button onclick="add_service();">Add services.</button>
-			<button>View generated GAMS file.</button>
-			<p class="selection">`CPU %' is steady-state, with respect to a 1 GHz machine. </p>
-		  </div>
-	      <div class="one_half">
-			<div id="machines"></div>
-			<button onclick="add_machine();">Add machines.</button>
-			<button>View generated GAMS file.</button>
-		  </div>
-		  <div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
-		  </div>
-	      <div style="position:relative; float:left; width:100%; padding-top:10px;">
-			<button align="center" style="font-size:20px;">Submit job to NEOS server!</button>
+            <div id="case2_content" style="display:none;">
+	      <div class="one_half"
+		   style="border-style:inset; border-width:4px; border-color:#999999;">
+		<div id="services"></div>
+		<button onclick="add_service();">Add services..</button>
+		<p class="selection">`CPU %' is steady-state, with respect to a 1 GHz machine. </p>
+		<div id="machines"></div>
+		<button onclick="add_machine();">Add machines..</button>
+		<div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
+		</div>
+		<br/>
+		<button align="center" 
+			style="font-size:20px; width:100%;" 
+			onclick="case2.load_from_java();">
+		  Display File On Right
+		</button>
+		<button align="center" 
+			style="font-size:20px; width:100%;" 
+			id="submit_button"
+			disabled onclick="case2.submit_from_java();">
+		  Submit job to NEOS!
+		</button>
 	      </div>
+	      <div class="one_half" 
+		   style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
+		<h4 >File to be loaded:</h4>
+		<textarea id="input_file" style="width:98%;font-size:9pt;" 
+			  rows="15">
+		</textarea>
+	      </div>
+	      <div style="position:relative; float:left; width:100%; padding-top:10px;">
+		<div class="one_third">
+		  Solver Status:<br/>
+		  <textarea id="solver_status" style="width:95%;" rows="12"></textarea>
+		</div>
+		<div class="one_third">
+		  Solver Output:<br/>
+		  <textarea id="solver_output" style="width:95%;" rows="12"></textarea>
+		</div>
+		<div class="one_third">
+		  Solution:<br/>
+		  <textarea id="solver_solution" style="width:95%;" rows="12"></textarea>
+		</div>
+	      </div>
+
 	    </div>
           </div>
-		</div>
+	</div>
       </div>
-    </div>
     
 </div>
 </body>

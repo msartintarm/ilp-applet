@@ -54,3 +54,18 @@ function send_to_neos() {
 
     alert(response.parseXML());
 }
+
+function submit_toggle() {
+
+    var active_text = "Submit job to NEOS!";
+    var inactive_text = "NEOS working..";
+    var submit_button = document.getElementById("submit_button");
+    
+    if(submit_button.disabled !== true) {
+	submit_button.disabled = true;
+	submit_button.innerHTML = inactive_text;
+    } else {
+	submit_button.disabled = false;
+	submit_button.innerHTML = active_text;
+    }
+};
