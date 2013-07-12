@@ -120,7 +120,7 @@ loop(C,
   put /;
 );
 
-$batinclude print-allocate-stats.gms
+*$batinclude print-allocate-stats.gms
 
 *display R(S,K);
 *display L(C,K);

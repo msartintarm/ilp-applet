@@ -87,6 +87,8 @@ boolean js_submitted = false;
 	    js_model += readFile("case2/ISAP.gms");
 	    break;
 	}
+	js_model += readFile("case2/print-allocate-stats.gms");
+
 	// Show the user (using Javascript) the model they specified.
 	js_show_file(js_model);
     }
@@ -110,7 +112,7 @@ public void JSload3(String arch, String software_file, String hardware_file) {
 // It cannot invoke the method directly due to sandboxing, so instead
 // it will change a variable, which is monitored by a Java thread.
 public void JSsubmit(String the_model) {
-    //    js_model = String.unescapeHtml4(the_model);
+
     js_model = the_model;
     js_submitted = true;
 }
@@ -119,7 +121,6 @@ public void JSsubmit(String the_model) {
 // Here this gets references to HTML DOM / JS objects.
 public void init() {
   js_dashboard = JSObject.getWindow(this);
-  //  js_case3 = (JSObject) js_dashboard.getMember("case3");
 }
 
 @Override
@@ -336,10 +337,10 @@ public boolean sendToNeos(String the_model) {
       }
     }
   };
-  
+   
   int delay = 2000; // milliseconds
   the_timer = new Timer(delay, solution_monitor);
-  the_timer.setInitialDelay(0);
+  the_timer.setInitialDelay(100);
   the_timer.start();
 
   // This class will handle callback in its own thread. I think it checks every
@@ -355,14 +356,14 @@ public boolean sendToNeos(String the_model) {
 public void stop() {
 
     if(job_name == -1) return;
-  Vector the_params = new Vector(2);
-  the_params.add(job_name);
-  the_params.add(job_pass);
-  try {
-      the_client.execute("killJob", the_params, 10000);
+    Vector the_params = new Vector(2);
+    the_params.add(job_name);
+    the_params.add(job_pass);
+    try {
+	the_client.execute("killJob", the_params, 10000);
     } catch (XmlRpcException e) {
-      System.err.println("Solver kill failed. " + e.toString());
-      return;
+	    System.err.println("Solver kill failed. " + e.toString());
+	return;
     }
 }
 

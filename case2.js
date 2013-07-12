@@ -163,7 +163,9 @@ case2.submit_from_java = function() {
 
     var the_applet = document.getElementById("the_applet");
     var input_file = document.getElementById("input_file");
-    the_applet.JSsubmit(input_file.innerHTML);
+    // When the text is sent this way, funky HTML symbols
+    // like '&gt;' aren't created
+    the_applet.JSsubmit(input_file.childNodes[0].nodeValue);
 };
 
 case2.submit_toggle = function() {
