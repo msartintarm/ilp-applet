@@ -55,42 +55,41 @@ boolean js_submitted = false;
 // Service[3*i] = number of services
 // Service[3*i + 1] = mem usage
 // Service[3*i + 2] = cpu usage
-    public void JSload2(char model_type, String[] services, String[] machines) {
+    public void JSload2(String model_type, 
+			JSObject service_num, JSObject service_mem, JSObject service_cpu,
+			JSObject machine_num, JSObject machine_mem, JSObject machine_cpu) {
 
-	switch(model_type) {
+	js_model  = "Set S /s1*s" + (String) service_num.getSlot(0) + "/;\n";
+	js_model += "Set C /c1*c" + (String) machine_num.getSlot(0) + "/;\n";
+
+	switch(model_type.charAt(0)) {
 	case 'S': // SSAP
-	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
-	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += readFile("case2/SSAP.gms");
 	    break;
 	case 'W': // WSAP
-	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
-	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += "parameter numS(S);\n";
-	    js_model += "numS(S)=" + Integer.valueOf(services[0]) + "/5;\n";
+	    js_model += "numS(S)=" + (String) service_num.getSlot(0) + "/5;\n";
 	    js_model += readFile("case2/WSAP.gms");
 	    break;
 	case 'T': // TSAP
-	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
-	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += "parameter numS(S);\n";
 	    js_model += "Set T /t1*t8/;\n";
-	    js_model += "numS(S)=" + Integer.valueOf(machines[0]) + "/5;\n";
+	    js_model += "numS(S)=" + (String) machine_num.getSlot(0) + "/5;\n";
 	    js_model += readFile("case2/TSAP.gms");
 	    break;
 	case 'I': // ISAP
-	    js_model  = "Set S /s1*s" + Integer.valueOf(services[0]) + "/;\n";
-	    js_model += "Set C /c1*c" + Integer.valueOf(machines[0]) + "/;\n";
 	    js_model += "parameter numS(S);\n";
 	    js_model += "Set T /t1*t1/;\n";
-	    js_model += "numS(S)=" + (Integer.valueOf(machines[0]) / Integer.valueOf(services[0])) + ";\n";
-	    js_model += "numS(s1)=numS(s1)+" + (Integer.valueOf(machines[0]) % Integer.valueOf(services[0])) + ";\n";
+	    js_model += "numS(S)=" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
+				      Integer.parseInt((String) service_num.getSlot(0))) + ";\n";
+	    js_model += "numS(s1)=numS(s1)+" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
+						Integer.parseInt((String) service_num.getSlot(0))) + ";\n";
 	    js_model += readFile("case2/ISAP.gms");
 	    break;
 	}
-  // Show the user (using Javascript) the model they specified.
-  js_show_file(js_model);
-}
+	// Show the user (using Javascript) the model they specified.
+	js_show_file(js_model);
+    }
 
 // Construct a GAMS string for case 3.
 // Check case 3's 'run-gams.sh' for a command-line version of this selector.
@@ -111,8 +110,9 @@ public void JSload3(String arch, String software_file, String hardware_file) {
 // It cannot invoke the method directly due to sandboxing, so instead
 // it will change a variable, which is monitored by a Java thread.
 public void JSsubmit(String the_model) {
-  js_model = the_model;
-  js_submitted = true;
+    //    js_model = String.unescapeHtml4(the_model);
+    js_model = the_model;
+    js_submitted = true;
 }
 
 // Called at applet's creation.
@@ -284,6 +284,8 @@ public boolean sendToNeos(String the_model) {
 
   js_dashboard.call("submit_toggle", null);
 
+  // Monitors and prints stuff. Here we can assume job_name and job_pass are 
+  // already initialized.
   ActionListener solution_monitor = new ActionListener() {
     Integer poll_count = 0;
     long start = System.nanoTime();
@@ -350,7 +352,19 @@ public boolean sendToNeos(String the_model) {
 }
 
 @Override
-public void stop() {}
+public void stop() {
+
+    if(job_name == -1) return;
+  Vector the_params = new Vector(2);
+  the_params.add(job_name);
+  the_params.add(job_pass);
+  try {
+      the_client.execute("killJob", the_params, 10000);
+    } catch (XmlRpcException e) {
+      System.err.println("Solver kill failed. " + e.toString());
+      return;
+    }
+}
 
 public static void main(String[] args) {}
 

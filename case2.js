@@ -132,21 +132,28 @@ function add_machine() {
  */
 case2.load_from_java = function() {
 
-    var services = [];
-    var machines = [];
+    var service_num = [];
+    var service_mem = [];
+    var service_cpu = [];
+    var machine_num = [];
+    var machine_mem = [];
+    var machine_cpu = [];
     var i;
+
     for(i = 0; i < case2.services; ++i) {
-	services.push(document.getElementById("service_num" + i).value);
-	services.push(document.getElementById("service_mem" + i).value);
-	services.push(document.getElementById("service_cpu" + i).value);
+	service_num.push(document.getElementById("service_num" + i).value);
+	service_mem.push(document.getElementById("service_mem" + i).value);
+	service_cpu.push(document.getElementById("service_cpu" + i).value);
     }
     for(i = 0; i < case2.machines; ++i) {
-	machines.push(document.getElementById("machine_num" + i).value);
-	machines.push(document.getElementById("machine_mem" + i).value);
-	machines.push(document.getElementById("machine_cpu" + i).value);
+	machine_num.push(document.getElementById("machine_num" + i).value);
+	machine_mem.push(document.getElementById("machine_mem" + i).value);
+	machine_cpu.push(document.getElementById("machine_cpu" + i).value);
     }
 
-    the_applet.JSload2(case2.model, services, machines);
+    the_applet.JSload2(case2.model, 
+		       service_num, service_mem, service_cpu,
+		       machine_num, machine_mem, machine_cpu );
 };
 
 /**
