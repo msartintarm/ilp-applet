@@ -1,18 +1,20 @@
 var hardware_loaded = false;
 
-function hardware_describe(hardware_num) {
+var case2 = {};
+
+case2.describe = function(hardware_num) {
 
     if(hardware_loaded === true) return;
 
-    var hw_title = document.getElementById("hardware_title");
-    var hw_describe = document.getElementById("hardware_describe");
+    var hw_title = document.getElementById("case2_title");
+    var hw_describe = document.getElementById("case2_describe");
     switch(hardware_num) {
     case 1:
 	hw_title.innerHTML = "Static Server Allocation (SSAP)";
 	hw_describe.innerHTML = "\
 Allocate services with fixed resource requirements onto machines with fixed resource limitations. \
 We assume that machines can provide heterogeneous resource requirements, and all instances of \
-services have been proviled individually. <br/>\
+services have been profiled individually. <br/>\
 Conceptually similar to the multidimensional vector bin-packing algorithm.";
 	break;
     case 2:
@@ -56,46 +58,61 @@ function select_own_cfg() {
     own_cfg.selected = true;
 }
 
-function hardware_load(hardware_num) {
+case2.load = function(hardware_num) {
 
     if(hardware_loaded === false) {
-	hardware_describe(hardware_num);
-	document.getElementById("hardware_content").style.display = "inline-block";
+	case2.describe(hardware_num);
+	document.getElementById("case2_content").style.display = "inline-block";
 	hardware_loaded = true;	
     }
 
-    var hw_title = document.getElementById("hardware_title");
-    var hw_describe = document.getElementById("hardware_describe");
-    var upload_file = document.getElementById("upload_file");
+    var hw_title = document.getElementById("case2_title");
+    var hw_describe = document.getElementById("case2_describe");
     switch(hardware_num) {
     case 1:
-	hw_files.innerHTML="Two hardware graphs.<br/>\
-<select id='hw_file' size='2'>\
-  <option value='simple_graph.gms' selected>simple_graph.gms</option>\
-  <option value='simple_graph2.gms'>simple_graph2.gms</option>\
-</select><br/>\
-<button>View raw file.</button>";
-	sw_files.innerHTML="Three software DAGs.<br/>\
-<select id='sw_file' size='2'>\
-  <option value='simpleCFG.gms' selected>simpleCFG.gms</option>\
-  <option value='simpleCFG2.gms'>simpleCFG2.gms</option>\
-  <option value='simpleCFG3.gms'>simpleCFG3.gms</option>\
-  <option id='own_cfg' value='ownCFG.gms' disabled> Own CFG</option>\
-</select><br/>\
-<button>View raw file.</button>";
-	upload_file.innerHTML="Or, specify an input DAG.<br/>\
-<input name='to_upload' id='upload_file_input' type='file' />\
-<button onclick='select_own_cfg()'>Upload</button>";
-	break;
+		services.innerHTML="Specify resource usage of services.<br/>";
+		add_service();
+		machines.innerHTML="Specify resources of machines.<br/>";
+		add_machine();
+		break;
     case 2:
-	hw_describe.innerHTML = "Two hardware graphs, and three provided software DAGs.";
-	break;
+		services.innerHTML="Specify resource usage of services.<br/>";
+		add_service();
+		machines.innerHTML="Specify resources of machines.<br/>";
+		add_machine();
+		break;
     case 3:
-	hw_describe.innerHTML = "Three hardware graphs, and four provided software DAGs.";
-	break;
+		services.innerHTML="Specify resource usage of services.<br/>";
+		add_service();
+		machines.innerHTML="Specify resources of machines.<br/>";
+		add_machine();
+		additional_params.innerHTML="Specify number of time periods over which to divide variance: \
+<input type='text' value='4' size='3'></input> time periods.";
+		break;
     case 4:
-	hw_describe.innerHTML = "Four hardware graphs, and five provided software DAGs.";
-	break;
+		hw_describe.innerHTML = "Four hardware graphs, and five provided software DAGs.";
+		break;
     default: break;
     }
+}
+
+function add_service() {
+		services.innerHTML += "\
+<input type='text' value='100' size='3'></input> services with \
+<input type='text' id='mem' value='4.00' size='3'></input> GB / \
+<input type='text' value='0.75' size='3'></input> CPU %<br/>";
+}
+
+function add_timed_service() {
+		services.innerHTML += "\
+<input type='text' value='100' size='3'></input> services with \
+<input type='text' id='mem' value='4.00' size='3'></input> GB / \
+<input type='text' value='0.75' size='3'></input> CPU %<br/>";
+}
+
+function add_machine() {
+		machines.innerHTML += "\
+<input type='text' value='2' size='3'></input> machines with \
+<input type='text' id='mem' value='16.0' size='3'></input> GB / \
+<input type='text' value='1.00' size='3'></input> GHz <br/>";
 }

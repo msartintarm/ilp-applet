@@ -39,6 +39,8 @@ static final long serialVersionUID = 248L;
 
 static Integer job_name = -1;
 static String job_pass = "-1";
+final NeosXmlRpcClient the_client = new NeosXmlRpcClient(
+      "www.neos-server.org", "3332");
 
 static JSObject js_dashboard;
 static JSObject js_case3;
@@ -48,22 +50,57 @@ static Timer the_timer;
 String js_model = "";
 boolean js_submitted = false;
 
-// Load a string from a couple files.
-// The way the files are stitched into a single model is very case 3 - specific.
-// Check case 3's 'run-gams.sh' for a command-line version of this selector.
-public void JSload(String arch, String software_file, String hardware_file) {
+// Construct a GAMS string for case 2.
+    public void JSload2(Integer num_1, Integer num_2, char model_type) {
 
-  final String root = "case3/";
-  
-  js_model  = readFile(root + arch + "/kind.gms");
-  js_model += readFile(root + arch + "/SW-DAG/" + software_file);
-  js_model += readFile(root + arch + "/HW-GRAPH/" + hardware_file);
-  js_model += readFile(root + "shared/gen-variables.gms");
-  js_model += readFile(root + "shared/gen-constraints.gms");
-  js_model += readFile(root + arch + "/constraints/constraints.gms");
-
+	switch(model_type) {
+	case 'S': // SSAP
+	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
+	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model += readFile("case2/SSAP.gms");
+	    break;
+	case 'W': // WSAP
+	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
+	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model += "parameter numS(S);\n";
+	    js_model += "numS(S)=$i/5;\n";
+	    js_model += readFile("case2/WSAP.gms");
+	    break;
+	case 'T': // TSAP
+	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
+	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model += "parameter numS(S);\n";
+	    js_model += "Set T /t1*t8/;\n";
+	    js_model += "numS(S)=" + num_2 + "/5;\n";
+	    js_model += readFile("case2/TSAP.gms");
+	    break;
+	case 'I': // ISAP
+	    js_model  = "Set S /s1*s" + num_1 + "/;\n";
+	    js_model += "Set C /c1*c" + num_2 + "/;\n";
+	    js_model += "parameter numS(S);\n";
+	    js_model += "Set T /t1*t1/;\n";
+	    js_model += "numS(S)=" + (num_2 / num_1) + ";\n";
+	    js_model += "numS(s1)=numS(s1)+" + (num_2 % num_1) + ";\n";
+	    js_model += readFile("case2/ISAP.gms");
+	    break;
+	}
   // Show the user (using Javascript) the model they specified.
   js_show_file(js_model);
+}
+
+// Construct a GAMS string for case 3.
+// Check case 3's 'run-gams.sh' for a command-line version of this selector.
+public void JSload3(String arch, String software_file, String hardware_file) {
+
+    final String root = "case3/";
+    js_model  = readFile(root + arch + "/kind.gms");
+    js_model += readFile(root + arch + "/SW-DAG/" + software_file);
+    js_model += readFile(root + arch + "/HW-GRAPH/" + hardware_file);
+    js_model += readFile(root + "shared/gen-variables.gms");
+    js_model += readFile(root + "shared/gen-constraints.gms");
+    js_model += readFile(root + arch + "/constraints/constraints.gms");
+    // Show the user (using Javascript) the model they specified.
+    js_show_file(js_model);
 }
 
 // Called from Javascript, using the string in its text box.
@@ -75,31 +112,53 @@ public void JSsubmit(String the_model) {
 }
 
 // Called at applet's creation.
-@Override
+// Here this gets references to HTML DOM / JS objects.
 public void init() {
   js_dashboard = JSObject.getWindow(this);
   js_case3 = (JSObject) js_dashboard.getMember("case3");
-  js_case3.call("submit_toggle", null);
 }
 
 @Override
-// Called when applet has finished loading.
+// Called when the applet container has finished loading.
 // Here we init a timer to check for JS updates.
+// We also test the connection by querying for solvers.
 public void start() {
-  
-  //Sets up delay to check for JS model
-  ActionListener watch_submission = new ActionListener() {
-    public void actionPerformed(ActionEvent evt) {
-      if(js_submitted != false) js_submitted = false; // reset our flag
-      else return;
-      sendToNeos(js_model);
-    }
-  };
-  
-  int delay = 500; // milliseconds
-  the_timer = new Timer(delay, watch_submission);
-  the_timer.start();
+    
+    //Sets up delay to check for JS model
+    ActionListener watch_submission = new ActionListener() {
+	public void actionPerformed(ActionEvent evt) {
+	    if(js_submitted == false) return; // reset our flag
+	    else js_submitted = false;
+	    sendToNeos(js_model);
+	}
+    };
+    
+    int delay = 500; // milliseconds
+    the_timer = new Timer(delay, watch_submission);
+    the_timer.start();
 
+    // Acquire 'connection'
+    try {
+	// 'Connect' to server
+	the_client.connect();
+    } catch (XmlRpcException e) {
+	System.err.println("Error connecting. " + e.toString());
+	return;
+    }
+
+    // Print out all the solvers we can use in MILP.
+    Object[] solvers = getSolvers(the_client, "milp");
+    if (solvers == null) { 
+	System.err.println("Solver query failed.");
+	return;
+    }
+    System.out.println("Solvers usable with \"milp\". Solver : input language.");
+    for (int i = 0; i < solvers.length; ++i) {
+	System.out.print(solvers[i] + " ");
+    }
+    System.out.print("\n");
+
+  // Ready to go.. toggle submit button.
   js_case3.call("submit_toggle", null);
 }
 
@@ -213,26 +272,6 @@ final String getSolution(
   
 public boolean sendToNeos(String the_model) {
 
-  // Acquire 'connection'
-  final NeosXmlRpcClient the_client = new NeosXmlRpcClient(
-      "www.neos-server.org", "3332");
-  try {
-    // 'Connect' to server
-    the_client.connect();
-  } catch (XmlRpcException e) {
-    System.err.println("Error connecting. " + e.toString());
-    return false;
-  }
-
-  // Print out all the solvers we can use in MILP.
-  Object[] solvers = getSolvers(the_client, "milp");
-  if (solvers == null) return false;
-  System.out.println("Solvers usable with \"milp\". Solver : input language.");
-  for (int i = 0; i < solvers.length; ++i) {
-    System.out.print(solvers[i] + " ");
-  }
-  System.out.print("\n");
-
   Object[] results = submitJob(the_client, the_model, "milp", "Gurobi", "GAMS");
   if (results == null) return false;
   
@@ -314,9 +353,9 @@ public static void main(String[] args) {}
 String readFile(String path) {
 
   try {
-    BufferedReader input = new BufferedReader(
-                           new InputStreamReader(
-                           getClass().getResourceAsStream("/" + path)));
+      BufferedReader input = new BufferedReader(
+                             new InputStreamReader(
+           	             getClass().getResourceAsStream("/" + path)));
     String the_data = "";
     String the_line;
 

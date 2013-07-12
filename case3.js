@@ -101,8 +101,8 @@ case3.load = function(hardware_num) {
   <option value='trips4x4.gms' selected>trips4x4.gms</option>\
 </select><br/>\
 <button>View raw file.</button>";
-	sw_files.innerHTML="One software DAG.<br/>\
-<select id='sw_file' size='2'>\
+	sw_files.innerHTML="Two software DAGs.<br/>\
+<select id='sw_file' size='3'>\
   <option value='tripsDAG-small.gms' selected>tripsDAG-small.gms</option>\
   <option value='tripsDAG-too-large.gms' selected>tripsDAG-too-large.gms</option>\
   <option id='own_cfg' value='ownCFG.gms' disabled> Own CFG</option>\
@@ -128,7 +128,7 @@ case3.load_from_java = function() {
     var sw_file = sw_select.options[sw_select.selectedIndex].text;
     var hw_select = document.getElementById("hw_file");
     var hw_file = hw_select.options[hw_select.selectedIndex].text;
-    the_applet.JSload(case3.arch, sw_file, hw_file);
+    the_applet.JSload3(case3.arch, sw_file, hw_file);
 };
 
 /**

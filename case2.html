@@ -37,33 +37,43 @@ Select from the following resource management models (mouse over for description
 	      </p>
 
 	      <thead><tr>
-		  <th><button onmouseover="hardware_describe(1)" 
-			      onclick="hardware_load(1)">SSAP</button></th>
-		  <th><button onmouseover="hardware_describe(2)" 
-			      onclick="hardware_load(2)">WSAP</button></th>
-		  <th><button onmouseover="hardware_describe(3)" 
-			      onclick="hardware_load(3)">TSAP</button></th>
-		  <th><button onmouseover="hardware_describe(4)" 
-			      onclick="hardware_load(4)">ISAP</button></th>
+		  <th><button onmouseover="case2.describe(1)" 
+			      onclick="case2.load(1)">SSAP</button></th>
+		  <th><button onmouseover="case2.describe(2)" 
+			      onclick="case2.load(2)">WSAP</button></th>
+		  <th><button onmouseover="case2.describe(3)" 
+			      onclick="case2.load(3)">TSAP</button></th>
+		  <th><button onmouseover="case2.describe(4)" 
+			      onclick="case2.load(4)">ISAP</button></th>
 	      </tr></thead>
 	    </table>
-            <div id="hardware_description">
-	      <h3 id="hardware_title"></h3>
-	      <p id="hardware_describe" style="font-size:20px;"></p>
+        <div id="case2_description">
+	      <h3 id="case2_title"></h3>
+	      <p id="case2_describe" style="font-size:20px;"></p>
 	    </div>
-            <div id="hardware_content" style="display:none;">
-	      <div class="one_third" id="hw_files"></div>
-	      <div class="one_third" id="sw_files"></div>
-	      <div class="one_third" id="upload_file"></div>
+        <div id="case2_content" style="display:none;">
+	      <div class="one_half">
+			<div id="services"></div>
+			<button onclick="add_service();">Add services.</button>
+			<button>View generated GAMS file.</button>
+			<p class="selection">`CPU %' is steady-state, with respect to a 1 GHz machine. </p>
+		  </div>
+	      <div class="one_half">
+			<div id="machines"></div>
+			<button onclick="add_machine();">Add machines.</button>
+			<button>View generated GAMS file.</button>
+		  </div>
+		  <div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
+		  </div>
 	      <div style="position:relative; float:left; width:100%; padding-top:10px;">
-		<button align="center" style="font-size:20px;">Submit job to NEOS server!</button>
+			<button align="center" style="font-size:20px;">Submit job to NEOS server!</button>
 	      </div>
 	    </div>
           </div>
-	</div>
+		</div>
       </div>
     </div>
-      
+    
 </div>
 </body>
 </html>
