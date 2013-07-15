@@ -3,11 +3,11 @@
 set -e
 
 JAVA_ARCHIVES="\
-slib/commons-logging-1.1.jar \
-slib/xmlrpc-client-3.1.3.jar \
-slib/xmlrpc-common-3.1.3.jar \
-slib/plugin.jar \
-slib/ws-commons-util-1.0.2.jar "
+commons-logging-1.1.jar \
+xmlrpc-client-3.1.3.jar \
+xmlrpc-common-3.1.3.jar \
+plugin.jar \
+ws-commons-util-1.0.2.jar "
 
 JAVA_FILES="\
 NeosClient/*.java \
@@ -17,39 +17,35 @@ OTHER_FILES="\
 case2 \
 case3 "
 
-# Substring replacement
-JAVA_CLASSES=${JAVA_FILES//"java"/"class"}
-JAVA_CLASS_PATH=${JAVA_ARCHIVES//" "/";"}
-
 MANIFEST_GENERAL='
 Trusted-Library: true\nCodebase: *\nPermissions: all-permissions\n'
-MANIFEST_FILE='Manifest-Version: 1.0\nTrusted-Library: true\nMain-Class: NeosClient.Neos\nCreated-By: Michael Sartin-Tarm\nCodebase: *\nPermissions: all-permissions\nClass-Path: '$JAVA_ARCHIVES'\n'
+MANIFEST_FILE='Manifest-Version: 1.0\nTrusted-Library: true\nMain-Class: NeosClient.Neos\nCreated-By: Michael Sartin-Tarm\nCodebase: *\nPermissions: all-permissions\nClass-Path: '${JAVA_ARCHIVES//"jar"/"jar.sig"}'\n'
 
-
-pushd eclipse >> /dev/null
+cd src
 
 # Create manifests
 echo -e $MANIFEST_FILE >& manifest_eclipse.txt
 echo -e $MANIFEST_GENERAL >& manifest_general.txt
 
 # Create Java classes
-javac -classpath $JAVA_CLASS_PATH $JAVA_FILES
+javac -classpath ${JAVA_ARCHIVES//" "/";"} $JAVA_FILES
 # Zip classes, manifest, and GAMS files into one JAR
-jar cfm Neos.jar manifest_eclipse.txt $JAVA_CLASSES $OTHER_FILES
+jar cfm Neos.jar manifest_eclipse.txt ${JAVA_FILES//"java"/"class"} $OTHER_FILES
+
 # Add entries to manifest for other JARs
 for JAR in $JAVA_ARCHIVES; do
-    cp ${JAR/slib/slib-old} $JAR
-    jar ufm $JAR manifest_general.txt
+    MANIFESTED_JAR=${JAR/"jar"/"jar.sig"}
+    cp $JAR $MANIFESTED_JAR
+    jar ufm $MANIFESTED_JAR manifest_general.txt
 done
 
 # Sign the JARs
-pushd .. >& /dev/null
-for JAR in Neos.jar $JAVA_ARCHIVES; do
-    echo Signing $JAR
-    jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed eclipse/$JAR jarkey
+echo Signing JARs..
+for JAR in Neos.jar ${JAVA_ARCHIVES//"jar"/"jar.sig"}; do
+    jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed $JAR jarkey
+    mv $JAR ../bin
 done
-popd >& /dev/null
 
+cd ..
 
-
-popd >> /dev/null
+echo Done.

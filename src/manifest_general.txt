@@ -1,0 +1,4 @@
+Trusted-Library: true
+Codebase: *
+Permissions: all-permissions
+

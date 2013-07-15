@@ -55,15 +55,18 @@ boolean js_submitted = false;
 // Service[3*i] = number of services
 // Service[3*i + 1] = mem usage
 // Service[3*i + 2] = cpu usage
-    public void JSload2(String model_type, 
+    public void JSload2(String model_type, Integer num_services, Integer num_machines,
 			JSObject service_num, JSObject service_mem, JSObject service_cpu,
 			JSObject machine_num, JSObject machine_mem, JSObject machine_cpu) {
+
+	int i = 0;
 
 	js_model  = "Set S /s1*s" + (String) service_num.getSlot(0) + "/;\n";
 	js_model += "Set C /c1*c" + (String) machine_num.getSlot(0) + "/;\n";
 
 	switch(model_type.charAt(0)) {
 	case 'S': // SSAP
+	    js_model += "parameter R(S,K);\nparameter L(C,K);\n";
 	    js_model += readFile("case2/SSAP.gms");
 	    break;
 	case 'W': // WSAP
@@ -288,7 +291,7 @@ public boolean sendToNeos(String the_model) {
   // Monitors and prints stuff. Here we can assume job_name and job_pass are 
   // already initialized.
   ActionListener solution_monitor = new ActionListener() {
-    Integer poll_count = 0;
+    Integer poll_count = -1;
     long start = System.nanoTime();
     boolean solution_found = false;
     
@@ -302,9 +305,9 @@ public boolean sendToNeos(String the_model) {
       
       // Is solver still running ..? If not, let's get a solution.
       if(result.equals("Done")) {
-	  //  js_case3.call("submit_toggle", null);
         this.solution_found = true;
         monitorJobOutput();
+	getJobSolution();
       }
     }
 
@@ -321,15 +324,15 @@ public boolean sendToNeos(String the_model) {
       if (result.length() > 2) {
         System.out.println("\nFinalresults: \n" + result);
         js_dashboard.call("update_element", new Object[] { "solver_solution", result });
-      }
-      // Now that we have a solution, we can stop polling the server.
+      } 
+      js_dashboard.call("submit_toggle", null);
+     // Now that we have a solution, we can stop polling the server.
       the_timer.stop();
     }
     
     public void actionPerformed(ActionEvent evt) {
       if (this.solution_found == true) { 
 	  getJobSolution();
-	  js_dashboard.call("submit_toggle", null);
       } else {
         monitorJobStatus();
         // Every 10 seconds, check the solver output.
@@ -342,7 +345,7 @@ public boolean sendToNeos(String the_model) {
    
   int delay = 2000; // milliseconds
   the_timer = new Timer(delay, solution_monitor);
-  the_timer.setInitialDelay(100);
+  the_timer.setInitialDelay(200);
   the_timer.start();
 
   // This class will handle callback in its own thread. I think it checks every

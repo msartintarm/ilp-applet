@@ -15,13 +15,13 @@
 
     <object type="application/x-java-applet" 
 	    height="1" width="1" id="the_applet">
-      <param name="codebase" value="eclipse/" />
+      <param name="codebase" value="bin" />
       <param name="archive" value="Neos.jar,
-				   slib/commons-logging-1.1.jar, 
-				   slib/xmlrpc-common-3.1.3.jar, 
-				   slib/xmlrpc-client-3.1.3.jar, 
-				   slib/ws-commons-util-1.0.2.jar,
-				   slib/plugin.jar" />
+				   commons-logging-1.1.jar.sig, 
+				   xmlrpc-common-3.1.3.jar.sig, 
+				   xmlrpc-client-3.1.3.jar.sig, 
+				   ws-commons-util-1.0.2.jar.sig,
+				   plugin.jar.sig" />
       <param name="code" value="NeosClient/Neos.class" />
       <param name="mayscript" value="true" />
       Java applet failed to load!
@@ -31,7 +31,7 @@
       <div class="padDiv"> 
         <div class='main'>
 
-	    <h2>Case Study 2:<br/>Data-Center Service Allocation</h2>
+	    <h2>Case Study 2:<br/>Data-Center Allocation</h2>
 	    <p class="description">
 Data-center resource managers are centralized software components which
 manage the execution of a large number of services. Co-locating multiple services on a
@@ -64,10 +64,12 @@ Select from the following resource management models (mouse over for description
 	      <div class="one_half"
 		   style="border-style:inset; border-width:4px; border-color:#999999;">
 		<div id="services"></div>
-		<button onclick="add_service();">Add services..</button>
-		<p class="selection">`CPU %' is steady-state, with respect to a 1 GHz machine. </p>
+		<button id="service_button">Add services..</button>
+		<p class="selection">
+		  `CPU %' is steady-state, with respect to a 1 GHz machine.
+		</p>
 		<div id="machines"></div>
-		<button onclick="add_machine();">Add machines..</button>
+		<button id="machine_button">Add machines..</button>
 		<div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
 		</div>
 		<br/>

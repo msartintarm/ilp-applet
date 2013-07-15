@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Trusted-Library: true
+Main-Class: NeosClient.Neos
+Created-By: Michael Sartin-Tarm
+Codebase: *
+Permissions: all-permissions
+Class-Path: commons-logging-1.1.jar.sig xmlrpc-client-3.1.3.jar.sig xmlrpc-common-3.1.3.jar.sig plugin.jar.sig ws-commons-util-1.0.2.jar.sig 
+

@@ -62,26 +62,35 @@ case2.load = function(hardware_num) {
     var hw_title = document.getElementById("case2_title");
     var hw_describe = document.getElementById("case2_describe");
     var services = document.getElementById("services");
+    var service_button = document.getElementById("service_button");
+    var machine_button = document.getElementById("machine_button");
     switch(hardware_num) {
     case 1:
 	case2.model = 'S';
-	services.innerHTML="Specify resource usage of services.<br/>";
+	services.innerHTML = "Specify resource usage of services.<br/>\
+<i>Service memory usage varies uniformly across the range specified.</i><br/>";
+	machines.innerHTML = "Specify resources of machines.<br/>";
+	service_button.onclick = add_service;
+	machine_button.onclick = add_machine;
 	add_service();
-	machines.innerHTML="Specify resources of machines.<br/>";
 	add_machine();
 	break;
     case 2:
 	case2.model = 'W';
 	services.innerHTML="Specify resource usage of services.<br/>";
-	add_service();
 	machines.innerHTML="Specify resources of machines.<br/>";
+	service_button.onclick = add_service;
+	machine_button.onclick = add_machine;
+	add_service();
 	add_machine();
 	break;
     case 3:
 	case2.model = 'T';
 	services.innerHTML="Specify resource usage of services.<br/>";
-	add_service();
 	machines.innerHTML="Specify resources of machines.<br/>";
+	service_button.onclick = add_service;
+	machine_button.onclick = add_machine;
+	add_service();
 	add_machine();
 	additional_params.innerHTML="Specify number of time periods over which to divide variance: \
 <input type='text' value='4' size='3'></input> time periods.";
@@ -102,6 +111,16 @@ case2.services = 0;
 function add_service() {
     var services = document.getElementById("services");
     services.innerHTML += "\
+<input type='text' id='service_num" + case2.services +  "' value='100' size='2'></input> services, \
+<input type='text' id='service_mem" + case2.services +  "' value='4.0' size='1'></input>-\
+<input type='text' id='service2mem" + case2.services +  "' value='4.0' size='1'></input> GB / \
+<input type='text' id='service_cpu" + case2.services +  "' value='0.75' size='2'></input> CPU %<br/>";
+    case2.services ++;
+}
+
+function add_warehouse_service() {
+    var services = document.getElementById("services");
+    services.innerHTML += "\
 <input type='text' id='service_num" + case2.services +  "' value='100' size='3'></input> services with \
 <input type='text' id='service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / \
 <input type='text' id='service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
@@ -119,9 +138,9 @@ case2.machines = 0;
 function add_machine() {
     var machines = document.getElementById("machines");
 		machines.innerHTML += "\
-<input type='text' id='machine_num" + case2.machines +  "' value='2' size='3'></input> machines with \
-<input type='text' id='machine_mem" + case2.machines +  "' value='16.0' size='3'></input> GB / \
-<input type='text' id='machine_cpu" + case2.machines +  "' value='1.00' size='3'></input> GHz <br/>";
+<input type='text' id='machine_num" + case2.machines +  "' value='2' size='2'></input> machines with \
+<input type='text' id='machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / \
+<input type='text' id='machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
     case2.machines ++;
 }
 
