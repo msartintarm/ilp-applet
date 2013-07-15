@@ -1,16 +1,13 @@
 *execseed = 1+gmillisec(jnow);
 
-**** Problem Inputs ****
-
-Set K /cpu,mem/;
 *Set S /s1*s500/;
 *Set C /c1*c500/;
 
-parameter R(S,K);
-parameter L(C,K);
+*parameter R(S,K);
+*parameter L(C,K);
 
-R(S,K) = uniform(0,1);
-L(C,K) = .5+2*uniform(0,1);
+*R(S,K) = uniform(0,1);
+*L(C,K) = .5+2*uniform(0,1);
 *L(C,K) = 1.5;
 
 

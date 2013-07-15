@@ -170,7 +170,7 @@ case2.load_from_java = function() {
 	machine_cpu.push(document.getElementById("machine_cpu" + i).value);
     }
 
-    the_applet.JSload2(case2.model, 
+    the_applet.JSload2(case2.model, case2.services, case2.machines,
 		       service_num, service_mem, service_cpu,
 		       machine_num, machine_mem, machine_cpu );
 };
