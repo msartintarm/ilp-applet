@@ -16,101 +16,94 @@
     <div id='wrap'>
       <div class="padDiv"> 
         <div class='main'>
-
-	    <h2>Case Study 2:<br/>Data-Center Allocation</h2>
-	    <p class="description">
+	  
+	  <h2>Case Study 2:<br/>Data-Center Allocation</h2>
+	  <p class="description">
 Data-center resource managers are centralized software components which
 manage the execution of a large number of services. Co-locating multiple services on a
 machine could degrade performance, and hence it is critical for the resource manager to
 utilize information upon services and machines in effectively allocating machine resources. <br/>
 In ILP, the problem is to statically determine the best co-locations of services on servers
 for resource requirements and service-level agreements to be satisfied. 
-	    </p>
-	    <p class="selection">
+	  </p>
+	  <p class="selection">
 Select from the following resource management models (mouse over for description).
-	    </p>
+	  </p>
 
-	    <table style="width:100%; text-align:center;">
-	      <thead><tr>
-		  <th><button onmouseover="case2.describe(1)" 
-			      onclick="case2.load(1)">SSAP</button></th>
-		  <th><button onmouseover="case2.describe(2)" 
-			      onclick="case2.load(2)">WSAP</button></th>
-		  <th><button onmouseover="case2.describe(3)" 
-			      onclick="case2.load(3)">TSAP</button></th>
-		  <th><button onmouseover="case2.describe(4)" 
-			      onclick="case2.load(4)">ISAP</button></th>
-	      </tr></thead>
-	    </table>
-            <div id="case2_description">
-	      <h3 id="case2_title"></h3>
-	      <p id="case2_describe" style="font-size:18px;"></p>
+	  <table style="width:100%; text-align:center;"><tr>
+	      <td><button onmouseover="case2.describe(1)" 
+			  onclick="case2.load(1)">SSAP</button></td>
+	      <td><button onmouseover="case2.describe(2)" 
+			  onclick="case2.load(2)">WSAP</button></td>
+	      <td><button onmouseover="case2.describe(3)" 
+			  onclick="case2.load(3)">TSAP</button></td>
+	      <td><button onmouseover="case2.describe(4)" 
+			  onclick="case2.load(4)">ISAP</button></td>
+	  </tr></table>
+          <div id="case2_description">
+	    <h3 id="case2_title"></h3>
+	    <p id="case2_describe" style="font-size:18px;"></p>
+	  </div>
+          <div id="case2_content" style="display:none;">
+	    <div class="one_half"
+		 style="border-style:inset; border-width:4px; border-color:#999999;">
+	      <div id="services"></div>
+	      <button id="service_button">Add services..</button>
+	      <p class="selection">
+		`CPU %' is steady-state, with respect to a 1 GHz machine.
+	      </p>
+	      <div id="machines"></div>
+	      <button id="machine_button">Add machines..</button>
+	      <div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
+	      </div>
+	      <br/>
+	      <button style="font-size:20px; width:100%;" 
+		      onclick="case2.load_from_java();">
+		Display File On Right
+	      </button>
+	      <button style="font-size:20px; width:100%;" 
+		      id="submit_button"
+		      disabled="true" onclick="case2.submit_from_java();">
+		Submit job to NEOS!
+	      </button>
 	    </div>
-            <div id="case2_content" style="display:none;">
-	      <div class="one_half"
-		   style="border-style:inset; border-width:4px; border-color:#999999;">
-		<div id="services"></div>
-		<button id="service_button">Add services..</button>
-		<p class="selection">
-		  `CPU %' is steady-state, with respect to a 1 GHz machine.
-		</p>
-		<div id="machines"></div>
-		<button id="machine_button">Add machines..</button>
-		<div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
-		</div>
-		<br/>
-		<button align="center" 
-			style="font-size:20px; width:100%;" 
-			onclick="case2.load_from_java();">
-		  Display File On Right
-		</button>
-		<button align="center" 
-			style="font-size:20px; width:100%;" 
-			id="submit_button"
-			disabled onclick="case2.submit_from_java();">
-		  Submit job to NEOS!
-		</button>
-	      </div>
-	      <div class="one_half" 
-		   style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
-		<h4 >File to be loaded:</h4>
-		<textarea id="input_file" style="width:98%;font-size:9pt;" 
-			  rows="16"></textarea>
-	      </div>
-	      <div style="position:relative; float:left; width:100%; padding-top:10px;">
-		<div class="one_third">
-		  Solver Status:<br/>
-		  <textarea id="solver_status" style="width:95%;" rows="12"></textarea>
-		</div>
-		<div class="one_third">
-		  Solver Output:<br/>
-		  <textarea id="solver_output" style="width:95%;" rows="12"></textarea>
-		</div>
-		<div class="one_third">
-		  Solution:<br/>
-		  <textarea id="solver_solution" style="width:95%;" rows="12"></textarea>
-		</div>
-	      </div>
-
-	      <object type="application/x-java-applet" 
-		      height="1" width="1" id="the_applet">
-		<param name="codebase" value="bin" />
-		<param name="archive" value="Neos.jar,
-					     commons-logging-1.1.jar.sig, 
-					     xmlrpc-common-3.1.3.jar.sig, 
-					     xmlrpc-client-3.1.3.jar.sig, 
-					     ws-commons-util-1.0.2.jar.sig,
-					     plugin.jar.sig" />
-		<param name="code" value="NeosClient/Neos.class" />
-		<param name="mayscript" value="true" />
-		Java applet failed to load!
-	      </object>
-
+	    <div class="one_half" 
+		 style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
+	      <h4 >File to be loaded:</h4>
+	      <textarea id="input_file" style="width:98%;font-size:9pt;" 
+			rows="16">NEOS loading..</textarea>
 	    </div>
-          </div>
-	</div>
+	    <div style="position:relative; float:left; width:100%; padding-top:10px;">
+	      <div class="one_third">
+		Solver Status:<br/>
+		<textarea id="solver_status" style="width:95%;" rows="12"></textarea>
+	      </div>
+	      <div class="one_third">
+		Solver Output:<br/>
+		<textarea id="solver_output" style="width:95%;" rows="12"></textarea>
+	      </div>
+	      <div class="one_third">
+		Solution:<br/>
+		<textarea id="solver_solution" style="width:95%;" rows="12"></textarea>
+	      </div>
+	    </div>
+
+	    <object type="application/x-java-applet" 
+		    height="1" width="1" id="the_applet">
+	      <param name="codebase" value="bin" />
+	      <param name="archive" value="Neos.jar,
+					   commons-logging-1.1.jar,
+					   xmlrpc-common-3.1.3.jar,
+					   xmlrpc-client-3.1.3.jar,
+					   ws-commons-util-1.0.2.jar,
+					   plugin.jar.sig" />
+	      <param name="code" value="NeosClient/Neos.class" />
+	      <param name="mayscript" value="true" />
+	      Java applet failed to load!
+	    </object>
+	  </div>
+        </div>
       </div>
-    
-</div>
-</body>
+    </div>
+  </body>
 </html>

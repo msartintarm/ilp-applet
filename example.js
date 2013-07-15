@@ -31,12 +31,13 @@ function update_element(element, result) {
 }
 
 function show_file(the_file) {
-    input_file.innerHTML = the_file;
+    document.getElementById("input_file").value = the_file;
 }
 
 function send_to_applet() {
     var the_applet = document.getElementById("the_applet");
-    the_applet.JSsubmit(input_file.innerHTML);
+    var text_to_send = document.getElementById("input_file").value;
+    the_applet.JSsubmit(text_to_send);
 }
 
 function send_to_neos() {

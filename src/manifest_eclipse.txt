@@ -4,4 +4,4 @@ Main-Class: NeosClient.Neos
 Created-By: Michael Sartin-Tarm
 Codebase: *
 Permissions: all-permissions
-Class-Path: $JAVA_ARCHIVES
+Class-Path: 

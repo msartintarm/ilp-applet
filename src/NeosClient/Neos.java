@@ -68,30 +68,29 @@ boolean js_submitted = false;
 	    total_machines += Integer.valueOf((String)machine_num.getSlot(i));
 	}
 
-	js_model  = "Set S /s1*s" + total_services + "/;\n";
+	js_model  = "**** Problem Inputs ****\n\n";
+	js_model += "Set S /s1*s" + total_services + "/;\n";
 	js_model += "Set C /c1*c" + total_machines + "/;\n";
 
 	switch(model_type.charAt(0)) {
 	case 'S': // SSAP
-	    js_model += "**** Problem Inputs ****\n";
-
 	    js_model += "Set K /cpu,mem/;\n";
 	    js_model += "parameter R(S,K);\nparameter L(C,K);\n";
 	    int lower_bound;
-	    int upper_bound = 1;
+	    int upper_bound = 0;
 	    int i;
-	    for(i = 1; i <= num_services; ++i) {
-		lower_bound = upper_bound;
-		upper_bound = Integer.valueOf((String)service_num.getSlot(i));
-		js_model += "Set subS" + i + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n";
-		js_model += "R(subS" + i + ",K) = uniform(0, " + (String)service_mem.getSlot(i) + ");\n";
+	    for(i = 0; i < num_services; ++i) {
+		lower_bound  = upper_bound + 1;
+		upper_bound += Integer.valueOf((String)service_num.getSlot(i));
+		js_model += "Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n";
+		js_model += "R(subS" + (i+1) + ",K) = uniform(0, " + (String)service_mem.getSlot(i) + ");\n";
 	    }
-	    upper_bound = 1;
-	    for(i = 1; i <= num_machines; ++i) {
-		lower_bound = upper_bound;
-		upper_bound = Integer.valueOf((String)machine_num.getSlot(i));
-		js_model += "Set subC" + i + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n";
-		js_model += "L(subC" + i + ",K) = uniform(0, " + (String)service_mem.getSlot(i) + ");\n";
+	    upper_bound = 0;
+	    for(i = 0; i < num_machines; ++i) {
+		lower_bound  = upper_bound + 1;
+		upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
+		js_model += "Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n";
+		js_model += "L(subC" + (i+1) + ",K) = uniform(0, " + (String)machine_mem.getSlot(i) + ");\n";
 	    }
 	    js_model += readFile("case2/SSAP.gms");
 	    break;

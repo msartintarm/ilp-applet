@@ -70,28 +70,28 @@ case2.load = function(hardware_num) {
 	services.innerHTML = "Specify resource usage of services.<br/>\
 <i>Service memory usage varies uniformly across the range specified.</i><br/>";
 	machines.innerHTML = "Specify resources of machines.<br/>";
-	service_button.onclick = add_service;
-	machine_button.onclick = add_machine;
-	add_service();
-	add_machine();
+	service_button.onclick = case2.add_service;
+	machine_button.onclick = case2.add_machine;
+	case2.add_service();
+	case2.add_machine();
 	break;
     case 2:
 	case2.model = 'W';
 	services.innerHTML="Specify resource usage of services.<br/>";
 	machines.innerHTML="Specify resources of machines.<br/>";
-	service_button.onclick = add_service;
-	machine_button.onclick = add_machine;
-	add_service();
-	add_machine();
+	service_button.onclick = case2.add_service;
+	machine_button.onclick = case2.add_machine;
+	case2.add_service();
+	case2.add_machine();
 	break;
     case 3:
 	case2.model = 'T';
 	services.innerHTML="Specify resource usage of services.<br/>";
 	machines.innerHTML="Specify resources of machines.<br/>";
-	service_button.onclick = add_service;
-	machine_button.onclick = add_machine;
-	add_service();
-	add_machine();
+	service_button.onclick = case2.add_service;
+	machine_button.onclick = case2.add_machine;
+	case2.add_service();
+	case2.add_machine();
 	additional_params.innerHTML="Specify number of time periods over which to divide variance: \
 <input type='text' value='4' size='3'></input> time periods.";
 	break;
@@ -108,7 +108,7 @@ case2.load = function(hardware_num) {
  * Give unique ID that can be looked up later.
  */
 case2.services = 0;
-function add_service() {
+case2.add_service = function() {
     var services = document.getElementById("services");
     services.innerHTML += "\
 <input type='text' id='service_num" + case2.services +  "' value='100' size='2'></input> services, \
@@ -135,10 +135,10 @@ function add_timed_service() {
 }
 
 case2.machines = 0;
-function add_machine() {
+case2.add_machine = function() {
     var machines = document.getElementById("machines");
 		machines.innerHTML += "\
-<input type='text' id='machine_num" + case2.machines +  "' value='2' size='2'></input> machines with \
+<input type='text' id='machine_num" + case2.machines +  "' value='200' size='2'></input> machines with \
 <input type='text' id='machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / \
 <input type='text' id='machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
     case2.machines ++;
@@ -184,7 +184,7 @@ case2.submit_from_java = function() {
     var input_file = document.getElementById("input_file");
     // When the text is sent this way, funky HTML symbols
     // like '&gt;' aren't created
-    the_applet.JSsubmit(input_file.childNodes[0].nodeValue);
+    the_applet.JSsubmit(input_file.value);
 };
 
 case2.submit_toggle = function() {
