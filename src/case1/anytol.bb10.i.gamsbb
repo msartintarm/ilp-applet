@@ -1,0 +1,6 @@
+Set v /i0, i1, i2, i3, i4, i5, i6, i7/;
+*Set IType /t_getelementptr, t_load, t_add, t_icmp, t_icmp, t_icmp, t_select, t_br/;
+Set Okay(v)/i2,i3,i4,i5,i6/;
+Set I(v)//;
+Set O(v)//;
+Set Gvv(v,v)/i0.i1,i1.i2,i2.i3,i1.i4,i1.i5,i3.i6,i5.i6,i4.i6,i6.i7/;

@@ -50,6 +50,18 @@ static Timer the_timer;
 String js_model = "";
 boolean js_submitted = false;
 
+// Construct a GAMS string for case 3.
+// It is the simplest of the 3 case studies thus far.
+public void JSload1(String software_file) {
+
+    final String root = "case1/";
+    js_model  = "$ONEMPTY\n";
+    js_model += readFile("case1/" + software_file);
+    js_model += readFile("case1/ise.gms");
+    // Show the user (using Javascript) the model they specified.
+    js_show_text(js_model);
+}
+
 // Construct a GAMS string for case 2.
 // If we hae 'i' classes of services:
 // Service[3*i] = number of services

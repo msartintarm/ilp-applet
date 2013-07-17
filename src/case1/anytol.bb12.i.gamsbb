@@ -1,0 +1,6 @@
+Set v /i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14, i15, i16, i17, i18, i19/;
+*Set IType /t_phi, t_zext, t_zext, t_phi, t_sext, t_sext, t_phi, t_load, t_load, t_phi, t_add, t_phi, t_add, t_phi, t_getelementptr, t_phi, t_shl, t_and, t_icmp, t_br/;
+Set Okay(v)/i16,i17,i18/;
+Set I(v)/i1,i2,i4,i5,i7,i8,i10,i12,i14,i15/;
+Set O(v)/i3,i6,i11,i13,i16/;
+Set Gvv(v,v)/i1.i0,i2.i0,i4.i3,i5.i3,i7.i6,i8.i6,i10.i9,i12.i11,i14.i13,i15.i13,i9.i16,i0.i17,i17.i18,i18.i19/;

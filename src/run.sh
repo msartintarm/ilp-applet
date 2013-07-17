@@ -14,6 +14,7 @@ NeosClient/*.java \
 org/neos/client/*.java "
 
 OTHER_FILES="\
+case1 \
 case2 \
 case3 "
 
