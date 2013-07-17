@@ -25,21 +25,18 @@ else
 
 # Add new permissions to manifest for other JARs
 
-    echo 'Trusted-Library: true
-Codebase: *
-Permissions: all-permissions' >& manifest_general.txt
+    echo 'Permissions: all-permissions
+Codebase: localhost:8000 mywebspace.wisc.edu neos-dev-1.neos-server.org
+Trusted-Library: true' >& manifest_general.txt
+    cp manifest_general.txt manifest_eclipse.txt
 
     echo 'Manifest-Version: 1.0
-Trusted-Library: true
 Main-Class: NeosClient.Neos
 Created-By: Michael Sartin-Tarm
-Codebase: *
-Permissions: all-permissions
-Class-Path: ' >& manifest_eclipse.txt
+Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
 
     for JAR in $JAVA_ARCHIVES; do
-	OLD_JAR="jars/$JAR"
-	cp $OLD_JAR $JAR
+	cp jars/$JAR $JAR
 	jar ufm $JAR manifest_general.txt
     done
 

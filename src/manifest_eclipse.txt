@@ -1,7 +1,7 @@
-Manifest-Version: 1.0
+Permissions: all-permissions
+Codebase: localhost:8000 mywebspace.wisc.edu neos-dev-1.neos-server.org
 Trusted-Library: true
+Manifest-Version: 1.0
 Main-Class: NeosClient.Neos
 Created-By: Michael Sartin-Tarm
-Codebase: *
-Permissions: all-permissions
-Class-Path: 
+Class-Path:  commons-logging-1.1.jar xmlrpc-client-3.1.3.jar xmlrpc-common-3.1.3.jar plugin.jar ws-commons-util-1.0.2.jar
