@@ -53,7 +53,7 @@ boolean js_submitted = false;
 // Construct a GAMS string for case 3.
 // It is the simplest of the 3 case studies thus far.
 public void JSload1(String software_file) {
-
+	
     final String root = "case1/";
     js_model  = "$ONEMPTY\n";
     js_model += readFile("case1/" + software_file);
@@ -67,9 +67,9 @@ public void JSload1(String software_file) {
 // Service[3*i] = number of services
 // Service[3*i + 1] = mem usage
 // Service[3*i + 2] = cpu usage
-    public void JSload2(String model_type, Integer num_services, Integer num_machines,
-			JSObject service_num, JSObject service_mem, JSObject service_cpu,
-			JSObject machine_num, JSObject machine_mem, JSObject machine_cpu) {
+public void JSload2(String model_type, Integer num_services, Integer num_machines,
+					JSObject service_num, JSObject service_mem, JSObject service_cpu,
+					JSObject machine_num, JSObject machine_mem, JSObject machine_cpu) {
 
 	int total_services = 0;
 	int total_machines = 0;
@@ -131,7 +131,7 @@ public void JSload1(String software_file) {
 
 	// Show the user (using Javascript) the model they specified.
 	js_show_text(js_model);
-    }
+}
 
 // Construct a GAMS string for case 3.
 // Check case 3's 'run-gams.sh' for a command-line version of this selector.
@@ -160,7 +160,7 @@ public void JSsubmit(String the_model) {
 // Called at applet's creation.
 // Here this gets references to HTML DOM / JS objects.
 public void init() {
-  js_dashboard = JSObject.getWindow(this);
+	js_dashboard = (JSObject) JSObject.getWindow(this).getMember("Neos");
 }
 
 @Override
@@ -171,12 +171,12 @@ public void start() {
     
     //Sets up delay to check for JS model
     ActionListener watch_submission = new ActionListener() {
-	public void actionPerformed(ActionEvent evt) {
-	    if(js_submitted == false) return; // reset our flag
-	    else js_submitted = false;
-	    sendToNeos(js_model);
-	}
-    };
+			public void actionPerformed(ActionEvent evt) {
+				if(js_submitted == false) return; // reset our flag
+				else js_submitted = false;
+				sendToNeos(js_model);
+			}
+		};
     
     int delay = 500; // milliseconds
     the_timer = new Timer(delay, watch_submission);

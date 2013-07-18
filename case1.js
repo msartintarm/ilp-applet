@@ -20,16 +20,6 @@ case1.load_from_java = function() {
     the_applet.JSload1(selected_file);
 };
 
-/**
- * Sends the model to load on the right.
- */
-case1.submit_from_java = function() {
-
-    var the_applet = document.getElementById("the_applet");
-    var input_file = document.getElementById("input_file");
-    the_applet.JSsubmit(input_file.value);
-};
-
 case1.submit_toggle = function() {
 
     var active_text = "Submit job to NEOS!";

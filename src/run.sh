@@ -42,7 +42,7 @@ Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
     done
 
 # Create Java classes
-    javac -classpath ${JAVA_ARCHIVES//" "/";"} $JAVA_FILES
+    javac -classpath ${JAVA_ARCHIVES//" "/":"} $JAVA_FILES
 # Zip classes, manifest, and GAMS files into one JAR
     jar cfm Neos.jar manifest_eclipse.txt ${JAVA_FILES//"java"/"class"} $OTHER_FILES
 
@@ -52,7 +52,7 @@ fi
 echo Signing JARs..
 for JAR in Neos.jar $JAVA_ARCHIVES; do
     jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed $JAR jarkey
-    mv $JAR ../bin
+    mv $JAR ../bin/
 done
 
 echo Done.

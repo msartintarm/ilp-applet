@@ -175,18 +175,6 @@ case2.load_from_java = function() {
 		       machine_num, machine_mem, machine_cpu );
 };
 
-/**
- * Sends the model to load on the right.
- */
-case2.submit_from_java = function() {
-
-    var the_applet = document.getElementById("the_applet");
-    var input_file = document.getElementById("input_file");
-    // When the text is sent this way, funky HTML symbols
-    // like '&gt;' aren't created
-    the_applet.JSsubmit(input_file.value);
-};
-
 case2.submit_toggle = function() {
 
     var active_text = "Submit job to NEOS!";

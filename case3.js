@@ -44,7 +44,7 @@ case3.load = function(hardware_num) {
 
     if(hardware_loaded === false) {
 	case3.describe(hardware_num);
-	document.getElementById("case3_content").style.display = "inline-block";
+	document.getElementById("case3_content").style.display = "block";
 	hardware_loaded = true;	
     }
 
@@ -130,14 +130,3 @@ case3.load_from_java = function() {
     var hw_file = hw_select.options[hw_select.selectedIndex].text;
     the_applet.JSload3(case3.arch, sw_file, hw_file);
 };
-
-/**
- * Sends the model to load on the right.
- */
-case3.submit_from_java = function() {
-
-    var the_applet = document.getElementById("the_applet");
-    var input_file = document.getElementById("input_file");
-    the_applet.JSsubmit(input_file.value);
-};
-

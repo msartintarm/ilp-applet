@@ -26,21 +26,23 @@ function turn_into_xml(input_string) {
     return the_xml;
 }
 
-function update_element(element, result) {
+var Neos = {};
+
+Neos.update_element = function(element, result) {
     document.getElementById(element).innerHTML = result;
 }
 
-function show_file(the_file) {
+Neos.show_file = function(the_file) {
     document.getElementById("input_file").value = the_file;
 }
 
-function send_to_applet() {
+Neos.send_to_applet = function() {
     var the_applet = document.getElementById("the_applet");
     var text_to_send = document.getElementById("input_file").value;
     the_applet.JSsubmit(text_to_send);
 }
 
-function send_to_neos() {
+Neos.send_to_neos = function() {
 
     // We are going to submit a job.
     var the_request = new XmlRpcRequest("http://www.neos-dev-1.neos-server.org:3332", "submitJob");
@@ -56,7 +58,17 @@ function send_to_neos() {
     alert(response.parseXML());
 }
 
-function submit_toggle() {
+/**
+ * Sends the model to load on the right.
+ */
+Neos.submit_from_java = function() {
+
+    var the_applet = document.getElementById("the_applet");
+    var input_file = document.getElementById("input_file");
+    the_applet.JSsubmit(input_file.value);
+};
+
+Neos.submit_toggle = function() {
 
     var active_text = "Submit job to NEOS!";
     var inactive_text = "NEOS working..";
