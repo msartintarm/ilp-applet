@@ -47,15 +47,15 @@
 		<div id="hw_files"></div><br/>
 		<div id="sw_files"></div><br/>
 		<div id="upload_file"></div>
-		  <button align="center" 
-			  style="font-size:20px; width:100%;" 
-			  onclick="case3.load_from_java();">
-		    Display File On Right
-		  </button>
-		  <br/>
-		  <button align="center" style="font-size:20px; width:100%;" id="submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
-		    Submit job to NEOS!
-		  </button>
+		<button style="font-size:20px; width:100%;" onclick="case3.load_from_java();">
+		  Display Problem on Right
+		</button>
+		<button style="font-size:20px; width:100%;" id="submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
+		  Submit Problem to NEOS!
+		</button>
+		<button style="font-size:20px; width:100%;" id="kill_button" disabled="disabled" onclick="Neos.kill_job();">
+		  Cancel Current Job?
+		</button>
 	      </div>
 	    </div>
 

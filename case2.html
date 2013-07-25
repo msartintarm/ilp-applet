@@ -13,9 +13,9 @@
 
   <body>
 
-    <div id='wrap'>
+    <div id="wrap">
       <div class="padDiv"> 
-        <div class='main'>
+        <div class="main">
 	  
 	  <h2>Case Study 2:<br/>Data-Center Allocation</h2>
 	  <p class="description">
@@ -30,15 +30,19 @@ for resource requirements and service-level agreements to be satisfied.
 Select from the following resource management models (mouse over for description).
 	  </p>
 
-	  <table style="width:100%; text-align:center;"><tr>
-	      <td><button onmouseover="case2.describe(1)" 
-			  onclick="case2.load(1)">SSAP</button></td>
-	      <td><button onmouseover="case2.describe(2)" 
-			  onclick="case2.load(2)">WSAP</button></td>
-	      <td><button onmouseover="case2.describe(3)" 
-			  onclick="case2.load(3)">TSAP</button></td>
-	      <td><button onmouseover="case2.describe(4)" 
-			  onclick="case2.load(4)">ISAP</button></td>
+	  <table style="width:100%;"><tr>
+	      <td style="text-align:center;">
+		<button onmouseover="case2.describe(1)" onclick="case2.load(1)">SSAP</button>
+	      </td>
+	      <td style="text-align:center;">
+		<button onmouseover="case2.describe(2)" onclick="case2.load(2)">WSAP</button>
+	      </td>
+	      <td style="text-align:center;">
+		<button onmouseover="case2.describe(3)" onclick="case2.load(3)">TSAP</button>
+	      </td>
+	      <td style="text-align:center;">
+		<button onmouseover="case2.describe(4)" onclick="case2.load(4)">ISAP</button>
+	      </td>
 	  </tr></table>
           <div id="case2_description">
 	    <h3 id="case2_title"></h3>
@@ -47,30 +51,30 @@ Select from the following resource management models (mouse over for description
           <div id="case2_content" style="display:none;">
 	    <div class="left_half">
 	      <div style="border-style:inset; border-width:4px; border-color:#999999;">
-	      <div id="services"></div>
-	      <button id="service_button">Add services..</button>
-	      <p class="selection">
-		`CPU %' is steady-state, with respect to a 1 GHz machine.
-	      </p>
-	      <div id="machines"></div>
-	      <button id="machine_button">Add machines..</button>
-	      <div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;">
+		<div id="services"></div>
+		<button id="service_button">Add services..</button>
+		<p class="selection">
+		  `CPU %' is steady-state, with respect to a 1 GHz machine.
+		</p>
+		<div id="machines"></div>
+		<button id="machine_button">Add machines..</button>
+		<div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;"></div>
+		<br/>
+		<button style="font-size:20px; width:100%;" onclick="case2.load_from_java();">
+		  Display Problem on Right
+		</button>
+		<button style="font-size:20px; width:100%;" id="submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
+		  Submit Problem to NEOS!
+		</button>
+		<button style="font-size:20px; width:100%;" id="kill_button" disabled="disabled" onclick="Neos.kill_job();">
+		  Cancel Current Job?
+		</button>
 	      </div>
-	      <br/>
-	      <button style="font-size:20px; width:100%;" 
-		      onclick="case2.load_from_java();">
-		Display File On Right
-	      </button>
-	      <button style="font-size:20px; width:100%;" id="submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
-		Submit job to NEOS!
-	      </button>
-	      <button style="font-size:20px; width:100%;" id="kill_button" disabled="disabled" onclick="Neos.kill_job();">
-		Cancel current job?
-	      </button>
-	    </div></div>
+	    </div>
+
 	    <div class="right_half">
 	      <div style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
-	      <h4 >File to be loaded:</h4>
+	      <h4 >Problem to be submitted:</h4>
 	      <textarea id="input_file" style="width:98%;font-size:9pt;" 
 			rows="16">NEOS loading..</textarea>
 	    </div>

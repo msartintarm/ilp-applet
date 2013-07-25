@@ -53,11 +53,10 @@ These are used in ISAP as a constraint denoting a minimum acceptable QoS threshh
 
 case2.load = function(hardware_num) {
 
-    if(hardware_loaded === false) {
-	case2.describe(hardware_num);
-	document.getElementById("case2_content").style.display = "inline-block";
-	hardware_loaded = true;	
-    }
+    hardware_loaded = false;
+    case2.describe(hardware_num);
+    document.getElementById("case2_content").style.display = "inline-block";
+    hardware_loaded = true;	
 
     var hw_title = document.getElementById("case2_title");
     var hw_describe = document.getElementById("case2_describe");

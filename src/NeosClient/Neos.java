@@ -215,8 +215,8 @@ public void start() {
 void js_submit_toggle() {  js_dashboard.call("submit_toggle", null); }
 void js_kill_toggle() {  js_dashboard.call("kill_toggle", null); }
 void js_show_text(String the_text) { 
-    js_dashboard.call("show_file", 
-		      new Object[] { the_text }); }
+    js_dashboard.call("update_element", 
+		      new Object[] { "input_file", the_text }); }
 
 /**
  * Finds the solvers available for this category (milp) and language (GAMS).
@@ -380,7 +380,7 @@ public boolean sendToNeos(String the_model) {
     void getJobSolution() {
       String result = getSolution(the_client, job_name, job_pass);
       if (result.length() > 2) {
-        System.out.println("\nFinalresults: \n" + result);
+        System.out.println("\nFinal results: \n" + result);
         js_dashboard.call("update_element", new Object[] { "solver_solution", result });
       } 
       js_submit_toggle();
