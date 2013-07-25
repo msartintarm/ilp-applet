@@ -14,19 +14,6 @@ import org.neos.client.ResultCallback;
 
 import netscape.javascript.*;
 
-class NeosResponse implements ResultCallback {
-
-@Override
-public void handleJobInfo(int job_num, String passwd) {
-  System.out.println("Job " + job_num + " submitted. Password: " + passwd);
-}
-
-@Override
-public void handleFinalResult(String results) {
-  System.out.println("Result follows:\n " + results);
-}
-}
-
 /*
  * Temporary main class designed to test the NEOS server's capability. - The
  * giant string represents a complete GAMS model of a spatial architecture. -
@@ -171,12 +158,16 @@ public void start() {
     
     //Sets up delay to check for JS model
     ActionListener watch_submission = new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				if(js_submitted == false) return; // reset our flag
-				else js_submitted = false;
-				sendToNeos(js_model);
-			}
-		};
+	public void actionPerformed(ActionEvent evt) {
+	    if(js_submitted == false) return; // reset our flag
+	    else js_submitted = false;
+	    if (sendToNeos(js_model) != true) {
+		System.err.println("Job not received by Neos.");
+		System.err.println(js_model);
+		the_timer.stop();
+	    }
+	}
+    };
     
     int delay = 500; // milliseconds
     the_timer = new Timer(delay, watch_submission);

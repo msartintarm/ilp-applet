@@ -45,8 +45,8 @@ Select from the following resource management models (mouse over for description
 	    <p id="case2_describe" style="font-size:18px;"></p>
 	  </div>
           <div id="case2_content" style="display:none;">
-	    <div class="one_half"
-		 style="border-style:inset; border-width:4px; border-color:#999999;">
+	    <div class="left_half">
+	      <div style="border-style:inset; border-width:4px; border-color:#999999;">
 	      <div id="services"></div>
 	      <button id="service_button">Add services..</button>
 	      <p class="selection">
@@ -66,12 +66,13 @@ Select from the following resource management models (mouse over for description
 		      disabled="disabled" onclick="Neos.submit_from_java();">
 		Submit job to NEOS!
 	      </button>
-	    </div>
-	    <div class="one_half" 
-		 style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
+	    </div></div>
+	    <div class="right_half">
+	      <div style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
 	      <h4 >File to be loaded:</h4>
 	      <textarea id="input_file" style="width:98%;font-size:9pt;" 
 			rows="16">NEOS loading..</textarea>
+	    </div>
 	    </div>
 	    <div style="position:relative; float:left; width:100%; padding-top:10px;">
 	      <div class="one_third">
@@ -89,7 +90,7 @@ Select from the following resource management models (mouse over for description
 	    </div>
 
 	    <object type="application/x-java-applet" 
-		    height="1" width="1" id="the_applet">
+		    height="200" width="200" id="the_applet">
 	      <param name="codebase" value="bin" />
 	      <param name="archive" value="Neos.jar,
 					   commons-logging-1.1.jar,
@@ -101,6 +102,7 @@ Select from the following resource management models (mouse over for description
 	      <param name="mayscript" value="true" />
 	      Java applet failed to load!
 	    </object>
+
 	  </div>
         </div>
       </div>

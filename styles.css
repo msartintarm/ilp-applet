@@ -121,11 +121,9 @@ div.one_third{
     -khtml-user-select: none;
 }
  
-div.one_half{
-    height:85%;
+div.left_half, div.right_half {
     background-color: #e0e0e0;
-    width:49%;
-    float:left;
+    width:50%;
     text-align:center;
     line-height:200%;
     -moz-user-select: none;
@@ -133,6 +131,8 @@ div.one_half{
     -khtml-user-select: none;
 }
 
+div.left_half { float: left; }
+div.right_half { float:right; }
 
 div#wrap {
     margin-right: auto;

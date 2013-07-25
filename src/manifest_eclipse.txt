@@ -1,5 +1,5 @@
 Permissions: all-permissions
-Codebase: localhost:8000 mywebspace.wisc.edu neos-dev-1.neos-server.org
+Codebase: file://O:/applet  mywebspace.wisc.edu neos-dev-1.neos-server.org
 Trusted-Library: true
 Manifest-Version: 1.0
 Main-Class: NeosClient.Neos
