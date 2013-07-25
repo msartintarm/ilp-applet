@@ -36,6 +36,7 @@ static Timer the_timer;
 
 String js_model = "";
 boolean js_submitted = false;
+boolean js_kill_job = false;
 
 // Construct a GAMS string for case 3.
 // It is the simplest of the 3 case studies thus far.
@@ -144,6 +145,11 @@ public void JSsubmit(String the_model) {
     js_submitted = true;
 }
 
+public void JSkill() {
+
+    js_kill_job = true;
+}
+
 // Called at applet's creation.
 // Here this gets references to HTML DOM / JS objects.
 public void init() {
@@ -159,8 +165,15 @@ public void start() {
     //Sets up delay to check for JS model
     ActionListener watch_submission = new ActionListener() {
 	public void actionPerformed(ActionEvent evt) {
-	    if(js_submitted == false) return; // reset our flag
-	    else js_submitted = false;
+
+	    if(js_kill_job  == true) { 
+		killJob(); 
+		js_kill_job = false;
+		return;
+	    } 
+
+	    if(js_submitted == false) return; 
+	    else js_submitted = false; // reset our flag
 	    if (sendToNeos(js_model) != true) {
 		System.err.println("Job not received by Neos.");
 		System.err.println(js_model);
@@ -199,8 +212,8 @@ public void start() {
     js_submit_toggle();
 }
 
-void js_submit_toggle() { 
-    js_dashboard.call("submit_toggle", null); }
+void js_submit_toggle() {  js_dashboard.call("submit_toggle", null); }
+void js_kill_toggle() {  js_dashboard.call("kill_toggle", null); }
 void js_show_text(String the_text) { 
     js_dashboard.call("show_file", 
 		      new Object[] { the_text }); }
@@ -245,6 +258,19 @@ final Object[] submitJob(final NeosXmlRpcClient the_client,
     System.err.println("Error submitting job." + e.toString());
     return null;
   }
+}
+
+final void killJob() {
+    if(job_name == -1) return;
+    Vector the_params = new Vector(2);
+    the_params.add(job_name);
+    the_params.add(job_pass);
+    try {
+	the_client.execute("killJob", the_params, 10000);
+    } catch (XmlRpcException e) {
+	System.err.println("Solver kill failed. " + e.toString());
+	return;
+    }
 }
 
 /**
@@ -317,7 +343,8 @@ public boolean sendToNeos(String the_model) {
   job_name = (Integer) results[0];
   job_pass = (String) results[1];
 
-  js_dashboard.call("submit_toggle", null);
+  js_submit_toggle();
+  js_kill_toggle();
 
   // Monitors and prints stuff. Here we can assume job_name and job_pass are 
   // already initialized.
@@ -356,7 +383,8 @@ public boolean sendToNeos(String the_model) {
         System.out.println("\nFinalresults: \n" + result);
         js_dashboard.call("update_element", new Object[] { "solver_solution", result });
       } 
-      js_dashboard.call("submit_toggle", null);
+      js_submit_toggle();
+      js_kill_toggle();
      // Now that we have a solution, we can stop polling the server.
       the_timer.stop();
     }
@@ -389,19 +417,8 @@ public boolean sendToNeos(String the_model) {
 }
 
 @Override
-public void stop() {
-
-    if(job_name == -1) return;
-    Vector the_params = new Vector(2);
-    the_params.add(job_name);
-    the_params.add(job_pass);
-    try {
-	the_client.execute("killJob", the_params, 10000);
-    } catch (XmlRpcException e) {
-	    System.err.println("Solver kill failed. " + e.toString());
-	return;
-    }
-}
+// If a job's running, kill it.
+public void stop() { JSkill(); }
 
 public static void main(String[] args) {}
 

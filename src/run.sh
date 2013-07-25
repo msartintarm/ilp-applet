@@ -18,6 +18,8 @@ case1 \
 case2 \
 case3 "
 
+pushd `dirname $0` >& /dev/null
+
 if [ -e Neos.jar ]; then
     echo "JAR already created." # Skip to the signature, which must have failed.
 else
@@ -52,8 +54,10 @@ fi
 echo Signing JARs..
 for JAR in Neos.jar $JAVA_ARCHIVES; do
     jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed $JAR jarkey
-    jarsigner -verify -keystore key/keystore -verbose -certs $JAR
+    jarsigner -verify -keystore key/keystore -certs $JAR
     mv $JAR ../bin
 done
 
 echo Done.
+
+popd >& /dev/null

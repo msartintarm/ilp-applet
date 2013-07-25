@@ -68,6 +68,14 @@ Neos.submit_from_java = function() {
     the_applet.JSsubmit(input_file.value);
 };
 
+/**
+ * Kills a model if it's currently executing.
+ */
+Neos.kill_job = function() {
+
+    document.getElementById("the_applet").JSkill();
+};
+
 Neos.submit_toggle = function() {
 
     var active_text = "Submit job to NEOS!";
@@ -80,5 +88,16 @@ Neos.submit_toggle = function() {
     } else {
 	submit_button.disabled = false;
 	submit_button.innerHTML = active_text;
+    }
+};
+
+Neos.kill_toggle = function() {
+
+    var kill_button = document.getElementById("kill_button");
+    
+    if(kill_button.disabled !== true) {
+	kill_button.disabled = true;
+    } else {
+	kill_button.disabled = false;
     }
 };

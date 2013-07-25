@@ -61,10 +61,11 @@ Select from the following resource management models (mouse over for description
 		      onclick="case2.load_from_java();">
 		Display File On Right
 	      </button>
-	      <button style="font-size:20px; width:100%;" 
-		      id="submit_button"
-		      disabled="disabled" onclick="Neos.submit_from_java();">
+	      <button style="font-size:20px; width:100%;" id="submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
 		Submit job to NEOS!
+	      </button>
+	      <button style="font-size:20px; width:100%;" id="kill_button" disabled="disabled" onclick="Neos.kill_job();">
+		Cancel current job?
 	      </button>
 	    </div></div>
 	    <div class="right_half">
@@ -90,7 +91,7 @@ Select from the following resource management models (mouse over for description
 	    </div>
 
 	    <object type="application/x-java-applet" 
-		    height="200" width="200" id="the_applet">
+		    height="1" width="1" id="the_applet">
 	      <param name="codebase" value="bin" />
 	      <param name="archive" value="Neos.jar,
 					   commons-logging-1.1.jar,
