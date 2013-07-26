@@ -1,0 +1,605 @@
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 1
+bilinear term linearized
+C o m p i l a t i o n
+
+
+      * Nilay simplified version
+      * Using Ahmed simplest approach
+      * write w(j) = Z*v(j) using binary expansion
+      * Michael Ferris (Oct 26, 2012)
+       
+      * min z st  z v(j) >= C(j,:) x
+                  Ax = b
+                  0 <= z <= zup
+                  0 <= v(j) <= power(2,r) -1, integer
+                  sum_j  v(j) <= vbar
+  14   
+  15  option limrow=0, limcol=0;
+
+
+COMPILATION TIME     =        0.000 SECONDS      3 Mb  LEX238-238 Apr  3, 2012
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 2
+bilinear term linearized
+Model Statistics    SOLVE blp Using MIP From line 80
+
+
+MODEL STATISTICS
+
+BLOCKS OF EQUATIONS           9     SINGLE EQUATIONS          186
+BLOCKS OF VARIABLES           7     SINGLE VARIABLES          172
+NON ZERO ELEMENTS         1,642     DISCRETE VARIABLES         40
+
+
+GENERATION TIME      =        0.310 SECONDS      4 Mb  LEX238-238 Apr  3, 2012
+
+
+EXECUTION TIME       =        0.310 SECONDS      4 Mb  LEX238-238 Apr  3, 2012
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 3
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+               S O L V E      S U M M A R Y
+
+     MODEL   blp                 OBJECTIVE  obj
+     TYPE    MIP                 DIRECTION  MINIMIZE
+     SOLVER  CPLEX               FROM LINE  80
+
+**** SOLVER STATUS     1 Normal Completion         
+**** MODEL STATUS      1 Optimal                   
+**** OBJECTIVE VALUE                2.7323
+
+ RESOURCE USAGE, LIMIT          1.071      1000.000
+ ITERATION COUNT, LIMIT      1133    2000000000
+
+IBM ILOG CPLEX   Mar 17, 2012 23.8.2 LEX 31442.32372 LEG x86_64/Linux
+Cplex 12.4.0.0
+
+MIP status(101): integer optimal solution
+Fixing integer variables, and solving final LP...
+Fixed MIP status(1): optimal
+Proven optimal solution.
+
+MIP Solution:            2.732317    (1117 iterations, 201 nodes)
+Final Solve:             2.732317    (16 iterations)
+
+Best possible:           2.732317
+Absolute gap:            0.000000
+Relative gap:            0.000000
+
+
+---- EQU defc  
+
+         LOWER          LEVEL          UPPER         MARGINAL
+
+1        -3.5756        -3.5756        -3.5756        -0.3933      
+2        -2.0877        -2.0877        -2.0877        -0.1785      
+3        -3.2815        -3.2815        -3.2815        -0.2367      
+4         0.7656         0.7656         0.7656         0.2309      
+
+---- EQU defbilin  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+1           .             0.0431        +INF             .          
+2           .             2.0439        +INF             .          
+3           .             0.8987        +INF             .          
+4           .              .            +INF            0.0496      
+5           .             0.8185        +INF             .          
+6           .             0.6251        +INF             .          
+7           .             0.9977        +INF             .          
+8           .              .            +INF            0.0247      
+9           .             2.4216        +INF             .          
+10          .             1.2777        +INF             .          
+11          .             0.1259        +INF             .          
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 4
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     EQU defbilin  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+12          .             2.2422        +INF             .          
+13          .             0.7677        +INF             .          
+14          .             2.3193        +INF             .          
+15          .              .            +INF            0.0830      
+16          .              .            +INF            0.0073      
+17          .              .            +INF            0.1120      
+18          .             2.0002        +INF             .          
+19          .              .            +INF            0.0384      
+20          .              .            +INF            0.0417      
+
+---- EQU defv  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+1           .              .              .             EPS         
+2           .              .              .             EPS         
+3           .              .              .             EPS         
+4           .              .              .             EPS         
+5           .              .              .             EPS         
+6           .              .              .             EPS         
+7           .              .              .             EPS         
+8           .              .              .             EPS         
+9           .              .              .             EPS         
+10          .              .              .             EPS         
+11          .              .              .             EPS         
+12          .              .              .             EPS         
+13          .              .              .             EPS         
+14          .              .              .             EPS         
+15          .              .              .             EPS         
+16          .              .              .             EPS         
+17          .              .              .             EPS         
+18          .              .              .             EPS         
+19          .              .              .             EPS         
+20          .              .              .             EPS         
+
+---- EQU defw  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+1           .              .              .             EPS         
+2           .              .              .             EPS         
+3           .              .              .             EPS         
+4           .              .              .            -0.0496      
+5           .              .              .             EPS         
+6           .              .              .             EPS         
+7           .              .              .             EPS         
+8           .              .              .            -0.0247      
+9           .              .              .             EPS         
+10          .              .              .             EPS         
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 5
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     EQU defw  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+11          .              .              .             EPS         
+12          .              .              .             EPS         
+13          .              .              .             EPS         
+14          .              .              .             EPS         
+15          .              .              .            -0.0830      
+16          .              .              .            -0.0073      
+17          .              .              .            -0.1120      
+18          .              .              .             EPS         
+19          .              .              .            -0.0384      
+20          .              .              .            -0.0417      
+
+---- EQU bnd1  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+1 .1        -INF           -2.2677          .              .          
+1 .2        -INF           -2.2677          .              .          
+2 .1        -INF           -2.2677          .              .          
+2 .2        -INF           -2.2677          .              .          
+3 .1        -INF             .              .              .          
+3 .2        -INF           -2.2677          .              .          
+4 .1        -INF           -2.2677          .              .          
+4 .2        -INF           -2.2677          .              .          
+5 .1        -INF           -2.2677          .              .          
+5 .2        -INF           -2.2677          .              .          
+6 .1        -INF           -2.2677          .              .          
+6 .2        -INF           -2.2677          .              .          
+7 .1        -INF           -2.2677          .              .          
+7 .2        -INF           -2.2677          .              .          
+8 .1        -INF             .              .            -0.0247      
+8 .2        -INF           -2.2677          .              .          
+9 .1        -INF           -2.2677          .              .          
+9 .2        -INF           -2.2677          .              .          
+10.1        -INF           -2.2677          .              .          
+10.2        -INF           -2.2677          .              .          
+11.1        -INF             .              .              .          
+11.2        -INF           -2.2677          .              .          
+12.1        -INF           -2.2677          .              .          
+12.2        -INF           -2.2677          .              .          
+13.1        -INF             .              .              .          
+13.2        -INF           -2.2677          .              .          
+14.1        -INF           -2.2677          .              .          
+14.2        -INF           -2.2677          .              .          
+15.1        -INF           -2.2677          .              .          
+15.2        -INF           -2.2677          .              .          
+16.1        -INF             .              .            -0.0073      
+16.2        -INF           -2.2677          .              .          
+17.1        -INF           -2.2677          .              .          
+17.2        -INF           -2.2677          .              .          
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 6
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     EQU bnd1  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+18.1        -INF           -2.2677          .              .          
+18.2        -INF           -2.2677          .              .          
+19.1        -INF             .              .            -0.0384      
+19.2        -INF           -2.2677          .              .          
+20.1        -INF           -2.2677          .              .          
+20.2        -INF           -2.2677          .              .          
+
+---- EQU bnd2  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+1 .1        -INF             .              .             EPS         
+1 .2        -INF             .              .              .          
+2 .1        -INF             .              .             EPS         
+2 .2        -INF             .              .             EPS         
+3 .1        -INF           -2.7323          .              .          
+3 .2        -INF             .              .             EPS         
+4 .1        -INF             .              .            -0.0496      
+4 .2        -INF             .              .            -0.0993      
+5 .1        -INF             .              .              .          
+5 .2        -INF             .              .             EPS         
+6 .1        -INF             .              .              .          
+6 .2        -INF             .              .              .          
+7 .1        -INF             .              .              .          
+7 .2        -INF             .              .             EPS         
+8 .1        -INF           -2.7323          .              .          
+8 .2        -INF             .              .            -0.0494      
+9 .1        -INF             .              .             EPS         
+9 .2        -INF             .              .              .          
+10.1        -INF             .              .              .          
+10.2        -INF             .              .             EPS         
+11.1        -INF           -2.7323          .              .          
+11.2        -INF             .              .              .          
+12.1        -INF             .              .              .          
+12.2        -INF             .              .              .          
+13.1        -INF           -2.7323          .              .          
+13.2        -INF             .              .             EPS         
+14.1        -INF             .              .             EPS         
+14.2        -INF             .              .             EPS         
+15.1        -INF             .              .            -0.0830      
+15.2        -INF             .              .            -0.1660      
+16.1        -INF           -2.7323          .              .          
+16.2        -INF             .              .            -0.0145      
+17.1        -INF             .              .            -0.1120      
+17.2        -INF             .              .            -0.2240      
+18.1        -INF             .              .              .          
+18.2        -INF             .              .             EPS         
+19.1        -INF           -2.7323          .              .          
+19.2        -INF             .              .            -0.0769      
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 7
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     EQU bnd2  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+20.1        -INF             .              .            -0.0417      
+20.2        -INF             .              .            -0.0835      
+
+---- EQU bnd3  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+1 .1        -5.0000        -5.0000        +INF             .          
+1 .2        -5.0000        -5.0000        +INF            EPS         
+2 .1        -5.0000        -5.0000        +INF             .          
+2 .2        -5.0000        -5.0000        +INF             .          
+3 .1        -5.0000        -2.7323        +INF             .          
+3 .2        -5.0000        -5.0000        +INF             .          
+4 .1        -5.0000        -5.0000        +INF             .          
+4 .2        -5.0000        -5.0000        +INF             .          
+5 .1        -5.0000        -5.0000        +INF            EPS         
+5 .2        -5.0000        -5.0000        +INF             .          
+6 .1        -5.0000        -5.0000        +INF            EPS         
+6 .2        -5.0000        -5.0000        +INF            EPS         
+7 .1        -5.0000        -5.0000        +INF            EPS         
+7 .2        -5.0000        -5.0000        +INF             .          
+8 .1        -5.0000        -2.7323        +INF             .          
+8 .2        -5.0000        -5.0000        +INF             .          
+9 .1        -5.0000        -5.0000        +INF             .          
+9 .2        -5.0000        -5.0000        +INF            EPS         
+10.1        -5.0000        -5.0000        +INF            EPS         
+10.2        -5.0000        -5.0000        +INF             .          
+11.1        -5.0000        -2.7323        +INF             .          
+11.2        -5.0000        -5.0000        +INF            EPS         
+12.1        -5.0000        -5.0000        +INF            EPS         
+12.2        -5.0000        -5.0000        +INF            EPS         
+13.1        -5.0000        -2.7323        +INF             .          
+13.2        -5.0000        -5.0000        +INF             .          
+14.1        -5.0000        -5.0000        +INF             .          
+14.2        -5.0000        -5.0000        +INF             .          
+15.1        -5.0000        -5.0000        +INF             .          
+15.2        -5.0000        -5.0000        +INF             .          
+16.1        -5.0000        -2.7323        +INF             .          
+16.2        -5.0000        -5.0000        +INF             .          
+17.1        -5.0000        -5.0000        +INF             .          
+17.2        -5.0000        -5.0000        +INF             .          
+18.1        -5.0000        -5.0000        +INF            EPS         
+18.2        -5.0000        -5.0000        +INF             .          
+19.1        -5.0000        -2.7323        +INF             .          
+19.2        -5.0000        -5.0000        +INF             .          
+20.1        -5.0000        -5.0000        +INF             .          
+20.2        -5.0000        -5.0000        +INF             .          
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 8
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- EQU defobj              .              .              .             1.0000      
+---- EQU limv              -INF           54.0000        54.0000          .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR z                   .             2.7323        +INF             .          
+
+---- VAR x  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+1           .              .            +INF            0.9682      
+2           .             2.8503        +INF             .          
+3           .              .            +INF            0.4682      
+4           .              .            +INF            0.1286      
+5           .             1.4204        +INF             .          
+6           .              .            +INF            0.3660      
+7           .             0.9432        +INF             .          
+8           .              .            +INF            0.0933      
+9           .              .            +INF            0.5683      
+10          .              .            +INF            0.3920      
+11          .              .            +INF            0.2540      
+12          .              .            +INF            0.4514      
+13          .             0.0655        +INF             .          
+14          .              .            +INF            0.4938      
+15          .              .            +INF            0.2816      
+16          .             0.1469        +INF             .          
+17          .              .            +INF            1.0530      
+18          .             0.0377        +INF             .          
+19          .              .            +INF            0.2157      
+20          .              .            +INF            0.2391      
+21          .              .            +INF            0.4819      
+22          .              .            +INF            0.4591      
+23          .              .            +INF            0.3608      
+24          .              .            +INF            0.2122      
+25          .              .            +INF            0.9157      
+26          .              .            +INF            0.1890      
+27          .              .            +INF            0.7336      
+28          .              .            +INF            0.1681      
+29          .              .            +INF            0.3871      
+30          .              .            +INF            0.3841      
+31          .              .            +INF            0.5821      
+32          .              .            +INF            0.6256      
+33          .              .            +INF            0.5385      
+34          .              .            +INF            0.1981      
+35          .              .            +INF            0.6259      
+36          .              .            +INF            0.7025      
+37          .              .            +INF            0.8913      
+38          .              .            +INF            0.4350      
+39          .              .            +INF            0.0025      
+40          .             0.1476        +INF             .          
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                              11/04/12 12:07:28 Page 9
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     VAR x  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+41          .              .            +INF            0.0496      
+42          .              .            +INF            0.1964      
+43          .             0.4147        +INF             .          
+44          .              .            +INF            0.4219      
+45          .              .            +INF            0.7278      
+46          .             0.2408        +INF             .          
+47          .              .            +INF            0.1869      
+48          .             0.8858        +INF             .          
+49          .              .            +INF            0.0541      
+50          .              .            +INF            0.2079      
+
+---- VAR v  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+1           .             3.0000        +INF             .          
+2           .             3.0000        +INF             .          
+3           .             2.0000        +INF             .          
+4           .             3.0000        +INF             .          
+5           .             3.0000        +INF             .          
+6           .             3.0000        +INF             .          
+7           .             3.0000        +INF             .          
+8           .             2.0000        +INF             .          
+9           .             3.0000        +INF             .          
+10          .             3.0000        +INF             .          
+11          .             2.0000        +INF             .          
+12          .             3.0000        +INF             .          
+13          .             2.0000        +INF             .          
+14          .             3.0000        +INF             .          
+15          .             3.0000        +INF             .          
+16          .             2.0000        +INF             .          
+17          .             3.0000        +INF             .          
+18          .             3.0000        +INF             .          
+19          .             2.0000        +INF             .          
+20          .             3.0000        +INF             .          
+
+                           LOWER          LEVEL          UPPER         MARGINAL
+
+---- VAR obj               -INF            2.7323        +INF             .          
+
+---- VAR w  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+1         -INF            8.1970        +INF             .          
+2         -INF            8.1970        +INF             .          
+3         -INF            5.4646        +INF             .          
+4         -INF            8.1970        +INF             .          
+5         -INF            8.1970        +INF             .          
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                             11/04/12 12:07:28 Page 10
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     VAR w  
+
+          LOWER          LEVEL          UPPER         MARGINAL
+
+6         -INF            8.1970        +INF             .          
+7         -INF            8.1970        +INF             .          
+8         -INF            5.4646        +INF             .          
+9         -INF            8.1970        +INF             .          
+10        -INF            8.1970        +INF             .          
+11        -INF            5.4646        +INF             .          
+12        -INF            8.1970        +INF             .          
+13        -INF            5.4646        +INF             .          
+14        -INF            8.1970        +INF             .          
+15        -INF            8.1970        +INF             .          
+16        -INF            5.4646        +INF             .          
+17        -INF            8.1970        +INF             .          
+18        -INF            8.1970        +INF             .          
+19        -INF            5.4646        +INF             .          
+20        -INF            8.1970        +INF             .          
+
+---- VAR e  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+1 .1          .             1.0000         1.0000         EPS         
+1 .2          .             1.0000         1.0000         EPS         
+2 .1          .             1.0000         1.0000         EPS         
+2 .2          .             1.0000         1.0000         EPS         
+3 .1          .              .             1.0000         EPS         
+3 .2          .             1.0000         1.0000         EPS         
+4 .1          .             1.0000         1.0000         EPS         
+4 .2          .             1.0000         1.0000         EPS         
+5 .1          .             1.0000         1.0000         EPS         
+5 .2          .             1.0000         1.0000         EPS         
+6 .1          .             1.0000         1.0000         EPS         
+6 .2          .             1.0000         1.0000         EPS         
+7 .1          .             1.0000         1.0000         EPS         
+7 .2          .             1.0000         1.0000         EPS         
+8 .1          .              .             1.0000        -0.1235      
+8 .2          .             1.0000         1.0000         EPS         
+9 .1          .             1.0000         1.0000         EPS         
+9 .2          .             1.0000         1.0000         EPS         
+10.1          .             1.0000         1.0000         EPS         
+10.2          .             1.0000         1.0000         EPS         
+11.1          .              .             1.0000         EPS         
+11.2          .             1.0000         1.0000         EPS         
+12.1          .             1.0000         1.0000         EPS         
+12.2          .             1.0000         1.0000         EPS         
+13.1          .              .             1.0000         EPS         
+13.2          .             1.0000         1.0000         EPS         
+14.1          .             1.0000         1.0000         EPS         
+14.2          .             1.0000         1.0000         EPS         
+15.1          .             1.0000         1.0000         EPS         
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                             11/04/12 12:07:28 Page 11
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     VAR e  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+15.2          .             1.0000         1.0000         EPS         
+16.1          .              .             1.0000        -0.0364      
+16.2          .             1.0000         1.0000         EPS         
+17.1          .             1.0000         1.0000         EPS         
+17.2          .             1.0000         1.0000         EPS         
+18.1          .             1.0000         1.0000         EPS         
+18.2          .             1.0000         1.0000         EPS         
+19.1          .              .             1.0000        -0.1922      
+19.2          .             1.0000         1.0000         EPS         
+20.1          .             1.0000         1.0000         EPS         
+20.2          .             1.0000         1.0000         EPS         
+
+---- VAR f  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+1 .1          .             2.7323        +INF             .          
+1 .2          .             2.7323        +INF             .          
+2 .1          .             2.7323        +INF             .          
+2 .2          .             2.7323        +INF             .          
+3 .1          .              .            +INF            EPS         
+3 .2          .             2.7323        +INF             .          
+4 .1          .             2.7323        +INF             .          
+4 .2          .             2.7323        +INF             .          
+5 .1          .             2.7323        +INF             .          
+5 .2          .             2.7323        +INF             .          
+6 .1          .             2.7323        +INF             .          
+6 .2          .             2.7323        +INF             .          
+7 .1          .             2.7323        +INF             .          
+7 .2          .             2.7323        +INF             .          
+8 .1          .              .            +INF             .          
+8 .2          .             2.7323        +INF             .          
+9 .1          .             2.7323        +INF             .          
+9 .2          .             2.7323        +INF             .          
+10.1          .             2.7323        +INF             .          
+10.2          .             2.7323        +INF             .          
+11.1          .              .            +INF            EPS         
+11.2          .             2.7323        +INF             .          
+12.1          .             2.7323        +INF             .          
+12.2          .             2.7323        +INF             .          
+13.1          .              .            +INF            EPS         
+13.2          .             2.7323        +INF             .          
+14.1          .             2.7323        +INF             .          
+14.2          .             2.7323        +INF             .          
+15.1          .             2.7323        +INF             .          
+15.2          .             2.7323        +INF             .          
+16.1          .              .            +INF             .          
+16.2          .             2.7323        +INF             .          
+17.1          .             2.7323        +INF             .          
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                             11/04/12 12:07:28 Page 12
+bilinear term linearized
+Solution Report     SOLVE blp Using MIP From line 80
+
+
+     VAR f  
+
+            LOWER          LEVEL          UPPER         MARGINAL
+
+17.2          .             2.7323        +INF             .          
+18.1          .             2.7323        +INF             .          
+18.2          .             2.7323        +INF             .          
+19.1          .              .            +INF             .          
+19.2          .             2.7323        +INF             .          
+20.1          .             2.7323        +INF             .          
+20.2          .             2.7323        +INF             .          
+
+
+**** REPORT SUMMARY :        0     NONOPT
+                             0 INFEASIBLE
+                             0  UNBOUNDED
+GAMS Rev 238  LEX-LEG 23.8.2 x86_64/Linux                                                                                                                                                                                             11/04/12 12:07:28 Page 13
+bilinear term linearized
+E x e c u t i o n
+
+
+----     85 PARAMETER l  
+
+1  8.154,    2  6.153,    3  4.566,    4  8.197,    5  7.378,    6  7.572,    7  7.199,    8  5.465,    9  5.775,    10 6.919,    11 5.339,    12 5.955,    13 4.697,    14 5.878,    15 8.197,    16 5.465,    17 8.197,    18 6.197,    19 5.465,    20 8.197
+
+
+----     85 VARIABLE w.L  
+
+1  8.197,    2  8.197,    3  5.465,    4  8.197,    5  8.197,    6  8.197,    7  8.197,    8  5.465,    9  8.197,    10 8.197,    11 5.465,    12 8.197,    13 5.465,    14 8.197,    15 8.197,    16 5.465,    17 8.197,    18 8.197,    19 5.465,    20 8.197
+
+
+
+EXECUTION TIME       =        0.002 SECONDS      3 Mb  LEX238-238 Apr  3, 2012
+
+
+USER: Computer Sciences Dept.                        G120515/0001AS-LNX
+      University of Wisconsin-Madison                            DC2621
+      License for teaching and research at degree granting institutions
+
+
+**** FILE SUMMARY
+
+Input      /afs/cs.wisc.edu/u/n/i/nilay/private/Architecture/Optimization/network_design/combined_design/src/example.gms
+Output     /afs/cs.wisc.edu/u/n/i/nilay/private/Architecture/Optimization/network_design/combined_design/src/example.lst

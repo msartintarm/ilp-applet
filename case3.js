@@ -55,8 +55,8 @@ case3.load = function(hardware_num) {
     switch(hardware_num) {
     case 1:
 	case3.arch = "Simple";
-	hw_files.innerHTML="One hardware graph.<br/><select id='syn_hw_file' size='1'>  <option value='simple_graph.gms' selected>simple_graph.gms</option></select><br/><button>View raw file.</button>";
-	sw_files.innerHTML="One software DAG.<br/><select id='syn_sw_file' size='2'>  <option value='simpleDAG.gms' selected>simpleDAG.gms</option>  <option id='syn_own_cfg' value='ownCFG.gms' disabled> Own CFG</option></select><br/><button>View raw file.</button>";
+	hw_files.innerHTML="One hardware graph.<br/> <select id='syn_hw_file' size='1'> <option value='simple_graph.gms' selected='selected'> simple_graph.gms </option></select><br/><button>View raw file.</button>";
+	sw_files.innerHTML="One software DAG.<br/><select id='syn_sw_file' size='2'>  <option value='simpleDAG.gms' selected='selected'> simpleDAG.gms </option>  <option id='syn_own_cfg' value='ownCFG.gms' disabled='disabled'> Own CFG </option> </select> <br/> <button> View raw file. </button>";
 	break;
     case 2:
 	case3.arch = "DySER";

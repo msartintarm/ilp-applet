@@ -1,4 +1,4 @@
-padDiv.table, caption, tbody, tfoot, thead, tr, th, td {
+syn_padDiv.table, caption, tbody, tfoot, thead, tr, th, td {
     margin: 0;
     padding: 0;
     border: 0;
@@ -16,16 +16,18 @@ h1 {
 }
 h2 { text-align: center; }
 
-p.syn_description {
+.syn_description {
     font-size: 18px;
     text-align: justify;
-    margin-left: 5%;
+    margin-left: 4%;
+    margin-right: 4%;
 }
 
-p.syn_selection {
+.syn_selection {
     font-size: 18px;
     text-align: center;
     margin-left: 5%;
+    margin-right: 5%;
     font-style: italic;
 }
 

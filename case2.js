@@ -48,7 +48,7 @@ case2.load = function(hardware_num) {
     case 1:
 	case2.model = 'S';
 	services.innerHTML = "Specify resource usage of services.<br/>";
- += "<i>Service memory usage varies uniformly across the range specified.</i><br/>";
+	services.innerHTML += "<i>Service memory usage varies uniformly across the range specified.</i><br/>";
 	machines.innerHTML = "Specify resources of machines.<br/>";
 	service_button.onclick = case2.add_service;
 	machine_button.onclick = case2.add_machine;
@@ -73,7 +73,7 @@ case2.load = function(hardware_num) {
 	case2.add_service();
 	case2.add_machine();
 	additional_params.innerHTML="Specify number of time periods over which to divide variance: ";
- += "<input type='text' value='4' size='3'></input> time periods.";
+	additional_params.innerHTML += "<input type='text' value='4' size='3'></input> time periods.";
 	break;
     case 4:
 	case2.model = 'I';

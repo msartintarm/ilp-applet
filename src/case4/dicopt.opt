@@ -1,0 +1,3 @@
+nlpsolver knitro
+nlpoptfile knitro.opt
+mipoptfile gurobi.opt
