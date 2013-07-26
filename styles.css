@@ -1,3 +1,13 @@
+padDiv.table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
 h1 {
     font-size: 23px;
     border-bottom-width: 2px;

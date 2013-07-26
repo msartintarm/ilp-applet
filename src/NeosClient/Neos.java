@@ -182,6 +182,9 @@ public void start() {
 	}
     };
     
+    // Reset offset for solver output
+    solver_output_offset = 0;
+
     int delay = 500; // milliseconds
     the_timer = new Timer(delay, watch_submission);
     the_timer.start();
@@ -290,7 +293,7 @@ final String jobStatus(final NeosXmlRpcClient the_client,
     }
 }
 
-int saved_offset = 0;
+int solver_output_offset = 0;
 /**
  * Gets output of the solver since last call. Keeps an internal offset
  *   to accomplish this.
@@ -301,11 +304,11 @@ final String getSolverOutput(
   Vector params = new Vector(3);
   params.add(user);
   params.add(pass);
-  params.add(saved_offset);
+  params.add(solver_output_offset);
   try {
     Object[] result = (Object[]) client.execute(
         "getIntermediateResultsNonBlocking", params, 10000);
-    saved_offset = (Integer) result[1];
+    solver_output_offset = (Integer) result[1];
     if (result[0] instanceof String) return (String) result[0];
     else return new String((byte[]) result[0]);
 

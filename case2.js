@@ -13,39 +13,19 @@ case2.describe = function(hardware_num) {
     switch(hardware_num) {
     case 1:
 	hw_title.innerHTML = "Static Server Allocation (SSAP)";
-	hw_describe.innerHTML = "\
-Allocate services with fixed resource requirements onto machines with fixed resource limitations. \
-We assume that machines can provide heterogeneous resource requirements, and all instances of \
-services have been profiled individually. <br/>\
-Conceptually similar to the multidimensional vector bin-packing algorithm.";
+	hw_describe.innerHTML = "Allocate services with fixed resource requirements onto machines with fixed resource limitations. We assume that machines can provide heterogeneous resource requirements, and all instances of services have been profiled individually. <br/>Conceptually similar to the multidimensional vector bin-packing algorithm.";
 	break;
     case 2:
 	hw_title.innerHTML = "Warehouse Server Allocation (WSAP)";
-	hw_describe.innerHTML = "\
-SSAP assumes workloads can be individually profiled. Under warehouse settings, workloads are \
-instead classified into particular types, allowing benefits such as aggregated profiling. \
-Such workload classifications can be taken advantage of in ILP to extend the formulation \
-and reduce overall computational complexity.";
+	hw_describe.innerHTML = "SSAP assumes workloads can be individually profiled. Under warehouse settings, workloads are instead classified into particular types, allowing benefits such as aggregated profiling. Such workload classifications can be taken advantage of in ILP to extend the formulation and reduce overall computational complexity.";
 	break;
     case 3:
 	hw_title.innerHTML = "Time-Varying Server Allocation (TSAP)";
-	hw_describe.innerHTML = "\
-Certain resource usage patterns can be inferred <i>a priori</i> based upon the time of day - \
-for example, certain services may be used more often in the nighttime than in the daytime. \
-Such time-specific knowledge can be statically utilized by co-locating machines with \
- complementary resource patterns.";
+	hw_describe.innerHTML = "Certain resource usage patterns can be inferred <i>a priori</i> based upon the time of day - for example, certain services may be used more often in the nighttime than in the daytime. Such time-specific knowledge can be statically utilized by co-locating machines with  complementary resource patterns.";
 	break;
     case 4:
 	hw_title.innerHTML = "Interference-Sensitive Server Allocation (ISAP)";
-	hw_describe.innerHTML = "\
-The 'bin-packing' approach used in the other three strategies does not lend itself easily to \
-interference in the memory system. Cache interference and contention for memory bandwidth \
-can profoundly affect the overall quality of service (QoS) for the system, and the \
-relationship is specific to the applications involved. <br/> \
-This problem is modeled with the abstract concepts of <i>memory pressure</i>, the application's \
-lowest level working set size, and of <i>memory sensitivity</i>, the projected QoS degradation \
-for a machine given the memory pressure from all other applications on the machine. <br/> \
-These are used in ISAP as a constraint denoting a minimum acceptable QoS threshhold. ";
+	hw_describe.innerHTML = "The 'bin-packing' approach used in the other three strategies does not lend itself easily to interference in the memory system. Cache interference and contention for memory bandwidth can profoundly affect the overall quality of service (QoS) for the system, and the relationship is specific to the applications involved. <br/> This problem is modeled with the abstract concepts of <i>memory pressure</i>, the application's lowest level working set size, and of <i>memory sensitivity</i>, the projected QoS degradation for a machine given the memory pressure from all other applications on the machine. <br/> These are used in ISAP as a constraint denoting a minimum acceptable QoS threshhold. ";
 	break;
     default: break;
     }
@@ -67,8 +47,8 @@ case2.load = function(hardware_num) {
     switch(hardware_num) {
     case 1:
 	case2.model = 'S';
-	services.innerHTML = "Specify resource usage of services.<br/>\
-<i>Service memory usage varies uniformly across the range specified.</i><br/>";
+	services.innerHTML = "Specify resource usage of services.<br/>";
+ += "<i>Service memory usage varies uniformly across the range specified.</i><br/>";
 	machines.innerHTML = "Specify resources of machines.<br/>";
 	service_button.onclick = case2.add_service;
 	machine_button.onclick = case2.add_machine;
@@ -92,8 +72,8 @@ case2.load = function(hardware_num) {
 	machine_button.onclick = case2.add_machine;
 	case2.add_service();
 	case2.add_machine();
-	additional_params.innerHTML="Specify number of time periods over which to divide variance: \
-<input type='text' value='4' size='3'></input> time periods.";
+	additional_params.innerHTML="Specify number of time periods over which to divide variance: ";
+ += "<input type='text' value='4' size='3'></input> time periods.";
 	break;
     case 4:
 	case2.model = 'I';
@@ -110,37 +90,37 @@ case2.load = function(hardware_num) {
 case2.services = 0;
 case2.add_service = function() {
     var services = document.getElementById("syn_services");
-    services.innerHTML += "\
-<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2'></input> services, \
-<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1'></input>-\
-<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1'></input> GB / \
-<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2'></input> CPU %<br/>";
+    services.innerHTML += "";
+    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2'></input> services, ";
+    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1'></input>-";
+    services.innerHTML += "<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1'></input> GB / ";
+    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2'></input> CPU %<br/>";
     case2.services ++;
 }
 
 function add_warehouse_service() {
     var services = document.getElementById("syn_services");
-    services.innerHTML += "\
-<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'></input> services with \
-<input type='text' id='syn_service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / \
-<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
+    services.innerHTML += "";
+    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'></input> services with ";
+    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / ";
+    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
     case2.services ++;
 }
 
 function add_timed_service() {
-		services.innerHTML += "\
-<input type='text' value='100' size='3'></input> services with \
-<input type='text' id='syn_mem' value='4.00' size='3'></input> GB / \
-<input type='text' value='0.75' size='3'></input> CPU %<br/>";
+    services.innerHTML += "";
+    services.innerHTML += "<input type='text' value='100' size='3'></input> services with ";
+    services.innerHTML += "<input type='text' id='syn_mem' value='4.00' size='3'></input> GB / ";
+    services.innerHTML += "<input type='text' value='0.75' size='3'></input> CPU %<br/>";
 }
 
 case2.machines = 0;
 case2.add_machine = function() {
     var machines = document.getElementById("syn_machines");
-		machines.innerHTML += "\
-<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'></input> machines with \
-<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / \
-<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
+    machines.innerHTML += "";
+    machines.innerHTML += "<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'></input> machines with ";
+    machines.innerHTML += "<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / ";
+    machines.innerHTML += "<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
     case2.machines ++;
 }
 
