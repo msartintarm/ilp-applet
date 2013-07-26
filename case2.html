@@ -13,12 +13,12 @@
 
   <body>
 
-    <div id="wrap">
-      <div class="padDiv"> 
-        <div class="main">
+    <div id="syn_wrap">
+      <div class="syn_padDiv"> 
+        <div class="syn_main">
 	  
 	  <h2>Case Study 2:<br/>Data-Center Allocation</h2>
-	  <p class="description">
+	  <p class="syn_description">
 Data-center resource managers are centralized software components which
 manage the execution of a large number of services. Co-locating multiple services on a
 machine could degrade performance, and hence it is critical for the resource manager to
@@ -26,7 +26,7 @@ utilize information upon services and machines in effectively allocating machine
 In ILP, the problem is to statically determine the best co-locations of services on servers
 for resource requirements and service-level agreements to be satisfied. 
 	  </p>
-	  <p class="selection">
+	  <p class="syn_selection">
 Select from the following resource management models (mouse over for description).
 	  </p>
 
@@ -44,58 +44,58 @@ Select from the following resource management models (mouse over for description
 		<button onmouseover="case2.describe(4)" onclick="case2.load(4)">ISAP</button>
 	      </td>
 	  </tr></table>
-          <div id="case2_description">
-	    <h3 id="case2_title"></h3>
-	    <p id="case2_describe" style="font-size:18px;"></p>
+          <div id="syn_case2_description">
+	    <h3 id="syn_case2_title"></h3>
+	    <p id="syn_case2_describe" style="font-size:18px;"></p>
 	  </div>
-          <div id="case2_content" style="display:none;">
-	    <div class="left_half">
+          <div id="syn_case2_content" style="display:none;">
+	    <div class="syn_left_half">
 	      <div style="border-style:inset; border-width:4px; border-color:#999999;">
-		<div id="services"></div>
-		<button id="service_button">Add services..</button>
-		<p class="selection">
+		<div id="syn_services"></div>
+		<button id="syn_service_button">Add services..</button>
+		<p class="syn_selection">
 		  `CPU %' is steady-state, with respect to a 1 GHz machine.
 		</p>
-		<div id="machines"></div>
-		<button id="machine_button">Add machines..</button>
-		<div id="additional_params" style="position:relative; float:left; width:100%; padding-top:10px;"></div>
+		<div id="syn_machines"></div>
+		<button id="syn_machine_button">Add machines..</button>
+		<div id="syn_additional_params" style="position:relative; float:left; width:100%; padding-top:10px;"></div>
 		<br/>
 		<button style="font-size:20px; width:100%;" onclick="case2.load_from_java();">
 		  Display Problem on Right
 		</button>
-		<button style="font-size:20px; width:100%;" id="submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
+		<button style="font-size:20px; width:100%;" id="syn_submit_button" disabled="disabled" onclick="Neos.submit_from_java();">
 		  Submit Problem to NEOS!
 		</button>
-		<button style="font-size:20px; width:100%;" id="kill_button" disabled="disabled" onclick="Neos.kill_job();">
+		<button style="font-size:20px; width:100%;" id="syn_kill_button" disabled="disabled" onclick="Neos.kill_job();">
 		  Cancel Current Job?
 		</button>
 	      </div>
 	    </div>
 
-	    <div class="right_half">
+	    <div class="syn_right_half">
 	      <div style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
 	      <h4 >Problem to be submitted:</h4>
-	      <textarea id="input_file" style="width:98%;font-size:9pt;" 
+	      <textarea id="syn_input_file" style="width:98%;font-size:9pt;" 
 			rows="16">NEOS loading..</textarea>
 	    </div>
 	    </div>
 	    <div style="position:relative; float:left; width:100%; padding-top:10px;">
-	      <div class="one_third">
+	      <div class="syn_one_third">
 		Solver Status:<br/>
-		<textarea id="solver_status" style="width:95%;" rows="12"></textarea>
+		<textarea id="syn_solver_status" style="width:95%;" rows="12"></textarea>
 	      </div>
-	      <div class="one_third">
+	      <div class="syn_one_third">
 		Solver Output:<br/>
-		<textarea id="solver_output" style="width:95%;" rows="12"></textarea>
+		<textarea id="syn_solver_output" style="width:95%;" rows="12"></textarea>
 	      </div>
-	      <div class="one_third">
+	      <div class="syn_one_third">
 		Solution:<br/>
-		<textarea id="solver_solution" style="width:95%;" rows="12"></textarea>
+		<textarea id="syn_solver_solution" style="width:95%;" rows="12"></textarea>
 	      </div>
 	    </div>
 
 	    <object type="application/x-java-applet" 
-		    height="1" width="1" id="the_applet">
+		    height="1" width="1" id="syn_the_applet">
 	      <param name="codebase" value="bin" />
 	      <param name="archive" value="Neos.jar,
 					   commons-logging-1.1.jar,

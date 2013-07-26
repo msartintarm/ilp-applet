@@ -216,7 +216,7 @@ void js_submit_toggle() {  js_dashboard.call("submit_toggle", null); }
 void js_kill_toggle() {  js_dashboard.call("kill_toggle", null); }
 void js_show_text(String the_text) { 
     js_dashboard.call("update_element", 
-		      new Object[] { "input_file", the_text }); }
+		      new Object[] { "syn_input_file", the_text }); }
 
 /**
  * Finds the solvers available for this category (milp) and language (GAMS).
@@ -359,7 +359,7 @@ public boolean sendToNeos(String the_model) {
       String solver_status = "Solver status: " + result
           + ", time elapsed: " + elapsed + " sec.";
       System.out.println(solver_status);
-      js_dashboard.call("update_element", new Object[] { "solver_status", solver_status });
+      js_dashboard.call("update_element", new Object[] { "syn_solver_status", solver_status });
       
       // Is solver still running ..? If not, let's get a solution.
       if(result.equals("Done")) {
@@ -373,7 +373,7 @@ public boolean sendToNeos(String the_model) {
       String result = getSolverOutput(the_client, job_name, job_pass);
       if (result.length() > 2) {
         System.out.println("\nIntermediate results: \n" + result);
-        js_dashboard.call("update_element", new Object[] { "solver_output", result });
+        js_dashboard.call("update_element", new Object[] { "syn_solver_output", result });
       }
     }
 
@@ -381,7 +381,7 @@ public boolean sendToNeos(String the_model) {
       String result = getSolution(the_client, job_name, job_pass);
       if (result.length() > 2) {
         System.out.println("\nFinal results: \n" + result);
-        js_dashboard.call("update_element", new Object[] { "solver_solution", result });
+        js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
       } 
       js_submit_toggle();
       js_kill_toggle();

@@ -8,8 +8,8 @@ case2.describe = function(hardware_num) {
 
     if(hardware_loaded === true) return;
 
-    var hw_title = document.getElementById("case2_title");
-    var hw_describe = document.getElementById("case2_describe");
+    var hw_title = document.getElementById("syn_case2_title");
+    var hw_describe = document.getElementById("syn_case2_describe");
     switch(hardware_num) {
     case 1:
 	hw_title.innerHTML = "Static Server Allocation (SSAP)";
@@ -55,14 +55,15 @@ case2.load = function(hardware_num) {
 
     hardware_loaded = false;
     case2.describe(hardware_num);
-    document.getElementById("case2_content").style.display = "inline-block";
+    document.getElementById("syn_case2_content").style.display = "inline-block";
     hardware_loaded = true;	
 
-    var hw_title = document.getElementById("case2_title");
-    var hw_describe = document.getElementById("case2_describe");
-    var services = document.getElementById("services");
-    var service_button = document.getElementById("service_button");
-    var machine_button = document.getElementById("machine_button");
+    var hw_title = document.getElementById("syn_case2_title");
+    var hw_describe = document.getElementById("syn_case2_describe");
+    var services = document.getElementById("syn_services");
+    var machines = document.getElementById("syn_machines");
+    var service_button = document.getElementById("syn_service_button");
+    var machine_button = document.getElementById("syn_machine_button");
     switch(hardware_num) {
     case 1:
 	case2.model = 'S';
@@ -108,38 +109,38 @@ case2.load = function(hardware_num) {
  */
 case2.services = 0;
 case2.add_service = function() {
-    var services = document.getElementById("services");
+    var services = document.getElementById("syn_services");
     services.innerHTML += "\
-<input type='text' id='service_num" + case2.services +  "' value='100' size='2'></input> services, \
-<input type='text' id='service_mem" + case2.services +  "' value='4.0' size='1'></input>-\
-<input type='text' id='service2mem" + case2.services +  "' value='4.0' size='1'></input> GB / \
-<input type='text' id='service_cpu" + case2.services +  "' value='0.75' size='2'></input> CPU %<br/>";
+<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2'></input> services, \
+<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1'></input>-\
+<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1'></input> GB / \
+<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2'></input> CPU %<br/>";
     case2.services ++;
 }
 
 function add_warehouse_service() {
-    var services = document.getElementById("services");
+    var services = document.getElementById("syn_services");
     services.innerHTML += "\
-<input type='text' id='service_num" + case2.services +  "' value='100' size='3'></input> services with \
-<input type='text' id='service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / \
-<input type='text' id='service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
+<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'></input> services with \
+<input type='text' id='syn_service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / \
+<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
     case2.services ++;
 }
 
 function add_timed_service() {
 		services.innerHTML += "\
 <input type='text' value='100' size='3'></input> services with \
-<input type='text' id='mem' value='4.00' size='3'></input> GB / \
+<input type='text' id='syn_mem' value='4.00' size='3'></input> GB / \
 <input type='text' value='0.75' size='3'></input> CPU %<br/>";
 }
 
 case2.machines = 0;
 case2.add_machine = function() {
-    var machines = document.getElementById("machines");
+    var machines = document.getElementById("syn_machines");
 		machines.innerHTML += "\
-<input type='text' id='machine_num" + case2.machines +  "' value='200' size='2'></input> machines with \
-<input type='text' id='machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / \
-<input type='text' id='machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
+<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'></input> machines with \
+<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / \
+<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
     case2.machines ++;
 }
 
@@ -157,28 +158,29 @@ case2.load_from_java = function() {
     var machine_mem = [];
     var machine_cpu = [];
     var i;
-
+    
     for(i = 0; i < case2.services; ++i) {
-	service_num.push(document.getElementById("service_num" + i).value);
-	service_mem.push(document.getElementById("service_mem" + i).value);
-	service_cpu.push(document.getElementById("service_cpu" + i).value);
+	service_num.push(document.getElementById("syn_service_num" + i).value);
+	service_mem.push(document.getElementById("syn_service_mem" + i).value);
+	service_cpu.push(document.getElementById("syn_service_cpu" + i).value);
     }
     for(i = 0; i < case2.machines; ++i) {
-	machine_num.push(document.getElementById("machine_num" + i).value);
-	machine_mem.push(document.getElementById("machine_mem" + i).value);
-	machine_cpu.push(document.getElementById("machine_cpu" + i).value);
+	machine_num.push(document.getElementById("syn_machine_num" + i).value);
+	machine_mem.push(document.getElementById("syn_machine_mem" + i).value);
+	machine_cpu.push(document.getElementById("syn_machine_cpu" + i).value);
     }
 
-    the_applet.JSload2(case2.model, case2.services, case2.machines,
-		       service_num, service_mem, service_cpu,
-		       machine_num, machine_mem, machine_cpu );
+    document.getElementById("syn_the_applet").JSload2(
+	case2.model, case2.services, case2.machines,
+	service_num, service_mem, service_cpu,
+	machine_num, machine_mem, machine_cpu );
 };
 
 case2.submit_toggle = function() {
 
     var active_text = "Submit job to NEOS!";
     var inactive_text = "NEOS working..";
-    var submit_button = document.getElementById("submit_button");
+    var submit_button = document.getElementById("syn_submit_button");
     
     if(submit_button.disabled !== true) {
 	submit_button.disabled = true;

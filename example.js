@@ -5,8 +5,8 @@ Neos.update_element = function(element, result) {
 }
 
 Neos.send_to_applet = function() {
-    var the_applet = document.getElementById("the_applet");
-    var text_to_send = document.getElementById("input_file").value;
+    var the_applet = document.getElementById("syn_the_applet");
+    var text_to_send = document.getElementById("syn_input_file").value;
     the_applet.JSsubmit(text_to_send);
 }
 
@@ -15,8 +15,8 @@ Neos.send_to_applet = function() {
  */
 Neos.submit_from_java = function() {
 
-    var the_applet = document.getElementById("the_applet");
-    var input_file = document.getElementById("input_file");
+    var the_applet = document.getElementById("syn_the_applet");
+    var input_file = document.getElementById("syn_input_file");
     the_applet.JSsubmit(input_file.value);
 };
 
@@ -25,14 +25,14 @@ Neos.submit_from_java = function() {
  */
 Neos.kill_job = function() {
 
-    document.getElementById("the_applet").JSkill();
+    document.getElementById("syn_the_applet").JSkill();
 };
 
 Neos.submit_toggle = function() {
 
     var active_text = "Submit job to NEOS!";
     var inactive_text = "NEOS working..";
-    var submit_button = document.getElementById("submit_button");
+    var submit_button = document.getElementById("syn_submit_button");
     
     if(submit_button.disabled !== true) {
 	submit_button.disabled = true;
@@ -45,7 +45,7 @@ Neos.submit_toggle = function() {
 
 Neos.kill_toggle = function() {
 
-    var kill_button = document.getElementById("kill_button");
+    var kill_button = document.getElementById("syn_kill_button");
     
     if(kill_button.disabled !== true) {
 	kill_button.disabled = true;

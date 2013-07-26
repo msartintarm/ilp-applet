@@ -6,21 +6,13 @@ h1 {
 }
 h2 { text-align: center; }
 
-thead { color: green; }
-tbody { color: blue; }
-
-a:link {text-decoration: none; }
-a:visited {color: #880000; }
-a:active {color: red; }
-a:hover {text-decoration: underline; color: red;}
-
-p.description {
+p.syn_description {
     font-size: 18px;
     text-align: justify;
     margin-left: 5%;
 }
 
-p.selection {
+p.syn_selection {
     font-size: 18px;
     text-align: center;
     margin-left: 5%;
@@ -35,7 +27,7 @@ body {
     padding: 1% 5% 0% 5%;
 }
 
-div.main {
+div.syn_main {
     width:100%;
     text-align: justify;
     background-color: #eeeeee;
@@ -44,7 +36,7 @@ div.main {
     border-color: #999999;
 }
  
-div.space {
+div.syn_space {
     position: relative;
     width: 71%;
     margin: 0% 0% 0% 27%;
@@ -52,13 +44,13 @@ div.space {
     background-color: #000000;
 }
 
-div.padDiv {
+div.syn_padDiv {
     width: 94%;
     margin: 0px;
     padding: 20px 3%;
 }
 
-div.one_third{
+div.syn_one_third{
     height:85%;
     width:33%;
     float:left;
@@ -69,7 +61,7 @@ div.one_third{
     -khtml-user-select: none;
 }
  
-div.left_half, div.right_half {
+div.syn_left_half, div.syn_right_half {
     background-color: #e0e0e0;
     width:50%;
     text-align:center;
@@ -79,8 +71,8 @@ div.left_half, div.right_half {
     -khtml-user-select: none;
 }
 
-div.left_half { float: left; }
-div.right_half { float:right; }
+div.syn_left_half { float: left; }
+div.syn_right_half { float:right; }
 
 div#wrap {
     margin-right: auto;
