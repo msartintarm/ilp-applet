@@ -264,12 +264,13 @@ final Object[] submitJob(final NeosXmlRpcClient the_client,
 }
 
 final void killJob() {
-    if(job_name == -1) return;
+    if(job_name == -1 || job_name == 0) return;
     Vector the_params = new Vector(2);
     the_params.add(job_name);
     the_params.add(job_pass);
     try {
 	the_client.execute("killJob", the_params, 10000);
+	System.out.println("Job " + job_name + ", password " + job_pass + " killed.");
     } catch (XmlRpcException e) {
 	System.err.println("Solver kill failed. " + e.toString());
 	return;
@@ -340,9 +341,9 @@ final String getSolution(
   
 public boolean sendToNeos(String the_model) {
 
-  Object[] results = submitJob(the_client, the_model, "milp", "Gurobi", "GAMS");
+  Object[] results = submitJob(the_client, the_model, "milp", "MOSEK", "GAMS");
   if (results == null) return false;
-  
+   
   job_name = (Integer) results[0];
   job_pass = (String) results[1];
 
@@ -430,7 +431,7 @@ public boolean sendToNeos(String the_model) {
 
 @Override
 // If a job's running, kill it.
-public void stop() { JSkill(); }
+public void stop() { killJob(); }
 
 public static void main(String[] args) {}
 
