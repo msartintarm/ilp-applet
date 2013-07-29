@@ -21,7 +21,7 @@ case3 "
 pushd `dirname $0` >& /dev/null
 
 if [ -e Neos.jar ]; then
-    echo "JAR already created." # Skip to the signature, which must have failed.
+    echo "Unsigned JARs already created." # Skip to the signature, which must have failed.
 else
 
 # Create manifests
@@ -58,6 +58,6 @@ for JAR in Neos.jar $JAVA_ARCHIVES; do
     mv $JAR ../bin
 done
 
-echo Done.
+echo "Done. Jars are in bin/ folder with appropriate permissions."
 
 popd >& /dev/null

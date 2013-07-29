@@ -2,8 +2,6 @@ var hardware_loaded = false;
 
 var case1 = {};
 
-case1.model = 'X';
-
 /**
  * Finds what the user has specified for all machines / services.
  * Creates two arrays of doubles.
@@ -14,23 +12,9 @@ case1.load_from_java = function() {
 
 
 
-    var the_file = document.getElementById("case1_file");
+    var the_file = document.getElementById("syn_case1_file");
+    var the_applet = document.getElementById("syn_the_applet");
     var selected_file = the_file.options[the_file.selectedIndex].value;
 
     the_applet.JSload1(selected_file);
-};
-
-case1.submit_toggle = function() {
-
-    var active_text = "Submit job to NEOS!";
-    var inactive_text = "NEOS working..";
-    var submit_button = document.getElementById("submit_button");
-    
-    if(submit_button.disabled !== true) {
-	submit_button.disabled = true;
-	submit_button.innerHTML = inactive_text;
-    } else {
-	submit_button.disabled = false;
-	submit_button.innerHTML = active_text;
-    }
 };

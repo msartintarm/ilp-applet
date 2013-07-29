@@ -13,25 +13,25 @@
 
   <body>
 
-    <div id='wrap'>
-      <div class="padDiv"> 
-        <div class='main'>
+    <div id="syn_wrap">
+      <div class="syn_padDiv"> 
+        <div class="syn_main">
 	  
 	  <h2>Case Study 1:<br/>Instruction Set Customization</h2>
-	  <p class="description">
+	  <p class="syn_description">
 	    Generating custom instruction candidates from an application is the process of 
 	    analyzing the intermediate representation of the program, and finding subgraphs
 	    which can be made into instructions.
 	  </p>
-	  <p class="selection">
+	  <p class="syn_selection">
 	    Select from the following basic blocks.
 	  </p>
 
-          <div id="case1_content">
-	    <div class="one_half"
-		 style="border-style:inset; border-width:4px; border-color:#999999;">
-	      <div id="basic_blocks"><br/><br/>
-		<select id="case1_file" size="5">
+          <div id="syn_case1_content">
+	    <div class="syn_left_half">
+	      <div style="border-style:inset; border-width:4px; border-color:#999999;">
+	      <div id="syn_basic_blocks"><br/><br/>
+		<select id="syn_case1_file" size="5">
 		  <option value="anytol.bb5.i3.gamsbb" selected="selected">graph_1.gms</option>
 		  <option value="anytol.bb10.i.gamsbb" >graph_2.gms</option>
 		  <option value="anytol.bb12.i.gamsbb" >graph_3.gms</option>
@@ -40,41 +40,36 @@
 		</select><br/><br/>
 
 	      </div>
-	      <div id="basic_picture"></div>
+	      <div id="syn_basic_picture"></div>
 	      <br/>
-	      <button style="font-size:20px; width:100%;" 
-		      onclick="case1.load_from_java();">
-		Display File On Right
-	      </button>
-	      <button style="font-size:20px; width:100%;" 
-		      id="submit_button"
-		      disabled="disabled" onclick="Neos.submit_from_java();">
-		Submit job to NEOS!
-	      </button>
+		<button style="font-size:20px; width:100%;" onclick="case1.load_from_java();">Load Problem</button>
+		<button style="font-size:20px; width:100%;" id="syn_submit_button" disabled="disabled" onclick="Neos.submit_from_java();">Submit to NEOS!</button>
+		<button style="font-size:20px; width:100%;" id="syn_kill_button" disabled="disabled" onclick="Neos.kill_job();">Cancel Current Job?</button>
+	      </div>
 	    </div>
-	    <div class="one_half" 
-		 style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
-	      <h4 >File to be loaded:</h4>
-	      <textarea id="input_file" style="width:98%;font-size:9pt;" 
-			rows="16">NEOS loading..</textarea>
+
+	    <div class="syn_right_half">
+	      <div style="border-style:inset; border-width:4px; border-color:#999999;text-align:center;">
+	      <h4 >Problem to be submitted:</h4>
+	      <textarea id="syn_input_file" style="width:98%;font-size:9pt;" rows="16">NEOS loading..</textarea>
+	    </div>
 	    </div>
 	    <div style="position:relative; float:left; width:100%; padding-top:10px;">
-	      <div class="one_third">
-		Solver Status:<br/>
-		<textarea id="solver_status" style="width:95%;" rows="12"></textarea>
+	      <div class="syn_one_third">Solver Status:<br/>
+		<textarea id="syn_solver_status" style="width:95%;" rows="12"></textarea>
 	      </div>
-	      <div class="one_third">
+	      <div class="syn_one_third">
 		Solver Output:<br/>
-		<textarea id="solver_output" style="width:95%;" rows="12"></textarea>
+		<textarea id="syn_solver_output" style="width:95%;" rows="12"></textarea>
 	      </div>
-	      <div class="one_third">
+	      <div class="syn_one_third">
 		Solution:<br/>
-		<textarea id="solver_solution" style="width:95%;" rows="12"></textarea>
+		<textarea id="syn_solver_solution" style="width:95%;" rows="12"></textarea>
 	      </div>
 	    </div>
 
 	    <object type="application/x-java-applet" 
-		    height="1" width="1" id="the_applet">
+		    height="1" width="1" id="syn_the_applet">
 	      <param name="codebase" value="bin" />
 	      <param name="archive" value="Neos.jar,
 					   commons-logging-1.1.jar,

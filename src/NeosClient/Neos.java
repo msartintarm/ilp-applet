@@ -32,7 +32,7 @@ final NeosXmlRpcClient the_client = new NeosXmlRpcClient(
 static JSObject js_dashboard;
 static JSObject js_case3;
 
-static Timer the_timer;
+    static Timer the_timer1, the_timer2;
 
 String js_model = "";
 boolean js_submitted = false;
@@ -172,12 +172,12 @@ public void start() {
 		return;
 	    } 
 
-	    if(js_submitted == false) return; 
-	    else js_submitted = false; // reset our flag
-	    if (sendToNeos(js_model) != true) {
-		System.err.println("Job not received by Neos.");
-		System.err.println(js_model);
-		the_timer.stop();
+	    if(js_submitted == true) {
+		js_submitted = false; // reset our flag
+		if (sendToNeos(js_model) != true) {
+		    System.err.println("Job not received by Neos.");
+		    System.err.println(js_model);
+		}
 	    }
 	}
     };
@@ -186,8 +186,8 @@ public void start() {
     solver_output_offset = 0;
 
     int delay = 500; // milliseconds
-    the_timer = new Timer(delay, watch_submission);
-    the_timer.start();
+    the_timer1 = new Timer(delay, watch_submission);
+    the_timer1.start();
 
     // Acquire 'connection'
     try {
@@ -346,7 +346,16 @@ public boolean sendToNeos(String the_model) {
   job_name = (Integer) results[0];
   job_pass = (String) results[1];
 
-  js_submit_toggle();
+  // Check for a 'queue-full' error case. Print 'password' output if job name is 0).
+
+  System.out.println("Job name: " + job_name + ", job password: " + job_pass);
+
+  if (job_name == 0) {
+      js_dashboard.call("update_element", new Object[] { "syn_solver_status", job_pass });
+      js_submit_toggle(); // update 'submit' button
+      return false;
+  }
+
   js_kill_toggle();
 
   // Monitors and prints stuff. Here we can assume job_name and job_pass are 
@@ -389,7 +398,7 @@ public boolean sendToNeos(String the_model) {
       js_submit_toggle();
       js_kill_toggle();
      // Now that we have a solution, we can stop polling the server.
-      the_timer.stop();
+      the_timer2.stop();
     }
     
     public void actionPerformed(ActionEvent evt) {
@@ -406,9 +415,9 @@ public boolean sendToNeos(String the_model) {
   };
    
   int delay = 2000; // milliseconds
-  the_timer = new Timer(delay, solution_monitor);
-  the_timer.setInitialDelay(200);
-  the_timer.start();
+  the_timer2 = new Timer(delay, solution_monitor);
+  the_timer2.setInitialDelay(200);
+  the_timer2.start();
 
   // This class will handle callback in its own thread. I think it checks every
   // 100 ms.

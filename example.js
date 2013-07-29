@@ -18,6 +18,7 @@ Neos.submit_from_java = function() {
     var the_applet = document.getElementById("syn_the_applet");
     var input_file = document.getElementById("syn_input_file");
     the_applet.JSsubmit(input_file.value);
+    Neos.submit_toggle();
 };
 
 /**
@@ -30,7 +31,7 @@ Neos.kill_job = function() {
 
 Neos.submit_toggle = function() {
 
-    var active_text = "Submit job to NEOS!";
+    var active_text = "Submit to NEOS!";
     var inactive_text = "NEOS working..";
     var submit_button = document.getElementById("syn_submit_button");
     
