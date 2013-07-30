@@ -1,7 +1,9 @@
 # Generates HTML stuff so I can easily paste into NEOS document.
 # For Case 2 only (for now)
 
-for i in {2..3}; do
+pushd `dirname $0` >& /dev/null
+
+for i in {1..4}; do
 
     CASE_FILE="case${i}_file.txt"
 
@@ -44,3 +46,4 @@ for i in {2..3}; do
 
 done
 
+popd

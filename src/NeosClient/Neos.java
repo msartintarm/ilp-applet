@@ -136,6 +136,18 @@ public void JSload3(String arch, String software_file, String hardware_file) {
     js_show_text(js_model);
 }
 
+public void JSload4(String software_file) {
+	
+    js_model  = readFile("case4/design_intro.gms");
+    js_model += readFile("case4/link_contention.txt");
+    js_model += readFile("case4/combined_design.gms");
+    js_model += "MeshDesignLinearLinksRouters.optcr=0.04;\n";
+    js_model += "solve MeshDesignLinearLinksRouters using mip minimizing t;\n";
+    js_model += readFile("case1/ise.gms");
+    // Show the user (using Javascript) the model they specified.
+    js_show_text(js_model);
+}
+
 // Called from Javascript, using the string in its text box.
 // It cannot invoke the method directly due to sandboxing, so instead
 // it will change a variable, which is monitored by a Java thread.

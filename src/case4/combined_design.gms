@@ -296,8 +296,6 @@ LVC.up = max_load_on_link;
 vc_budget = 960;
 
 *******************************************************************************
-$include initial_solution.txt
-
 Option MIP = cplex;
 Option minlp = Baron;
 Option nlp = knitro;
@@ -316,7 +314,6 @@ Model MeshDesignLinksOnly /
 
 MeshDesignLinksOnly.optcr=0.0001;
 MeshDesignLinksOnly.Workspace = 960;
-*solve MeshDesignLinksOnly using minlp maximizing t;
 
 
 *******************************************************************************
@@ -332,7 +329,6 @@ Model LinearMeshDesignLinksOnly /
 LinearMeshDesignLinksOnly.optcr=0.0001;
 LinearMeshDesignLinksOnly.optfile=1;
 LinearMeshDesignLinksOnly.Workspace = 12000;
-* solve LinearMeshDesignLinksOnly using mip minimizing t;
 
 *******************************************************************************
 Model MeshDesignLinksRouters /
@@ -361,7 +357,6 @@ Model MeshDesignLinksRouters /
 MeshDesignLinksRouters.optcr=0.000;
 MeshDesignLinksRouters.optca=0.000;
 MeshDesignLinksRouters.Workspace = 9600;
-*solve MeshDesignLinksRouters using minlp minimizing t;
 
 *******************************************************************************
 Model MeshDesignLinearLinksRouters /
@@ -396,11 +391,11 @@ Model MeshDesignLinearLinksRouters /
                                 CombinedObjective
                             /;
 
-MeshDesignLinearLinksRouters.optcr=0.0001;
+*MeshDesignLinearLinksRouters.optcr=0.0001;
 MeshDesignLinearLinksRouters.optca=0.000001;
 MeshDesignLinearLinksRouters.Workspace = 12000;
 MeshDesignLinearLinksRouters.optfile=1;
-solve MeshDesignLinearLinksRouters using mip minimizing t;
+*solve MeshDesignLinearLinksRouters using mip minimizing t;
 
 *******************************************************************************
 Option minlp=dicopt;
