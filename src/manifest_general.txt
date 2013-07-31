@@ -1,3 +1,0 @@
-Permissions: all-permissions
-Codebase: file://O:/applet  https://mywebspace.wisc.edu neos-dev-1.neos-server.org
-Trusted-Library: true
