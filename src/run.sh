@@ -29,10 +29,11 @@ else
 
 # Add new permissions to manifest for other JARs
 
+    date
     # Any command line args, we deploy
     if [ "$#" -eq 0 ] 
     then 
-	echo 'Development.'
+	echo 'For development. ' 
 	echo 'Permissions: all-permissions
 Codebase: file://O:/applet  https://mywebspace.wisc.edu neos-dev-1.neos-server.org
 Trusted-Library: true' >& manifest_general.txt
@@ -44,7 +45,7 @@ Created-By: Michael Sartin-Tarm
 Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
 
     else
-	echo 'Deploy.'
+	echo 'For deployment.'
 	echo 'Permissions: all-permissions
 Codebase: neos-dev-1.neos-server.org
 Trusted-Library: true' >& manifest_general.txt

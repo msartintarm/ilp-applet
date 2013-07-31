@@ -32,9 +32,12 @@ case3.describe = function(hardware_num) {
 
 function select_own_cfg() {
     var own_cfg = document.getElementById("syn_own_cfg");
-    var filename = document.getElementById("syn_upload_file_input").value;
+    var ss = document.getElementById("syn_upload_file_input");
+    var filename = ss.files[0].fileName;
     own_cfg.value = filename;
     own_cfg.innerHTML = filename.substr(filename.lastIndexOf('\\') + 1);
+    var the_applet = document.getElementById("syn_the_applet");
+    the_applet.JSupload(filename);
     own_cfg.disabled = false;
     own_cfg.selected = true;
 };

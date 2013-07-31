@@ -27,7 +27,7 @@ static final long serialVersionUID = 248L;
 static Integer job_name = -1;
 static String job_pass = "-1";
 final NeosXmlRpcClient the_client = new NeosXmlRpcClient(
-      "www.neos-server.org", "3332");
+      "neos-dev-1.neos-server.org", "3332");
 
 static JSObject js_dashboard;
 static JSObject js_case3;
@@ -126,6 +126,12 @@ public void JSload2(String model_type, Integer num_services, Integer num_machine
 	js_show_text(js_model);
 }
 
+    String upload_text = "";
+
+    public void JSupload(String the_file) {
+	upload_text = readFile(the_file);
+    }
+
 // Construct a GAMS string for case 3.
 // Check case 3's 'run-gams.sh' for a command-line version of this selector.
 public void JSload3(String arch, String software_file, String hardware_file) {
@@ -134,7 +140,8 @@ public void JSload3(String arch, String software_file, String hardware_file) {
 
     final String root = "case3/";
     js_model  = readFile(root + arch + "/kind.gms");
-    js_model += readFile(root + arch + "/SW-DAG/" + software_file);
+    if (upload_text.length() > 0) js_model += upload_text;
+    else js_model += readFile(root + arch + "/SW-DAG/" + software_file);
     js_model += readFile(root + arch + "/HW-GRAPH/" + hardware_file);
     js_model += readFile(root + "shared/gen-variables.gms");
     js_model += readFile(root + "shared/gen-constraints.gms");
@@ -152,7 +159,6 @@ public void JSload4(String software_file) {
     js_model += readFile("case4/combined_design.gms");
     js_model += "MeshDesignLinearLinksRouters.optcr=0.04;\n";
     js_model += "solve MeshDesignLinearLinksRouters using mip minimizing t;\n";
-    js_model += readFile("case1/ise.gms");
     // Show the user (using Javascript) the model they specified.
     js_show_text(js_model);
 }
@@ -427,8 +433,8 @@ public boolean sendToNeos(String the_model) {
 
     String searchLine(String line, char first, char second) {
 	if (line.length() > 0 &&
-	    line.charAt(0) == 'v' && 
-	    line.indexOf('.') + 1 == line.indexOf('n')) {
+	    line.charAt(0) == first && 
+	    line.indexOf('.') + 1 == line.indexOf(second)) {
 	    String[] lines = line.split("\\s+"); // remove all other whitespace
 	    if (lines.length > 3 ) {
 		if( lines[2].equals("1.000")) {
