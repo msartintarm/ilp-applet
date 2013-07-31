@@ -32,6 +32,8 @@ final NeosXmlRpcClient the_client = new NeosXmlRpcClient(
 static JSObject js_dashboard;
 static JSObject js_case3;
 
+    int case_num;
+
     static Timer the_timer1, the_timer2;
 
 String js_model = "";
@@ -42,6 +44,7 @@ boolean js_kill_job = false;
 // It is the simplest of the 3 case studies thus far.
 public void JSload1(String software_file) {
 	
+    case_num = 1;
     final String root = "case1/";
     js_model  = "$ONEMPTY\n";
     js_model += readFile("case1/" + software_file);
@@ -58,6 +61,8 @@ public void JSload1(String software_file) {
 public void JSload2(String model_type, Integer num_services, Integer num_machines,
 					JSObject service_num, JSObject service_mem, JSObject service_cpu,
 					JSObject machine_num, JSObject machine_mem, JSObject machine_cpu) {
+
+    case_num = 2;
 
 	int total_services = 0;
 	int total_machines = 0;
@@ -125,6 +130,8 @@ public void JSload2(String model_type, Integer num_services, Integer num_machine
 // Check case 3's 'run-gams.sh' for a command-line version of this selector.
 public void JSload3(String arch, String software_file, String hardware_file) {
 
+    case_num = 3;
+
     final String root = "case3/";
     js_model  = readFile(root + arch + "/kind.gms");
     js_model += readFile(root + arch + "/SW-DAG/" + software_file);
@@ -138,6 +145,8 @@ public void JSload3(String arch, String software_file, String hardware_file) {
 
 public void JSload4(String software_file) {
 	
+    case_num = 4;
+
     js_model  = readFile("case4/design_intro.gms");
     js_model += readFile("case4/link_contention.txt");
     js_model += readFile("case4/combined_design.gms");
@@ -405,15 +414,49 @@ public boolean sendToNeos(String the_model) {
     void getJobSolution() {
       String result = getSolution(the_client, job_name, job_pass);
       if (result.length() > 2) {
-        System.out.println("\nFinal results: \n" + result);
-        js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
+	  System.out.println("\nFinal results: \n" + result);
+	  if (case_num == 3) parseSolution(result);
+				
+	  js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
       } 
       js_submit_toggle();
       js_kill_toggle();
-     // Now that we have a solution, we can stop polling the server.
+      // Now that we have a solution, we can stop polling the server.
       the_timer2.stop();
     }
-    
+
+    String searchLine(String line, char first, char second) {
+	if (line.length() > 0 &&
+	    line.charAt(0) == 'v' && 
+	    line.indexOf('.') + 1 == line.indexOf('n')) {
+	    String[] lines = line.split("\\s+"); // remove all other whitespace
+	    if (lines.length > 3 ) {
+		if( lines[2].equals("1.000")) {
+		    return lines[0] + " ";
+		}
+	    }
+	}
+	return "";
+    }
+	  
+    void parseSolution(String solution) {
+	
+	System.out.println("Parsing for solution");
+	String parsedA = "";
+	String parsedB = "";
+	String[] lines = solution.split("\\n");
+	
+	for (int i = 0; i < lines.length; ++i) {
+	    // Find a string with the first args v3.n4
+	    parsedA += searchLine(lines[i], 'v', 'n');
+	    parsedB += searchLine(lines[i], 'e', 'l');
+	}
+ 
+	js_dashboard.call("update_element", new Object[] { 
+		"syn_parsed_solution", 
+	    "Mvn: " + parsedA + "\nMel: " + parsedB }); 
+    }
+
     public void actionPerformed(ActionEvent evt) {
       if (this.solution_found == true) { 
 	  getJobSolution();
