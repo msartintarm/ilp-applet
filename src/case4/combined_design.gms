@@ -76,13 +76,13 @@ LoadOnChannel(x,y,direction)
 Objective
     .. z =e= t;
 
-mesh_dimension = 8;
-num_memory_controllers = 16;
+mesh_dimension = 3;
+num_memory_controllers = 8;
 * max_load_on_link = 2 * mesh_dimension * mesh_dimension * num_memory_controllers;
 max_load_on_link = 2 * 81;
 
 LoadOnLink.up(x,y,direction) = max_load_on_link;
-z.up  = 81;
+z.up  = 2 * 81;
 
 
 ******************************************************************
@@ -268,7 +268,7 @@ Bound3(x,y,Port,domVp)        .. Fvp(x,y,Port,domVp) =g= LVC + max_load_on_link 
 
 CombinedObjective           ..  z + LVC =e= t;
 
-max_vc = 2 * %max_vp%;
+max_vc = 3 * %max_vp%;
 VCount.up(x,y,Port) = max_vc;
 Vp.up(x,y,Port) = %max_vp%;
 LVC.lo = 1;
@@ -385,10 +385,10 @@ MeshDesignLinksRouters.optfile=1;
 *******************************************************************************
 ***************************  Write Output to files ****************************
 *******************************************************************************
-file linkFile /link_output.txt/ ;
-put linkFile;
-loop((x,y,direction), put x.tl:3, y.tl:3, direction.tl:6, LinkCap.l(x,y,direction):1:0 /);
+*file linkFile /link_output.txt/ ;
+*put linkFile;
+*loop((x,y,direction), put x.tl:3, y.tl:3, direction.tl:6, LinkCap.l(x,y,direction):1:0 /);
 
-file vcFile /vc_output.txt/ ;
-put vcFile;
-loop((x,y,Port), put x.tl:3, y.tl:3, Port.tl:10, VCount.l(x,y,Port):2:0 /);
+*file vcFile /vc_output.txt/ ;
+*put vcFile;
+*loop((x,y,Port), put x.tl:3, y.tl:3, Port.tl:10, VCount.l(x,y,Port):2:0 /);
