@@ -86,14 +86,18 @@ public class Neos extends Applet {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)service_num.getSlot(i));
         js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
-        js_model.append("R(subS" + (i+1) + ",K) = uniform(0, " + (String)service_mem.getSlot(i) + ");\n");
+        js_model.append("R(subS" + (i+1) + ",K) = uniform(" + 
+                        (String) service_mem.getSlot(i * 2) + ", " + 
+                        (String) service_mem.getSlot(i * 2 + 1) + ");\n");
       }
       upper_bound = 0;
       for(i = 0; i < num_machines; ++i) {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
         js_model.append("Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
-        js_model.append("L(subC" + (i+1) + ",K) = uniform(0, " + (String)machine_mem.getSlot(i) + ");\n");
+        js_model.append("L(subC" + (i+1) + ",K) = uniform(" + 
+                        (String)machine_mem.getSlot(i * 2) + ", " +
+                        (String)machine_mem.getSlot(i * 2 + 1) + ");\n");
       }
       js_model.append(readFile("case2/SSAP.gms"));
       break;

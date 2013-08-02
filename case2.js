@@ -91,38 +91,49 @@ case2.services = 0;
 case2.add_service = function() {
     var services = document.getElementById("syn_services");
     services.innerHTML += "";
-    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2' /> services, ";
-    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1' />-";
-    services.innerHTML += "<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1' /> GB / ";
-    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2' /> CPU %<br/>";
+    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2'/> services, ";
+    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1'/>-";
+    services.innerHTML += "<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1'/> GB / ";
+    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2'/> CPU %<br/>";
     case2.services ++;
 }
 
 function add_warehouse_service() {
     var services = document.getElementById("syn_services");
     services.innerHTML += "";
-    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'></input> services with ";
-    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.00' size='3'></input> GB / ";
-    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='3'></input> CPU %<br/>";
+    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'/> services with ";
+    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.00' size='3'/> GB / ";
+    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='3'/> CPU %<br/>";
     case2.services ++;
 }
 
 function add_timed_service() {
     services.innerHTML += "";
-    services.innerHTML += "<input type='text' value='100' size='3'></input> services with ";
-    services.innerHTML += "<input type='text' id='syn_mem' value='4.00' size='3'></input> GB / ";
-    services.innerHTML += "<input type='text' value='0.75' size='3'></input> CPU %<br/>";
+    services.innerHTML += "<input type='text' value='100' size='3'/> services with ";
+    services.innerHTML += "<input type='text' id='syn_mem' value='4.00' size='3'/> GB / ";
+    services.innerHTML += "<input type='text' value='0.75' size='3'/> CPU %<br/>";
 }
 
 case2.machines = 0;
+
 case2.add_machine = function() {
     var machines = document.getElementById("syn_machines");
     machines.innerHTML += "";
-    machines.innerHTML += "<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'></input> machines with ";
-    machines.innerHTML += "<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'></input> GB / ";
-    machines.innerHTML += "<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'></input> GHz <br/>";
+    machines.innerHTML += "<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'/> machines, ";
+    machines.innerHTML += "<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'/>-";
+    machines.innerHTML += "<input type='text' id='syn_machine2mem" + case2.machines +  "' value='16.0' size='2'/> GB / ";
+    machines.innerHTML += "<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'/> GHz <br/>";
     case2.machines ++;
-}
+};
+
+case2.add_warehouse_machine = function() {
+    var machines = document.getElementById("syn_machines");
+    machines.innerHTML += "";
+    machines.innerHTML += "<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'/> machines with ";
+    machines.innerHTML += "<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'/> GB / ";
+    machines.innerHTML += "<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'/> GHz <br/>";
+    case2.machines ++;
+};
 
 /**
  * Finds what the user has specified for all machines / services.
@@ -142,11 +153,13 @@ case2.load_from_java = function() {
     for(i = 0; i < case2.services; ++i) {
 	service_num.push(document.getElementById("syn_service_num" + i).value);
 	service_mem.push(document.getElementById("syn_service_mem" + i).value);
+	if (case2.model === 'S') service_mem.push(document.getElementById("syn_service2mem" + i).value);
 	service_cpu.push(document.getElementById("syn_service_cpu" + i).value);
     }
     for(i = 0; i < case2.machines; ++i) {
 	machine_num.push(document.getElementById("syn_machine_num" + i).value);
 	machine_mem.push(document.getElementById("syn_machine_mem" + i).value);
+	if (case2.model === 'S') machine_mem.push(document.getElementById("syn_machine2mem" + i).value);
 	machine_cpu.push(document.getElementById("syn_machine_cpu" + i).value);
     }
 
