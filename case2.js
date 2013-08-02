@@ -91,10 +91,10 @@ case2.services = 0;
 case2.add_service = function() {
     var services = document.getElementById("syn_services");
     services.innerHTML += "";
-    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2'></input> services, ";
-    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1'></input>-";
-    services.innerHTML += "<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1'></input> GB / ";
-    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2'></input> CPU %<br/>";
+    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2' /> services, ";
+    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1' />-";
+    services.innerHTML += "<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1' /> GB / ";
+    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2' /> CPU %<br/>";
     case2.services ++;
 }
 

@@ -9,9 +9,8 @@ var case4 = {};
  */
 case4.load_from_java = function() {
 
-    var the_file = document.getElementById("syn_case4_file");
+    var relative_gap = document.getElementById("syn_relative_tolerance").value;
     var the_applet = document.getElementById("syn_the_applet");
-    var selected_file = the_file.options[the_file.selectedIndex].value;
 
-    the_applet.JSload4(selected_file);
+    the_applet.JSload4(relative_gap);
 };

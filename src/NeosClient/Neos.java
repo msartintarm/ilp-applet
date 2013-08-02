@@ -24,19 +24,18 @@ public class Neos extends Applet {
 
 static final long serialVersionUID = 248L;
 
-static Integer job_name = -1;
-static String job_pass = "-1";
+Integer job_name = -1;
+String job_pass = "-1";
 final NeosXmlRpcClient the_client = new NeosXmlRpcClient(
       "neos-dev-1.neos-server.org", "3332");
 
-static JSObject js_dashboard;
-static JSObject js_case3;
+JSObject js_dashboard;
 
     int case_num;
 
-    static Timer the_timer1, the_timer2;
+    Timer the_timer1, the_timer2;
 
-String js_model = "";
+    StringBuilder js_model = new StringBuilder();
 boolean js_submitted = false;
 boolean js_kill_job = false;
 
@@ -46,9 +45,9 @@ public void JSload1(String software_file) {
 	
     case_num = 1;
     final String root = "case1/";
-    js_model  = "$ONEMPTY\n";
-    js_model += readFile("case1/" + software_file);
-    js_model += readFile("case1/ise.gms");
+    js_model.append("$ONEMPTY\n");
+    js_model.append(readFile("case1/" + software_file));
+    js_model.append(readFile("case1/ise.gms"));
     // Show the user (using Javascript) the model they specified.
     js_show_text(js_model);
 }
@@ -64,63 +63,63 @@ public void JSload2(String model_type, Integer num_services, Integer num_machine
 
     case_num = 2;
 
-	int total_services = 0;
-	int total_machines = 0;
-	for(int i = 0; i < num_services; ++i) {
-	    total_services += Integer.valueOf((String)service_num.getSlot(i));
+    int total_services = 0;
+    int total_machines = 0;
+    for(int i = 0; i < num_services; ++i) {
+	total_services += Integer.valueOf((String)service_num.getSlot(i));
+    }
+    for(int i = 0; i < num_machines; ++i) {
+	total_machines += Integer.valueOf((String)machine_num.getSlot(i));
+    }
+    
+    js_model.append("**** Problem Inputs ****\n\n");
+    js_model.append("Set S /s1*s" + total_services + "/;\n");
+    js_model.append("Set C /c1*c" + total_machines + "/;\n");
+    
+    switch(model_type.charAt(0)) {
+    case 'S': // SSAP
+	js_model.append("Set K /cpu,mem/;\n");
+	js_model.append("parameter R(S,K);\nparameter L(C,K);\n");
+	int lower_bound;
+	int upper_bound = 0;
+	int i;
+	for(i = 0; i < num_services; ++i) {
+	    lower_bound  = upper_bound + 1;
+	    upper_bound += Integer.valueOf((String)service_num.getSlot(i));
+	    js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
+	    js_model.append("R(subS" + (i+1) + ",K) = uniform(0, " + (String)service_mem.getSlot(i) + ");\n");
 	}
-	for(int i = 0; i < num_machines; ++i) {
-	    total_machines += Integer.valueOf((String)machine_num.getSlot(i));
+	upper_bound = 0;
+	for(i = 0; i < num_machines; ++i) {
+	    lower_bound  = upper_bound + 1;
+	    upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
+	    js_model.append("Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
+	    js_model.append("L(subC" + (i+1) + ",K) = uniform(0, " + (String)machine_mem.getSlot(i) + ");\n");
 	}
-
-	js_model  = "**** Problem Inputs ****\n\n";
-	js_model += "Set S /s1*s" + total_services + "/;\n";
-	js_model += "Set C /c1*c" + total_machines + "/;\n";
-
-	switch(model_type.charAt(0)) {
-	case 'S': // SSAP
-	    js_model += "Set K /cpu,mem/;\n";
-	    js_model += "parameter R(S,K);\nparameter L(C,K);\n";
-	    int lower_bound;
-	    int upper_bound = 0;
-	    int i;
-	    for(i = 0; i < num_services; ++i) {
-		lower_bound  = upper_bound + 1;
-		upper_bound += Integer.valueOf((String)service_num.getSlot(i));
-		js_model += "Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n";
-		js_model += "R(subS" + (i+1) + ",K) = uniform(0, " + (String)service_mem.getSlot(i) + ");\n";
-	    }
-	    upper_bound = 0;
-	    for(i = 0; i < num_machines; ++i) {
-		lower_bound  = upper_bound + 1;
-		upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
-		js_model += "Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n";
-		js_model += "L(subC" + (i+1) + ",K) = uniform(0, " + (String)machine_mem.getSlot(i) + ");\n";
-	    }
-	    js_model += readFile("case2/SSAP.gms");
-	    break;
-	case 'W': // WSAP
-	    js_model += "parameter numS(S);\n";
-	    js_model += "numS(S)=" + (String) service_num.getSlot(0) + "/5;\n";
-	    js_model += readFile("case2/WSAP.gms");
+	js_model.append(readFile("case2/SSAP.gms"));
+	break;
+    case 'W': // WSAP
+	js_model.append("parameter numS(S);\n");
+	js_model.append("numS(S)=" + (String) service_num.getSlot(0) + "/5;\n");
+	js_model.append(readFile("case2/WSAP.gms"));
 	    break;
 	case 'T': // TSAP
-	    js_model += "parameter numS(S);\n";
-	    js_model += "Set T /t1*t8/;\n";
-	    js_model += "numS(S)=" + (String) machine_num.getSlot(0) + "/5;\n";
-	    js_model += readFile("case2/TSAP.gms");
+	    js_model.append("parameter numS(S);\n");
+	    js_model.append("Set T /t1*t8/;\n");
+	    js_model.append("numS(S)=" + (String) machine_num.getSlot(0) + "/5;\n");
+	    js_model.append(readFile("case2/TSAP.gms"));
 	    break;
 	case 'I': // ISAP
-	    js_model += "parameter numS(S);\n";
-	    js_model += "Set T /t1*t1/;\n";
-	    js_model += "numS(S)=" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
-				      Integer.parseInt((String) service_num.getSlot(0))) + ";\n";
-	    js_model += "numS(s1)=numS(s1)+" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
-						Integer.parseInt((String) service_num.getSlot(0))) + ";\n";
-	    js_model += readFile("case2/ISAP.gms");
+	    js_model.append("parameter numS(S);\n");
+	    js_model.append("Set T /t1*t1/;\n");
+	    js_model.append("numS(S)=" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
+					  Integer.parseInt((String) service_num.getSlot(0))) + ";\n");
+	    js_model.append("numS(s1)=numS(s1)+" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
+						    Integer.parseInt((String) service_num.getSlot(0))) + ";\n");
+	    js_model.append(readFile("case2/ISAP.gms"));
 	    break;
 	}
-	js_model += readFile("case2/print-allocate-stats.gms");
+    js_model.append(readFile("case2/print-allocate-stats.gms"));
 
 	// Show the user (using Javascript) the model they specified.
 	js_show_text(js_model);
@@ -139,28 +138,28 @@ public void JSload3(String arch, String software_file, String hardware_file) {
     case_num = 3;
 
     final String root = "case3/";
-    js_model  = readFile(root + arch + "/kind.gms");
-    if (upload_text.length() > 0) js_model += upload_text;
-    else js_model += readFile(root + arch + "/SW-DAG/" + software_file);
-    js_model += readFile(root + arch + "/HW-GRAPH/" + hardware_file);
-    js_model += readFile(root + "shared/gen-variables.gms");
-    js_model += readFile(root + "shared/gen-constraints.gms");
-    js_model += readFile(root + arch + "/constraints/constraints.gms");
+    js_model.append(readFile(root + arch + "/kind.gms"));
+    if (upload_text.length() > 0) js_model.append(upload_text);
+    else js_model.append(readFile(root + arch + "/SW-DAG/" + software_file));
+    js_model.append(readFile(root + arch + "/HW-GRAPH/" + hardware_file));
+    js_model.append(readFile(root + "shared/gen-variables.gms"));
+    js_model.append(readFile(root + "shared/gen-constraints.gms"));
+    js_model.append(readFile(root + arch + "/constraints/constraints.gms"));
     // Show the user (using Javascript) the model they specified.
     js_show_text(js_model);
 }
 
-public void JSload4(String software_file) {
+public void JSload4(String tolerance) {
 	
     case_num = 4;
 
-    js_model  = readFile("case4/design_intro.gms");
-    js_model += readFile("case4/link_contention.txt");
-    js_model += readFile("case4/combined_design.gms");
-    js_model += "MeshDesignLinearLinksRouters.optcr=0.04;\n";
-    js_model += "solve MeshDesignLinearLinksRouters using mip minimizing t;\n";
+    js_model.append(readFile("case4/design_intro.gms"));
+    js_model.append(readFile("case4/link_contention.txt")); 
+    js_model.append(readFile("case4/combined_design.gms"));
+    js_model.append("MeshDesignLinearLinksRouters.optcr=" + (Double.parseDouble(tolerance) / 100.0) + ";\n");
+    js_model.append("solve MeshDesignLinearLinksRouters using mip minimizing t;\n");
     // Show the user (using Javascript) the model they specified.
-    js_show_text(js_model);
+    //    js_show_text(shortened_string);
 }
 
 // Called from Javascript, using the string in its text box.
@@ -168,7 +167,8 @@ public void JSload4(String software_file) {
 // it will change a variable, which is monitored by a Java thread.
 public void JSsubmit(String the_model) {
 
-    js_model = the_model;
+    if (case_num != 4) js_model = new StringBuilder().append(the_model);
+    else js_model = new StringBuilder().append("this shouldn't compile");
     js_submitted = true;
 }
 
@@ -203,7 +203,6 @@ public void start() {
 		js_submitted = false; // reset our flag
 		if (sendToNeos(js_model) != true) {
 		    System.err.println("Job not received by Neos.");
-		    System.err.println(js_model);
 		}
 	    }
 	}
@@ -238,15 +237,17 @@ public void start() {
     System.out.print("\n");
 
   // Ready to go.. toggle submit button.
-    js_show_text("");
+    js_dashboard.call("update_element", 
+		      new Object[] { "syn_input_file", "" });
     js_submit_toggle();
 }
 
 void js_submit_toggle() {  js_dashboard.call("submit_toggle", null); }
 void js_kill_toggle() {  js_dashboard.call("kill_toggle", null); }
-void js_show_text(String the_text) { 
+void js_show_text(StringBuilder the_text) { 
     js_dashboard.call("update_element", 
-		      new Object[] { "syn_input_file", the_text }); }
+		      new Object[] { "syn_input_file", 
+				     the_text.toString() }); }
 
 /**
  * Finds the solvers available for this category (milp) and language (GAMS).
@@ -283,7 +284,7 @@ final Object[] submitJob(final NeosXmlRpcClient the_client,
 
   // Submit job to NEOS, with a 5 second timeout
   try {
-    return (Object[]) the_client.execute("submitJob", the_params, 5000);
+    return (Object[]) the_client.execute("submitJob", the_params, 10000);
   } catch (XmlRpcException e) {
     System.err.println("Error submitting job." + e.toString());
     return null;
@@ -366,9 +367,9 @@ final String getSolution(
   }
 }
   
-public boolean sendToNeos(String the_model) {
+public boolean sendToNeos(StringBuilder the_model) {
 
-  Object[] results = submitJob(the_client, the_model, "milp", "MOSEK", "GAMS");
+    Object[] results = submitJob(the_client, the_model.toString(), "milp", "MOSEK", "GAMS");
   if (results == null) return false;
    
   job_name = (Integer) results[0];
@@ -448,19 +449,19 @@ public boolean sendToNeos(String the_model) {
     void parseSolution(String solution) {
 	
 	System.out.println("Parsing for solution");
-	String parsedA = "";
-	String parsedB = "";
+	StringBuilder parsedA = new StringBuilder();
+	StringBuilder parsedB = new StringBuilder();
 	String[] lines = solution.split("\\n");
 	
 	for (int i = 0; i < lines.length; ++i) {
 	    // Find a string with the first args v3.n4
-	    parsedA += searchLine(lines[i], 'v', 'n');
-	    parsedB += searchLine(lines[i], 'e', 'l');
+	    parsedA.append(searchLine(lines[i], 'v', 'n'));
+	    parsedB.append(searchLine(lines[i], 'e', 'l'));
 	}
  
 	js_dashboard.call("update_element", new Object[] { 
 		"syn_parsed_solution", 
-	    "Mvn: " + parsedA + "\nMel: " + parsedB }); 
+		"Mvn: " + parsedA.toString() + "\nMel: " + parsedB.toString() }); 
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -502,15 +503,16 @@ String readFile(String path) {
       BufferedReader input = new BufferedReader(
                              new InputStreamReader(
            	             getClass().getResourceAsStream("/" + path)));
-    String the_data = "";
+      StringBuilder the_data = new StringBuilder();
     String the_line;
 
     while ((the_line = input.readLine()) != null) {
-      the_data += the_line + "\n";
+	the_data.append(the_line + "\n");
     }
 
     input.close();
-    return the_data;
+    System.out.println("Data from " + path + " read.");
+    return the_data.toString();
   } catch (IOException e) {
     System.err.println("Error reading file " + path + ": " + e.toString());
     return null;
