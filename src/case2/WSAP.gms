@@ -1,13 +1,3 @@
-*execseed = 1+gmillisec(jnow);
-
-**** Problem Inputs ****
-
-Set K /cpu,mem/;
-
-*Set S /s1*s20/;
-*Set C /c1*c500/;
-*parameter numS(S);
-*numS(S)=100;
 
 alias(S,S1,S2);
 alias(C,C1,C2);
@@ -18,13 +8,6 @@ loop((S1,S2)$(ORD(S1)+1=ORD(S2) and mod(ORD(S1),2)=0),
   numS(S1) = numS(S1) + thediff;
   numS(S2) = numS(S2) - thediff;
 );
-
-parameter R(S,K);
-parameter L(C,K);
-
-R(S,K) = uniform(0,1);
-*L(C,K) = 0.5+uniform(0,1);
-L(C,K) = 1.5;
 
 * Variables
 

@@ -75,13 +75,14 @@ public class Neos extends Applet {
     js_model.append("Set S /s1*s" + total_services + "/;\n");
     js_model.append("Set C /c1*c" + total_machines + "/;\n");
     
+    int lower_bound;
+    int upper_bound = 0;
+    int i;
+
     switch(model_type.charAt(0)) {
     case 'S': // SSAP
       js_model.append("Set K /cpu,mem/;\n");
       js_model.append("parameter R(S,K);\nparameter L(C,K);\n");
-      int lower_bound;
-      int upper_bound = 0;
-      int i;
       for(i = 0; i < num_services; ++i) {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)service_num.getSlot(i));
@@ -102,14 +103,50 @@ public class Neos extends Applet {
       js_model.append(readFile("case2/SSAP.gms"));
       break;
     case 'W': // WSAP
-      js_model.append("parameter numS(S);\n");
-      js_model.append("numS(S)=" + (String) service_num.getSlot(0) + "/5;\n");
+	    js_model.append("parameter numS(S);\n");
+	    js_model.append("numS(S)=" + total_services + ";\n");
+      js_model.append("Set K /cpu,mem/;\n");
+      js_model.append("parameter R(S,K);\nparameter L(C,K);\n");
+      for(i = 0; i < num_services; ++i) {
+        lower_bound  = upper_bound + 1;
+        upper_bound += Integer.valueOf((String)service_num.getSlot(i));
+        js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
+        js_model.append("R(subS" + (i+1) + ",K) = " + (String) service_mem.getSlot(i) + ";\n");
+      }
+      upper_bound = 0;
+      for(i = 0; i < num_machines; ++i) {
+        lower_bound  = upper_bound + 1;
+        upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
+        js_model.append("Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
+        js_model.append("L(subC" + (i+1) + ",K) = " + (String)machine_mem.getSlot(i) + ";\n");
+      }
       js_model.append(readFile("case2/WSAP.gms"));
 	    break;
     case 'T': // TSAP
+      // Same as 'S' to start.. except we add an extra number (timing info) to the front of service_mem
+      js_model.append("Set K /cpu,mem/;\n");
+      js_model.append("parameter R(S,K);\nparameter L(C,K);\n");
+      for(i = 0; i < num_services; ++i) {
+        lower_bound  = upper_bound + 1;
+        upper_bound += Integer.valueOf((String)service_num.getSlot(i));
+        js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
+        js_model.append("R(subS" + (i+1) + ",K) = uniform(" + 
+                        (String) service_mem.getSlot(i * 2 + 1) + ", " + 
+                        (String) service_mem.getSlot(i * 2 + 2) + ");\n");
+      }
+      upper_bound = 0;
+      for(i = 0; i < num_machines; ++i) {
+        lower_bound  = upper_bound + 1;
+        upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
+        js_model.append("Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
+        js_model.append("L(subC" + (i+1) + ",K) = uniform(" + 
+                        (String)machine_mem.getSlot(i * 2) + ", " +
+                        (String)machine_mem.getSlot(i * 2 + 1) + ");\n");
+      }
+
 	    js_model.append("parameter numS(S);\n");
-	    js_model.append("Set T /t1*t8/;\n");
-	    js_model.append("numS(S)=" + (String) machine_num.getSlot(0) + "/5;\n");
+	    js_model.append("numS(S)=" + total_services + ";\n");
+	    js_model.append("Set T /t1*t" + (String) service_mem.getSlot(0) + "/;\n");
 	    js_model.append(readFile("case2/TSAP.gms"));
 	    break;
     case 'I': // ISAP

@@ -38,6 +38,9 @@ case2.load = function(hardware_num) {
     document.getElementById("syn_case2_content").style.display = "inline-block";
     hardware_loaded = true;	
 
+    case2.services = 0;
+    case2.machines = 0;
+
     var hw_title = document.getElementById("syn_case2_title");
     var hw_describe = document.getElementById("syn_case2_describe");
     var services = document.getElementById("syn_services");
@@ -58,22 +61,24 @@ case2.load = function(hardware_num) {
     case 2:
 	case2.model = 'W';
 	services.innerHTML="Specify resource usage of services.<br/>";
+	services.innerHTML += "<i>Services with the same parameters are aggregated together.</i><br/>";
 	machines.innerHTML="Specify resources of machines.<br/>";
-	service_button.onclick = case2.add_service;
-	machine_button.onclick = case2.add_machine;
-	case2.add_service();
-	case2.add_machine();
+	service_button.onclick = case2.add_warehouse_service;
+	machine_button.onclick = case2.add_warehouse_machine;
+	case2.add_warehouse_service();
+	case2.add_warehouse_machine();
 	break;
     case 3:
-	case2.model = 'T';
+	var additional_params = document.getElementById("syn_additional_params");
+	    case2.model = 'T';
 	services.innerHTML="Specify resource usage of services.<br/>";
 	machines.innerHTML="Specify resources of machines.<br/>";
 	service_button.onclick = case2.add_service;
 	machine_button.onclick = case2.add_machine;
 	case2.add_service();
 	case2.add_machine();
-	additional_params.innerHTML="Specify number of time periods over which to divide variance: ";
-	additional_params.innerHTML += "<input type='text' value='4' size='3'></input> time periods.";
+	additional_params.innerHTML="Specify number of time periods over which to divide variance.<br/>";
+	additional_params.innerHTML += "<input type='text' id='syn_timing' value='4' size='1'/> time periods";
 	break;
     case 4:
 	case2.model = 'I';
@@ -87,7 +92,6 @@ case2.load = function(hardware_num) {
  * Add Case 2 services with 3 params: number of services, mem usage, CPU usage
  * Give unique ID that can be looked up later.
  */
-case2.services = 0;
 case2.add_service = function() {
     var services = document.getElementById("syn_services");
     services.innerHTML += "";
@@ -98,7 +102,7 @@ case2.add_service = function() {
     case2.services ++;
 }
 
-function add_warehouse_service() {
+case2.add_warehouse_service = function() {
     var services = document.getElementById("syn_services");
     services.innerHTML += "";
     services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'/> services with ";
@@ -107,14 +111,12 @@ function add_warehouse_service() {
     case2.services ++;
 }
 
-function add_timed_service() {
+case2.add_timed_service = function() {
     services.innerHTML += "";
     services.innerHTML += "<input type='text' value='100' size='3'/> services with ";
     services.innerHTML += "<input type='text' id='syn_mem' value='4.00' size='3'/> GB / ";
     services.innerHTML += "<input type='text' value='0.75' size='3'/> CPU %<br/>";
 }
-
-case2.machines = 0;
 
 case2.add_machine = function() {
     var machines = document.getElementById("syn_machines");
@@ -150,16 +152,19 @@ case2.load_from_java = function() {
     var machine_cpu = [];
     var i;
     
+    if (case2.model === 'T') service_mem.push(document.getElementById("syn_timing").value);
     for(i = 0; i < case2.services; ++i) {
 	service_num.push(document.getElementById("syn_service_num" + i).value);
 	service_mem.push(document.getElementById("syn_service_mem" + i).value);
-	if (case2.model === 'S') service_mem.push(document.getElementById("syn_service2mem" + i).value);
+	if (case2.model === 'S' || case2.model === 'T') 
+	    service_mem.push(document.getElementById("syn_service2mem" + i).value);
 	service_cpu.push(document.getElementById("syn_service_cpu" + i).value);
     }
     for(i = 0; i < case2.machines; ++i) {
 	machine_num.push(document.getElementById("syn_machine_num" + i).value);
 	machine_mem.push(document.getElementById("syn_machine_mem" + i).value);
-	if (case2.model === 'S') machine_mem.push(document.getElementById("syn_machine2mem" + i).value);
+	if (case2.model === 'S' || case2.model === 'T') 
+	    machine_mem.push(document.getElementById("syn_machine2mem" + i).value);
 	machine_cpu.push(document.getElementById("syn_machine_cpu" + i).value);
     }
 
