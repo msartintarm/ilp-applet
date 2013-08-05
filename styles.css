@@ -47,19 +47,13 @@ div.syn_main {
     border-width: 5px;
     border-color: #999999;
 }
- 
+
 div.syn_space {
     position: relative;
     width: 71%;
     margin: 0% 0% 0% 27%;
     height: 4px;
     background-color: #000000;
-}
-
-div.syn_padDiv {
-    width: 94%;
-    margin: 0px;
-    padding: 20px 3%;
 }
 
 div.syn_one_third{
@@ -72,7 +66,7 @@ div.syn_one_third{
     -webkit-user-select: none;
     -khtml-user-select: none;
 }
- 
+
 div.syn_left_half, div.syn_right_half {
     background-color: #e0e0e0;
     width:50%;
