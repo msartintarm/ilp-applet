@@ -66,7 +66,7 @@ done
 
 
 # Create Java classes
-    javac -classpath ${JAVA_ARCHIVES//" "/";"} $JAVA_FILES
+    javac -classpath ${JAVA_ARCHIVES//" "/":"} $JAVA_FILES
 # Zip classes, manifest, and GAMS files into one JAR
     jar cfm Neos.jar manifest_eclipse.txt ${JAVA_FILES//"java"/"class"} $OTHER_FILES
 
