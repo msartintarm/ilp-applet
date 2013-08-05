@@ -63,7 +63,7 @@ case1.drawGraph = function() {
 
     var i = 0;
 
-    graph.addNode(new_name);
+//    g.addNode(new_name);
 
     var added = {};
 
@@ -71,7 +71,7 @@ case1.drawGraph = function() {
         var new_name = one_name[0].replace(",", "");
 
 
-        if(!added[new_name]) { graph.addNode(new_name); added[new_name] = 1; }
+        if(!added[new_name]) { g.addNode(new_name); added[new_name] = 1; }
 
         if(++i % 2 === 0) {
             console.log(other_name + " --> " + new_name);
