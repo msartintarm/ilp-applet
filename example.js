@@ -55,3 +55,31 @@ Neos.kill_toggle = function() {
 	kill_button.disabled = false;
     }
 };
+
+Neos.resizeTextArea = function(elem_name) {
+	
+	var parent = document.getElementById("syn_" + elem_name + "_holder");
+	var button = document.getElementById("syn_" + elem_name + "_button");
+	var text = document.getElementById("syn_solver_" + elem_name + "");
+	if(parent.style.cssFloat !== "none") {
+		parent.style.cssFloat = "none";
+		parent.style.width = "100%";
+		text.rows = 40;
+		button.innerHTML = "shrink";
+	} else {
+		parent.style.cssFloat = "left";
+		parent.style.width = "33%";
+		text.rows = 12;
+		button.innerHTML = "expand";
+	}
+	/*
+	if(solution.rows < 20) {
+		solution.rows = 40;
+		solution.style.width = "500px";
+		solution.style.cssFloat = "none";
+	} else {
+		solution.rows = 12;
+		solution.style.width = "95%";
+	}
+	*/
+};

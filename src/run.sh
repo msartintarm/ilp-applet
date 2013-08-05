@@ -72,11 +72,11 @@ done
 
 fi
 
-# Sign the JARs
+# Sign the JARs. Optionally, verify them too.
 echo Signing JARs..
 for JAR in Neos.jar $JAVA_ARCHIVES; do
     jarsigner -keystore key/keystore -storepass qawsed -keypass qawsed $JAR jarkey
-#    jarsigner -verify -keystore key/keystore -certs $JAR
+#    jarsigner -verify -keystore key/keystore -certs -verbose $JAR
     mv $JAR ../bin
 done
 

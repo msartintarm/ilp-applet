@@ -48,11 +48,12 @@ case1.drawGraph = function() {
         }
     };
 
-    var g = new Graph();
+    case1.graph = new Graph();
+	var graph = case1.graph;
 
     var text = document.getElementById("syn_input_file").value;
 
-    parseGamsSet(g, text);
+    parseGamsSet(graph, text);
 
     var set_v = /Gvv\(v\,v\)\/([a-z]+[0-9]+.[a-z]+[0-9]+[,\s]*)+\/;/g;
     var new_text = text.match(set_v);
@@ -71,35 +72,87 @@ case1.drawGraph = function() {
         var new_name = one_name[0].replace(",", "");
 
 
-        if(!added[new_name]) { g.addNode(new_name); added[new_name] = 1; }
+        if(!added[new_name]) { graph.addNode(new_name); added[new_name] = 1; }
 
         if(++i % 2 === 0) {
             console.log(other_name + " --> " + new_name);
-            g.addEdge(other_name, new_name, { directed: true });
+            graph.addEdge(other_name, new_name, { directed: true });
         } else {
             other_name = new_name;
         }
         one_name = each_v.exec(new_text);
     }
-/*
-    g.addNode("input");
-    g.addNode("mul1");
-    g.addNode("mul2");
-    g.addNode("output");
 
+    case1.layer = new Graph.Layout.Ordered(graph, graph.nodes);
+    case1.renderer = new Graph.Renderer.Raphael("syn_canvas", graph,  300, 300);
+    case1.layer.layout();
+    case1.renderer.draw();
 
+	case1.highlightGraph();
+};
 
+case1.highlightGraph = function() {
 
-    g.addEdge("input", "mul1", { directed: true });
-    g.addEdge("input", "mul2", { directed: true });
-    g.addEdge("mul1", "mul2", { directed: true });
-    g.addEdge("mul2", "output", { directed: true });
-*/
+	var graph = case1.graph;
 
-    var spring = new Graph.Layout.Ordered(g, g.nodes);
-    var render = new Graph.Renderer.Raphael("syn_canvas", g,  300, 300);
-    spring.layout();
-    render.draw();
+	var nodes_to_highlight = ["i0", "i1"];
+
+	function renderHighlight(r, node) {
+		/* the default node drawing */
+		var color = "#ddeeff";
+		var ellipse = r.ellipse(0, 0, 30, 20).attr({fill: color, stroke: color, "stroke-width": 2});
+		/* set DOM node ID */
+		ellipse.node.id = node.label || node.id;
+		var shape = r.set().
+			push(ellipse).
+			push(r.text(0, 30, node.label || node.id));
+		return shape;
+	}
+
+	function renderNoHighlight(r, node) {
+		/* the default node drawing */
+		var color = "#334455";
+		var ellipse = r.ellipse(0, 0, 30, 20).attr({fill: color, stroke: color, "stroke-width": 2});
+		/* set DOM node ID */
+		ellipse.node.id = node.label || node.id;
+		var shape = r.set().
+			push(ellipse).
+			push(r.text(0, 30, node.label || node.id));
+		return shape;
+	}
+
+	console.log(graph.nodes);
+	for(var node_name in graph.nodes) {
+		
+		var node = graph.nodes[node_name];
+		node.shape = null;
+		node.render = renderNoHighlight;
+	}
+
+	for(var i = 0; i < nodes_to_highlight.length; ++i) {
+		var this_node = nodes_to_highlight[i];
+		delete graph.nodes[this_node].shape;
+		graph.nodes[this_node].render = renderHighlight;
+	}
+
+	//    var render = new Graph.Renderer.Raphael("syn_canvas", graph,  300, 300);
+    case1.renderer.draw();
+
+	/*
+	var ellipses = {};
+
+	// Index ellipses by ID
+	var ellipse_list = document.getElementsByTagName("ellipse");
+	for (var i = 0; i < ellipse_list.length; ++i) {
+		var one_ellipse = ellipse_list[i];
+		if (one_ellipse.id === "i1" || one_ellipse.id === "i0") {
+			console.log("zzzzooo");
+			one_ellipse.fill = "#ee8899";
+		}		
+		ellipses[one_ellipse.id] = one_ellipse;
+	}
+
+	*/
 
 
 };

@@ -1,28 +1,11 @@
 
-* Standard Problem Input
-*Set v /vi1,vi2,vi3,v1,v2,v3,v4,v5,v6,v7,v8/;
-*Set I(v) /vi1, vi2, vi3/;
-*Set O(v) /v5,  v7,  v8/;
-*Set Gvv(v,v) /vi1.v1, vi2.v2, vi3.v3, v1.v4, v1.v6, v6.v7, v6.v8, v4.v6, v2.v5, v3.v5, v5.v6/;
-
 alias(v,v1,v2);
-*set O(v);
-*O(v1)$(sum(v2$(Gvv(v1,v2)),1)=0)=1;
-
-
-*Parameter Sdelta(v) /v1 1, v2 1, v3 1, v4 1, v5 1, v6 1, v7 1, v8 1/;
-*Parameter Hdelta(v) /v1 .9, v2 .2, v3 .2, v4 .9, v5 .8, v6 1, v7 .9, v8 .9/;
-*Parameter Hdelta(v) /v1 .9, v2 .5, v3 .5, v4 .9, v5 .5, v6 .9, v7 .9, v8 .9/;
 
 Parameter Sdelta(v);
 Parameter Hdelta(v);
 
 Sdelta(v)=1;
 Hdelta(v)=.75;
-
-*Parameter I(v),O(v);
-*I(v2)$(sum(v1$(Gvv(v1,v2)),1)=0)=1;
-*O(v1)$(sum(v2$(Gvv(v1,v2)),1)=0)=1;
 
 * Problem Definition
 Scalar MAXin /100/;
@@ -83,9 +66,7 @@ det_out3(v).. isOut(v) =g= T(v)+someSuccNotInT(v)-1;
 Equations is_output(v1,v2);
 is_output(v1,v2)$(Gvv(v1,v2)).. isOut(v1) =g= T(v1) - T(v2);
 
-
 calc_out.. INSTout =e= sum(v$O(v), T(v)) + sum(v$(not O(v)),  isOut(v));
-
 
 * Data Transfer Cost
 
@@ -114,12 +95,6 @@ de3(v1).. descendantT(v1) =l= sum(v2$(Gvv(v1,v2)),T(v2)+descendantT(v2));
 
 convexity(v).. ancestorT(v) + descendantT(v) - T(v) =l= 1;
 
-*Formulating Objective
-*variable numNodes;
-*Equations calc_numNodes;
-*calc_numNodes.. numNodes =e= sum(v,T(v));
-*numNodes.l=1;
-
 variable reduction;
 positive variable S,Time(v);
 integer variable H;
@@ -135,7 +110,6 @@ calc_reduct.. reduction =e= S-H-C;
 option optca = 0.05;
 option optcr = 0;
 
-
 Model partition 
 /is_input, calc_in,
 is_output, calc_out,
@@ -145,60 +119,19 @@ an1,an2,an3,de1,de2,de3, convexity,
 inDT, outDT, costDT,
 calc_timing, calc_hard, calc_soft, calc_reduct/;
 
-scalar keep_going;
-keep_going=1;
-
-
-*file outfile / "" /;
-*outfile.pc=8;
-*outfile.pw=4096;
-*put outfile;
-
 file stdout / "/dev/stdout" /;
 stdout.pc=8;
 stdout.pw=4096;
 put stdout;
 
-while((keep_going<>0),
-  
-  solve partition using MIP maximizing reduction;
+solve partition using MIP maximizing reduction;
 
-  if(reduction.l,
-*    put reduction.l S.l H.l C.l INSTin.l INSTout.l:
-*    loop(v$(T.l(v)=1),
-*      put v.tl;
-*    );
-*    put /;
-  put partition.objVal partition.objEst;
-  put partition.numVar partition.numDVar partition.numEqu partition.numNZ;
-  put partition.etSolve partition.etSolver/;
-  );
+put partition.objVal partition.objEst;
+put partition.numVar partition.numDVar partition.numEqu partition.numNZ;
+put partition.etSolve partition.etSolver/;
 
-  keep_going = reduction.l;
-  T.fx(v)$(T.l(v)=1)=0;
-
-);
+T.fx(v)$(T.l(v)=1)=0;
 
 display I;
 display O;
 display T.l;
-
-
-* Sample input
-*T.l('v1')=1;
-*someSuccInT.l('vi1')=1;
-*isIn.l('vi1')=1;
-*someSuccNotInT.l(v)=1;
-*someSuccNotInT.l('vi1')=0;
-*someSuccNotInT.l('v4')=0;
-*someSuccNotInT.l('v7')=0;
-*someSuccNotInT.l('v8')=0;
-
-*isOut.l('v1')=1;
-*descendantT.l('vi1')=1;
-*ancestorT.l('v4')=1;
-*ancestorT.l('v6')=1;
-*ancestorT.l('v7')=1;
-*ancestorT.l('v8')=1;
-*INSTin.l=1;
-*INSTout.l=1;
