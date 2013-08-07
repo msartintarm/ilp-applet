@@ -64,11 +64,13 @@ Neos.resizeTextArea = function(elem_name) {
 	if(parent.style.cssFloat !== "none") {
 		parent.style.cssFloat = "none";
 		parent.style.width = "100%";
+		parent.style.clear = "both";
 		text.rows = 40;
 		button.innerHTML = "shrink";
 	} else {
 		parent.style.cssFloat = "left";
 		parent.style.width = "33%";
+		parent.style.clear = "none";
 		text.rows = 12;
 		button.innerHTML = "expand";
 	}
@@ -82,4 +84,21 @@ Neos.resizeTextArea = function(elem_name) {
 		solution.style.width = "95%";
 	}
 	*/
+};
+
+Neos.case1_highlightGraph = function() {
+
+	var graph = case1.graph;
+
+	var nodes_to_highlight = document.getElementById("syn_parsed_solution").value.split(/\s+/);
+
+	for(var i = 1; i < nodes_to_highlight.length; ++i) {
+		var this_node = nodes_to_highlight[i];
+		if (graph.nodes[this_node]) {
+			delete graph.nodes[this_node].shape;
+			graph.nodes[this_node].render = case1.renderHighlight;
+		}
+	}
+
+    case1.renderer.draw();
 };

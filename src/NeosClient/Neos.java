@@ -458,21 +458,61 @@ public class Neos extends Applet {
             js_dashboard.call("update_element", new Object[] { "syn_solver_output", result });
           }
         }
+			
+			void getJobSolution() {
+				String result = getSolution(the_client, job_name, job_pass);
+				if (result != null && result.length() > 2) {
+					System.out.println("\nFinal results: \n" + result);
+					if (case_num == 1) parseSolution1(result);
+					if (case_num == 3) parseSolution3(result);
+					
+					js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
+				} 
+			}
+			
+			// i8  1.000,    i9  1.000,    i10 1.000,    i11 1.000
+			String searchLine1(String line) {
 
-        void getJobSolution() {
-          String result = getSolution(the_client, job_name, job_pass);
-          if (result != null && result.length() > 2) {
-            System.out.println("\nFinal results: \n" + result);
-            if (case_num == 3) parseSolution(result);
-				
-            js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
-          } 
+				StringBuilder to_return = new StringBuilder("");
+				if (line.length() > 0) {
+					String[] lines = line.split("\\s+"); // remove all other whitespace
+					
+					for (int i = 0; i < lines.length; i += 2) {
+						if (lines[i + 1].equals("1.000,")) {
+							to_return.append(lines[i] + " ");
+						}
+					}
+				}
+				return to_return.toString();
+			}
+	  
+        void parseSolution1(String solution) {
+	
+          System.out.println("Parsing for solution");
+          StringBuilder parsedT = new StringBuilder();
+          String[] lines = solution.split("\\n");
+
+          boolean in_Tl = false;
+	
+          for (int i = 0; i < lines.length; ++i) {
+            if (in_Tl == false) { 
+              if (lines[i].indexOf("VARIABLE T.L") != -1) in_Tl = true;
+            } else { 
+              if (lines[i].indexOf("REPORT") != -1) in_Tl = false;
+			  else parsedT.append(searchLine1(lines[i]));
+            }
+          }
+ 
+          js_dashboard.call("update_element", new Object[] { 
+              "syn_parsed_solution", "T.L: " + parsedT.toString() }); 
+          js_dashboard.call("case1_highlightGraph", null); 
+		  
         }
 
         // see if this line contains a solution!
         // Example line:   v0 .in1   .   1.000   1.000   EPS
         //         opt. space^     lo^  set?^     hi^     ^marginal
-        String searchLine(String line) {
+        String searchLine3(String line) {
           if (line.length() > 0) {
             String[] lines = line.split("\\s+"); // remove all other whitespace
             int length = lines.length;
@@ -487,7 +527,7 @@ public class Neos extends Applet {
           return "";
         }
 	  
-        void parseSolution(String solution) {
+        void parseSolution3(String solution) {
 	
           System.out.println("Parsing for solution");
           StringBuilder parsedA = new StringBuilder();
@@ -502,13 +542,13 @@ public class Neos extends Applet {
               if (lines[i].indexOf("VAR Mvn") != -1) in_Mvn = true;
             } else { 
               if (lines[i].indexOf("VAR") != -1) in_Mvn = false;
-              else parsedA.append(searchLine(lines[i]));
+              else parsedA.append(searchLine3(lines[i]));
             }
             if (in_Mel == false) { 
               if (lines[i].indexOf("VAR Mel") != -1) in_Mel = true;
             } else { 
               if (lines[i].indexOf("VAR") != -1) in_Mel = false;
-              else parsedB.append(searchLine(lines[i]));
+              else parsedB.append(searchLine3(lines[i]));
             }
           }
  
@@ -516,6 +556,7 @@ public class Neos extends Applet {
               "syn_parsed_solution", 
               "Mvn: " + parsedA.toString() + 
               "\nMel: " + parsedB.toString() }); 
+
         }
 
         public void actionPerformed(ActionEvent evt) {
@@ -557,9 +598,7 @@ public class Neos extends Applet {
   String readFile(String path) {
 
     try {
-      BufferedReader input = new BufferedReader(
-                                                new InputStreamReader(
-                                                                      getClass().getResourceAsStream("/" + path)));
+      BufferedReader input = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/" + path)));
       StringBuilder the_data = new StringBuilder();
       String the_line;
 
