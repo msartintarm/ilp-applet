@@ -1,19 +1,21 @@
-
 alias(v,v1,v2);
 
+* HW / SW node latency
 Parameter Sdelta(v);
 Parameter Hdelta(v);
 
 Sdelta(v)=1;
-Hdelta(v)=.75;
+Hdelta(v)=0;
 
 * Problem Definition
 Scalar MAXin /100/;
 Scalar MAXout /100/;
 
-Scalar RFCin /1/;
-Scalar RFCout /1/;
+* Register File Cost
+Scalar RFCin /0/;
+Scalar RFCout /0/;
 
+* free operands / instruction
 Scalar PORTin /2/;
 Scalar PORTout /1/;
 
@@ -129,8 +131,6 @@ solve partition using MIP maximizing reduction;
 put partition.objVal partition.objEst;
 put partition.numVar partition.numDVar partition.numEqu partition.numNZ;
 put partition.etSolve partition.etSolver/;
-
-T.fx(v)$(T.l(v)=1)=0;
 
 display I;
 display O;

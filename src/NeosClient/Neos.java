@@ -463,7 +463,7 @@ public class Neos extends Applet {
           String result = getSolution(the_client, job_name, job_pass);
           if (result != null && result.length() > 2) {
             System.out.println("\nFinal results: \n" + result);
-            parseSolution(result);
+            if (case_num == 3) parseSolution(result);
 				
             js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
           } 
@@ -488,58 +488,34 @@ public class Neos extends Applet {
         }
 	  
         void parseSolution(String solution) {
-			System.out.println("Parsing for solution");
+	
+          System.out.println("Parsing for solution");
+          StringBuilder parsedA = new StringBuilder();
+          StringBuilder parsedB = new StringBuilder();
+          String[] lines = solution.split("\\n");
 
-			if (case_num == 3) {
-				StringBuilder parsedA = new StringBuilder();
-				StringBuilder parsedB = new StringBuilder();
-				String[] lines = solution.split("\\n");
-			  
-				boolean in_Mvn = false;
-				boolean in_Mel = false;
-			  
-				for (int i = 0; i < lines.length; ++i) {
-					if (in_Mvn == false) { 
-						if (lines[i].indexOf("VAR Mvn") != -1) in_Mvn = true;
-					} else { 
-						if (lines[i].indexOf("VAR") != -1) in_Mvn = false;
-						else parsedA.append(searchLine(lines[i]));
-					}
-					if (in_Mel == false) { 
-						if (lines[i].indexOf("VAR Mel") != -1) in_Mel = true;
-					} else { 
-						if (lines[i].indexOf("VAR") != -1) in_Mel = false;
-						else parsedB.append(searchLine(lines[i]));
-					}
-				}
-				
-				js_dashboard.call("update_element", new Object[] { 
-						"syn_parsed_solution", 
-						"Mvn: " + parsedA.toString() + 
-						"\nMel: " + parsedB.toString() }); 
-
-			} else if (case_num == 1) {
-
-				bool in_t_l = false;
-
-				for (int i = 0; i < lines.length; ++i) {
-					if (in_t_l == false) { 
-						if (lines[i].indexOf("VARIABLE T.L") != -1) in_t_l = true;
-					} else { 
-						if (lines[i].indexOf("REPORT") != -1) in_t_l = false;
-						//						else parsedA.append(searchLine(lines[i]));
-					}
-				}
-				
-				js_dashboard.call("update_element", new Object[] { 
-						"syn_parsed_solution", 
-						"Mvn: " + parsedA.toString() + 
-						"\nMel: " + parsedB.toString() }); 
-
-
-
-
-			}
+          boolean in_Mvn = false;
+          boolean in_Mel = false;
+	
+          for (int i = 0; i < lines.length; ++i) {
+            if (in_Mvn == false) { 
+              if (lines[i].indexOf("VAR Mvn") != -1) in_Mvn = true;
+            } else { 
+              if (lines[i].indexOf("VAR") != -1) in_Mvn = false;
+              else parsedA.append(searchLine(lines[i]));
+            }
+            if (in_Mel == false) { 
+              if (lines[i].indexOf("VAR Mel") != -1) in_Mel = true;
+            } else { 
+              if (lines[i].indexOf("VAR") != -1) in_Mel = false;
+              else parsedB.append(searchLine(lines[i]));
+            }
+          }
+ 
+          js_dashboard.call("update_element", new Object[] { 
+              "syn_parsed_solution", 
+              "Mvn: " + parsedA.toString() + 
+              "\nMel: " + parsedB.toString() }); 
         }
 
         public void actionPerformed(ActionEvent evt) {

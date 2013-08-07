@@ -61,15 +61,19 @@
 	      </div>
 	    </div>
 	    
-	    <div style="width:100%; padding-top:10px; text-align:center;float:left;">
-	      <div class="syn_one_third">Solver Status:<br/>
-		<textarea id="syn_solver_status" style="width:95%;" rows="12"></textarea>
+	    <div style="position:relative; float:left; width:100%; padding-top:10px;">
+	      <div class="syn_one_third" id="syn_status_holder">
+			Solver Status:
+			<button id="syn_status_button" onclick="Neos.resizeTextArea('status');">expand</button><br/>
+			<textarea id="syn_solver_status" style="width:95%;" rows="12"></textarea>
 	      </div>
-	      <div class="syn_one_third">Solver Output:<br/>
-		<textarea id="syn_solver_output" style="width:95%;" rows="12"></textarea>
+	      <div class="syn_one_third" id="syn_output_holder">
+			Solver Output:<button id="syn_output_button" onclick="Neos.resizeTextArea('output');">expand</button><br/>
+			<textarea id="syn_solver_output" style="width:95%;" rows="12"></textarea>
 	      </div>
-	      <div class="syn_one_third">Solution:<br/>
-		<textarea id="syn_solver_solution" style="width:95%;" rows="12"></textarea>
+	      <div class="syn_one_third" id="syn_solution_holder">
+			Solution: <button id="syn_solution_button" onclick="Neos.resizeTextArea('solution');">expand</button><br/>
+			<textarea id="syn_solver_solution" style="width:95%;" rows="12"></textarea>
 	      </div>
 	      <textarea id="syn_parsed_solution" style="width:95%;" rows="4"></textarea>
 	    </div>
