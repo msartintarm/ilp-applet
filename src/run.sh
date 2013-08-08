@@ -31,9 +31,9 @@ else
 
     date
     # Any command line args, we deploy
-    if [ "$#" -eq 0 ] 
-    then 
-	echo 'For development. ' 
+    if [ "$#" -eq 0 ]
+    then
+	echo 'For development. '
 	echo 'Permissions: all-permissions
 Codebase: file://O:/applet  https://mywebspace.wisc.edu neos-dev-1.neos-server.org
 Trusted-Library: true' >& manifest_general.txt
@@ -66,7 +66,7 @@ done
 
 
 # Create Java classes
-    javac -classpath ${JAVA_ARCHIVES//" "/":"} $JAVA_FILES
+    javac -classpath ${JAVA_ARCHIVES//" "/";"} $JAVA_FILES
 # Zip classes, manifest, and GAMS files into one JAR
     jar cfm Neos.jar manifest_eclipse.txt ${JAVA_FILES//"java"/"class"} $OTHER_FILES
 

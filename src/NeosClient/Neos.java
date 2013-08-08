@@ -21,27 +21,27 @@ import netscape.javascript.*;
  * the server. Next step: think about duplicating this in Javascript?
  */
 public class Neos extends Applet {
-  
+
   static final long serialVersionUID = 248L;
-  
+
   Integer job_name = -1;
   String job_pass = "-1";
   final NeosXmlRpcClient the_client = new NeosXmlRpcClient("neos-dev-1.neos-server.org", "3332");
-  
+
   JSObject js_dashboard;
-  
+
   int case_num;
-  
+
   Timer the_timer1, the_timer2;
-  
+
   StringBuilder js_model;
   boolean js_submitted = false;
   boolean js_kill_job = false;
-  
+
   // Construct a GAMS string for case 3.
   // It is the simplest of the 3 case studies thus far.
   public void JSload1(String software_file) {
-    
+
     case_num = 1;
     final String root = "case1/";
     js_model = new StringBuilder("$ONEMPTY\n");
@@ -70,11 +70,11 @@ public class Neos extends Applet {
     for(int i = 0; i < num_machines; ++i) {
       total_machines += Integer.valueOf((String)machine_num.getSlot(i));
     }
-    
+
     js_model = new StringBuilder("**** Problem Inputs ****\n\n");
     js_model.append("Set S /s1*s" + total_services + "/;\n");
     js_model.append("Set C /c1*c" + total_machines + "/;\n");
-    
+
     int lower_bound;
     int upper_bound = 0;
     int i;
@@ -86,17 +86,17 @@ public class Neos extends Applet {
       for(i = 0; i < num_services; ++i) {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)service_num.getSlot(i));
-        js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
-        js_model.append("R(subS" + (i+1) + ",K) = uniform(" + 
-                        (String) service_mem.getSlot(i * 2) + ", " + 
+        js_model.append("Set S_" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
+        js_model.append("R(S_" + (i+1) + ",K) = uniform(" +
+                        (String) service_mem.getSlot(i * 2) + ", " +
                         (String) service_mem.getSlot(i * 2 + 1) + ");\n");
       }
       upper_bound = 0;
       for(i = 0; i < num_machines; ++i) {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
-        js_model.append("Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
-        js_model.append("L(subC" + (i+1) + ",K) = uniform(" + 
+        js_model.append("Set C_" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
+        js_model.append("L(C_" + (i+1) + ",K) = uniform(" +
                         (String)machine_mem.getSlot(i * 2) + ", " +
                         (String)machine_mem.getSlot(i * 2 + 1) + ");\n");
       }
@@ -110,8 +110,8 @@ public class Neos extends Applet {
       for(i = 0; i < num_services; ++i) {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)service_num.getSlot(i));
-        js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
-        js_model.append("R(subS" + (i+1) + ",K) = " + (String) service_mem.getSlot(i) + ";\n");
+        js_model.append("Set group" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
+        js_model.append("R(group" + (i+1) + ",K) = " + (String) service_mem.getSlot(i) + ";\n");
       }
       upper_bound = 0;
       for(i = 0; i < num_machines; ++i) {
@@ -130,8 +130,8 @@ public class Neos extends Applet {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)service_num.getSlot(i));
         js_model.append("Set subS" + (i+1) + "(S) /s" + lower_bound + "*s" + upper_bound + "/;\n");
-        js_model.append("R(subS" + (i+1) + ",K) = uniform(" + 
-                        (String) service_mem.getSlot(i * 2 + 1) + ", " + 
+        js_model.append("R(subS" + (i+1) + ",K) = uniform(" +
+                        (String) service_mem.getSlot(i * 2 + 1) + ", " +
                         (String) service_mem.getSlot(i * 2 + 2) + ");\n");
       }
       upper_bound = 0;
@@ -139,7 +139,7 @@ public class Neos extends Applet {
         lower_bound  = upper_bound + 1;
         upper_bound += Integer.valueOf((String)machine_num.getSlot(i));
         js_model.append("Set subC" + (i+1) + "(C) /c" + lower_bound + "*c" + upper_bound + "/;\n");
-        js_model.append("L(subC" + (i+1) + ",K) = uniform(" + 
+        js_model.append("L(subC" + (i+1) + ",K) = uniform(" +
                         (String)machine_mem.getSlot(i * 2) + ", " +
                         (String)machine_mem.getSlot(i * 2 + 1) + ");\n");
       }
@@ -152,15 +152,13 @@ public class Neos extends Applet {
     case 'I': // ISAP
 	    js_model.append("parameter numS(S);\n");
 	    js_model.append("Set T /t1*t1/;\n");
-	    js_model.append("numS(S)=" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
+	    js_model.append("numS(S)=" + (Integer.parseInt((String) machine_num.getSlot(0)) /
                                     Integer.parseInt((String) service_num.getSlot(0))) + ";\n");
-	    js_model.append("numS(s1)=numS(s1)+" + (Integer.parseInt((String) machine_num.getSlot(0)) / 
+	    js_model.append("numS(s1)=numS(s1)+" + (Integer.parseInt((String) machine_num.getSlot(0)) /
                                               Integer.parseInt((String) service_num.getSlot(0))) + ";\n");
 	    js_model.append(readFile("case2/ISAP.gms"));
 	    break;
     }
-    js_model.append(readFile("case2/print-allocate-stats.gms"));
-
     // Show the user (using Javascript) the model they specified.
     js_show_text(js_model);
   }
@@ -190,11 +188,11 @@ public class Neos extends Applet {
   }
 
   public void JSload4(String tolerance) {
-	
+
     case_num = 4;
 
     js_model = new StringBuilder(readFile("case4/design_intro.gms"));
-    js_model.append(readFile("case4/link_contention.txt")); 
+    js_model.append(readFile("case4/link_contention.txt"));
     js_model.append(readFile("case4/combined_design.gms"));
     js_model.append("Option optcr=" + (Double.parseDouble(tolerance) / 100.0) + ";\n");
     js_model.append("solve MeshDesignLinearLinksRouters using mip minimizing t;\n");
@@ -225,16 +223,16 @@ public class Neos extends Applet {
   // Here we init a timer to check for JS updates.
   // We also test the connection by querying for solvers.
   public void start() {
-    
+
     //Sets up delay to check for JS model
     ActionListener watch_submission = new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
 
-          if(js_kill_job  == true) { 
+          if(js_kill_job  == true) {
             js_kill_job = false;
-            killJob(); 
+            killJob();
             return;
-          } 
+          }
 
           if(js_submitted == true) {
             js_submitted = false; // reset our flag
@@ -244,7 +242,7 @@ public class Neos extends Applet {
           }
         }
       };
-    
+
     int delay = 500; // milliseconds
     the_timer1 = new Timer(delay, watch_submission);
     the_timer1.start();
@@ -260,7 +258,7 @@ public class Neos extends Applet {
 
     // Print out all the solvers we can use in MILP.
     Object[] solvers = getSolvers(the_client, "milp");
-    if (solvers == null) { 
+    if (solvers == null) {
       System.err.println("Error: Solver query failed.");
       return;
     }
@@ -275,20 +273,20 @@ public class Neos extends Applet {
     js_submit_toggle("Submit to NEOS!");
   }
 
-  void js_submit_toggle(String new_text) {  
+  void js_submit_toggle(String new_text) {
     js_dashboard.call("submit_toggle", new Object[] { new_text }); }
-  void js_change_submit_text(String new_text) {  
+  void js_change_submit_text(String new_text) {
     js_dashboard.call("submit_change_text", new Object[] { new_text }); }
   void js_kill_toggle() {  js_dashboard.call("kill_toggle", null); }
-  void js_show_text(StringBuilder the_text) { 
-    js_dashboard.call("update_element", 
-                      new Object[] { "syn_input_file", 
+  void js_show_text(StringBuilder the_text) {
+    js_dashboard.call("update_element",
+                      new Object[] { "syn_input_file",
                                      the_text.toString() }); }
 
   /**
    * Finds the solvers available for this category (milp) and language (GAMS).
    */
-  final Object[] getSolvers(final NeosXmlRpcClient the_client, 
+  final Object[] getSolvers(final NeosXmlRpcClient the_client,
                             String the_category) {
 
     Vector<String> solver_params = new Vector<String>(1);
@@ -319,9 +317,9 @@ public class Neos extends Applet {
   /**
    *  Given the job ID and password, and looks up the job status.
    */
-  final String jobStatus(final NeosXmlRpcClient the_client, 
+  final String jobStatus(final NeosXmlRpcClient the_client,
                          Integer the_user, String the_pass) {
-  
+
     Vector the_params = new Vector(2);
     the_params.add(the_user);
     the_params.add(the_pass);
@@ -378,10 +376,10 @@ public class Neos extends Applet {
    *  Submits a job, and returns the job ID and password. Quite a lot of params.
    *  This is most likely to fail to to incorrect string formatting.
    */
-  final Object[] submitJob(final NeosXmlRpcClient the_client, 
-                           StringBuilder the_model, 
-                           String category, 
-                           String solver, 
+  final Object[] submitJob(final NeosXmlRpcClient the_client,
+                           StringBuilder the_model,
+                           String category,
+                           String solver,
                            String language) {
 
     // Package file into server-sending format by turning it into XML within a Vector.
@@ -398,19 +396,19 @@ public class Neos extends Applet {
       return null;
     }
   }
-  
+
   // Submits job to NEOS and creates class to monitor it.
   public boolean sendToNeos() {
 
     System.out.println(js_model.toString());
     Object[] results = submitJob(the_client, js_model, "milp", "MOSEK", "GAMS");
-    if (results == null) { 
-      js_submit_toggle("Send to NEOS!"); 
-      return false; 
+    if (results == null) {
+      js_submit_toggle("Send to NEOS!");
+      return false;
     }
 
     js_change_submit_text("NEOS working..");
-   
+
     job_name = (Integer) results[0];
     job_pass = (String) results[1];
 
@@ -428,13 +426,13 @@ public class Neos extends Applet {
     solver_output_offset = 0;
     js_kill_toggle();
 
-    // Monitors and prints stuff. Here we can assume job_name and job_pass are 
+    // Monitors and prints stuff. Here we can assume job_name and job_pass are
     // already initialized.
     ActionListener solution_monitor = new ActionListener() {
         Integer poll_count = -1;
         long start = System.nanoTime();
         boolean solution_found = false;
-    
+
         void monitorJobStatus() {
           String result = jobStatus(the_client, job_name, job_pass);
           long elapsed = (System.nanoTime() - start) / 1000000000;
@@ -442,7 +440,7 @@ public class Neos extends Applet {
             + ", time elapsed: " + elapsed + " sec.";
           System.out.println(solver_status);
           js_dashboard.call("update_element", new Object[] { "syn_solver_status", solver_status });
-      
+
           // Is solver still running ..? If not, let's get a solution.
           if(result.equals("Done")) {
             this.solution_found = true;
@@ -458,25 +456,26 @@ public class Neos extends Applet {
             js_dashboard.call("update_element", new Object[] { "syn_solver_output", result });
           }
         }
-			
+
 			void getJobSolution() {
 				String result = getSolution(the_client, job_name, job_pass);
 				if (result != null && result.length() > 2) {
 					System.out.println("\nFinal results: \n" + result);
 					if (case_num == 1) parseSolution1(result);
+					if (case_num == 2) parseSolution2(result);
 					if (case_num == 3) parseSolution3(result);
-					
+
 					js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
-				} 
+				}
 			}
-			
+
 			// i8  1.000,    i9  1.000,    i10 1.000,    i11 1.000
 			String searchLine1(String line) {
 
 				StringBuilder to_return = new StringBuilder("");
 				if (line.length() > 0) {
 					String[] lines = line.split("\\s+"); // remove all other whitespace
-					
+
 					for (int i = 0; i < lines.length; i += 2) {
 						if (lines[i + 1].equals("1.000,")) {
 							to_return.append(lines[i] + " ");
@@ -485,28 +484,28 @@ public class Neos extends Applet {
 				}
 				return to_return.toString();
 			}
-	  
+
         void parseSolution1(String solution) {
-	
+
           System.out.println("Parsing for solution");
           StringBuilder parsedT = new StringBuilder();
           String[] lines = solution.split("\\n");
 
           boolean in_Tl = false;
-	
+
           for (int i = 0; i < lines.length; ++i) {
-            if (in_Tl == false) { 
+            if (in_Tl == false) {
               if (lines[i].indexOf("VARIABLE T.L") != -1) in_Tl = true;
-            } else { 
+            } else {
               if (lines[i].indexOf("REPORT") != -1) in_Tl = false;
 			  else parsedT.append(searchLine1(lines[i]));
             }
           }
- 
-          js_dashboard.call("update_element", new Object[] { 
-              "syn_parsed_solution", "T.L: " + parsedT.toString() }); 
-          js_dashboard.call("case1_highlightGraph", null); 
-		  
+
+          js_dashboard.call("update_element", new Object[] {
+              "syn_parsed_solution", "T.L: " + parsedT.toString() });
+          js_dashboard.call("case1_highlightGraph", null);
+
         }
 
         // see if this line contains a solution!
@@ -518,7 +517,7 @@ public class Neos extends Applet {
             int length = lines.length;
             // Word 3rd from back of array marks whether this var is set
             if (length > 3 && lines[length - 3].equals("1.000")) {
-              
+
               // It's set. Return either 'v0.in1' or 'v0 .in1'
               if (lines[0].indexOf('.') == -1) return lines[0] + lines[1] + " ";
               else return lines[0] + " ";
@@ -526,9 +525,32 @@ public class Neos extends Applet {
           }
           return "";
         }
-	  
+
+        void parseSolution2(String solution) {
+
+        System.out.println("Parsing for solution");
+          StringBuilder parsedM = new StringBuilder();
+          String[] lines = solution.split("\\n");
+
+          boolean in_M = false;
+
+          for (int i = 0; i < lines.length; ++i) {
+            if (in_M == false) {
+              if (lines[i].indexOf("VAR M") != -1) in_M = true;
+            } else {
+              if (lines[i].indexOf("VAR") != -1) in_M = false;
+              else parsedM.append(searchLine3(lines[i]));
+            }
+          }
+
+          js_dashboard.call("update_element", new Object[] {
+              "syn_parsed_solution",
+              "M: " + parsedM.toString()
+            });
+        }
+
         void parseSolution3(String solution) {
-	
+
           System.out.println("Parsing for solution");
           StringBuilder parsedA = new StringBuilder();
           StringBuilder parsedB = new StringBuilder();
@@ -536,26 +558,26 @@ public class Neos extends Applet {
 
           boolean in_Mvn = false;
           boolean in_Mel = false;
-	
+
           for (int i = 0; i < lines.length; ++i) {
-            if (in_Mvn == false) { 
+            if (in_Mvn == false) {
               if (lines[i].indexOf("VAR Mvn") != -1) in_Mvn = true;
-            } else { 
+            } else {
               if (lines[i].indexOf("VAR") != -1) in_Mvn = false;
               else parsedA.append(searchLine3(lines[i]));
             }
-            if (in_Mel == false) { 
+            if (in_Mel == false) {
               if (lines[i].indexOf("VAR Mel") != -1) in_Mel = true;
-            } else { 
+            } else {
               if (lines[i].indexOf("VAR") != -1) in_Mel = false;
               else parsedB.append(searchLine3(lines[i]));
             }
           }
- 
-          js_dashboard.call("update_element", new Object[] { 
-              "syn_parsed_solution", 
-              "Mvn: " + parsedA.toString() + 
-              "\nMel: " + parsedB.toString() }); 
+
+          js_dashboard.call("update_element", new Object[] {
+              "syn_parsed_solution",
+              "Mvn: " + parsedA.toString() +
+              "\nMel: " + parsedB.toString() });
 
         }
 
@@ -565,7 +587,7 @@ public class Neos extends Applet {
             // Every 10 seconds, check the solver output.
             if ((++poll_count % 5) == 0) {
               monitorJobOutput();
-            } 
+            }
           } else {
             js_submit_toggle("Submit to NEOS!");
             js_kill_toggle();
@@ -574,7 +596,7 @@ public class Neos extends Applet {
           }
         }
       };
-   
+
     int delay = 2000; // milliseconds
     the_timer2 = new Timer(delay, solution_monitor);
     the_timer2.setInitialDelay(200);

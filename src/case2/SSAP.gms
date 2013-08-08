@@ -1,9 +1,4 @@
 
-*R(S,K) = uniform(0,1);
-*L(C,K) = .5+2*uniform(0,1);
-*L(C,K) = 1.5;
-
-
 * Variables
 binary variable M(S,C);
 binary variable O(C);
@@ -88,24 +83,14 @@ Model allocate /uniqueMapping,utilization,calcTotalOn,latticeOrdering/;
 
 allocate.optca=0.99999999;
 allocate.optcr=0.1;
-
-*mipstart!
-*M.l(S,C)=1$(ORD(S)=ORD(C));
-*O.l(C)=1;
-*totalOn.l=sum(C,O.l(C));
-
-*M.prior(S,C)=1000*ORD(C)+ORD(S);
-*O.prior(C)=1000*ORD(C)+1;
-*allocate.prioropt=1;
 allocate.threads=8;
 allocate.optfile=1;
 
-file optfile /cplex.opt/;      
+file optfile /cplex.opt/;
 put optfile;
 put 'parallelmode -1'/;
 put 'probe 2'/;
 put 'mipstart 1'/;
-*put 'heurfreq 1'/;
 putclose;
 
 option mip=cplex
@@ -133,6 +118,6 @@ loop(C,
 
 *$batinclude print-allocate-stats.gms
 
-*display R(S,K);
-*display L(C,K);
-*display M.l(S,C);
+display R;
+display L;
+display M.l;

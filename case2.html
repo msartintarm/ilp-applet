@@ -8,15 +8,15 @@
     <link rel='stylesheet' type='text/css' href='styles.css'/>
     <link rel='icon' type='image/x-icon' href='./favicon.ico'/>
     <script src='case2.js' type='text/javascript'></script>
-    <script src="example.js" type="text/javascript"></script> 
+    <script src="example.js" type="text/javascript"></script>
   </head>
 
   <body>
 
     <div id="syn_wrap">
-      <div class="syn_padDiv"> 
+      <div class="syn_padDiv">
         <div class="syn_main">
-	  
+
 	  <h2>Case Study 2:<br/>Data-Center Allocation</h2>
 	  <p class="syn_description">Data-center resource managers are centralized software components which manage the execution of a large number of services. Co-locating multiple services on a machine could degrade performance, and hence it is critical for the resource manager to utilize information upon services and machines in effectively allocating machine resources. <br/> In ILP, the problem is to statically determine the best co-locations of services on servers for resource requirements and service-level agreements to be satisfied. </p>
 	  <p class="syn_selection">Select from the following resource management models (mouse over for description).</p>
@@ -74,6 +74,9 @@
 	      <div class="syn_one_third" id="syn_solution_holder">
 			Solution: <button id="syn_solution_button" onclick="Neos.resizeTextArea('solution');">expand</button><br/>
 			<textarea id="syn_solver_solution" style="width:95%;" rows="12"></textarea>
+	      </div>
+	      <div style="width:100%; text-align:center;">Parsed solution:
+		<textarea id="syn_parsed_solution" style="width:95%;" rows="4"></textarea>
 	      </div>
 	    </div>
 

@@ -88,27 +88,28 @@ case2.load = function(hardware_num) {
     }
 }
 
+case2.inputMachine = function(elem) {
+    return function(name, value, size, text_before, text_after, break_after) {
+    if (!!text_before) elem.appendChild(document.createTextNode(text_before));
+    var n = document.createElement("input");
+    n.type = "text";
+    n.id = "" + name;
+    n.value = String(value);
+    n.size = size;
+    elem.appendChild(n);
+    if (!!text_after) elem.appendChild(document.createTextNode(text_after));
+    if (!!break_after) elem.appendChild(document.createElement("br"));
+};};
+
 /**
  * Add Case 2 services with 3 params: number of services, mem usage, CPU usage
  * Give unique ID that can be looked up later.
  */
 case2.add_service = function() {
 
-    var services = document.getElementById("syn_services");
-    var zz = function(name, value, size, text_before, text_after, break_after) {
-        if (!!text_before) services.appendChild(document.createTextNode(text_before));
-        var n = document.createElement("input");
-        n.type = "text";
-        n.id = "" + name;
-        n.value = String(value);
-        n.size = size;
-        services.appendChild(n);
-        if (!!text_after) services.appendChild(document.createTextNode(text_after));
-        if (!!break_after) services.appendChild(document.createElement("br"));
-    };
-
-    zz("syn_service_num" + case2.services, 100, 2, "Number of services:", null, true);
-    zz("syn_service_mem" + case2.services, "2.0", 1, "Memory usage: uniform(", ",");
+    var zz = case2.inputMachine(document.getElementById("syn_services"));
+    zz("syn_service_num" + case2.services, 100, 2, "Services in group " + (case2.services + 1) + ":", null, true);
+    zz("syn_service_mem" + case2.services, "2.0", 1, "Mem usage: uniform(", ",");
     zz("syn_service2mem" + case2.services, "4.0", 1, null, ") GB ", true);
     zz("syn_service_cpu" + case2.services, 0.75, 2, "CPU usage: ", " %", true);
     case2.services ++;
@@ -116,37 +117,42 @@ case2.add_service = function() {
 }
 
 case2.add_warehouse_service = function() {
-    var services = document.getElementById("syn_services");
-    services.innerHTML += "";
-    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='3'/> services with ";
-    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.00' size='3'/> GB / ";
-    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='3'/> CPU %<br/>";
+
+    var zz = case2.inputMachine(document.getElementById("syn_services"));
+    zz("syn_service_num" + case2.services, 100, 2, "Number of services:", null, true);
+    zz("syn_service_mem" + case2.services, "2.0", 1, "Mem usage: ", " GB ", true);
+    zz("syn_service_cpu" + case2.services, 0.75, 2, "CPU usage: ", " %", true);
+
     case2.services ++;
 }
 
 case2.add_timed_service = function() {
-    services.innerHTML += "";
-    services.innerHTML += "<input type='text' value='100' size='3'/> services with ";
-    services.innerHTML += "<input type='text' id='syn_mem' value='4.00' size='3'/> GB / ";
-    services.innerHTML += "<input type='text' value='0.75' size='3'/> CPU %<br/>";
+
+    var zz = case2.inputMachine(document.getElementById("syn_services"));
+    zz("syn_service_num" + case2.services, 100, 2, "Number of services:", null, true);
+    zz("syn_service_mem" + case2.services, "2.0", 1, "Mem usage: uniform(", ",");
+    zz("syn_service2mem" + case2.services, "4.0", 1, null, ") GB ", true);
+    zz("syn_service_cpu" + case2.services, 0.75, 2, "CPU usage: ", " %", true);
+    case2.services ++;
 }
 
 case2.add_machine = function() {
-    var machines = document.getElementById("syn_machines");
-    machines.innerHTML += "";
-    machines.innerHTML += "<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'/> machines, ";
-    machines.innerHTML += "<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'/>-";
-    machines.innerHTML += "<input type='text' id='syn_machine2mem" + case2.machines +  "' value='16.0' size='2'/> GB / ";
-    machines.innerHTML += "<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'/> GHz <br/>";
+
+    var zz = case2.inputMachine(document.getElementById("syn_machines"));
+    zz("syn_machine_num" + case2.machines, 200, 2, "Number of machines:", null, true);
+    zz("syn_machine_mem" + case2.machines, 8.0, 1, "Mem capacity: uniform(", ",");
+    zz("syn_machine2mem" + case2.machines, 16.0, 1, null, ") GB ", true);
+    zz("syn_machine_cpu" + case2.machines, 1.00, 2, "CPU power: ", " GHz", true);
     case2.machines ++;
 };
 
 case2.add_warehouse_machine = function() {
-    var machines = document.getElementById("syn_machines");
-    machines.innerHTML += "";
-    machines.innerHTML += "<input type='text' id='syn_machine_num" + case2.machines +  "' value='200' size='2'/> machines with ";
-    machines.innerHTML += "<input type='text' id='syn_machine_mem" + case2.machines +  "' value='16.0' size='2'/> GB / ";
-    machines.innerHTML += "<input type='text' id='syn_machine_cpu" + case2.machines +  "' value='1.00' size='2'/> GHz <br/>";
+
+    var zz = case2.inputMachine(document.getElementById("syn_machines"));
+    zz("syn_machine_num" + case2.machines, 200, 2, "Number of machines:", null, true);
+    zz("syn_machine_mem" + case2.machines, 8.0, 1, "Mem capacity: uniform(", ",");
+    zz("syn_machine2mem" + case2.machines, 16.0, 1, null, ") GB ", true);
+    zz("syn_machine_cpu" + case2.machines, 1.00, 2, "CPU power: ", " GHz", true);
     case2.machines ++;
 };
 
