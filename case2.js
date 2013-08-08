@@ -36,7 +36,7 @@ case2.load = function(hardware_num) {
     hardware_loaded = false;
     case2.describe(hardware_num);
     document.getElementById("syn_case2_content").style.display = "inline-block";
-    hardware_loaded = true;	
+    hardware_loaded = true;
 
     case2.services = 0;
     case2.machines = 0;
@@ -93,13 +93,26 @@ case2.load = function(hardware_num) {
  * Give unique ID that can be looked up later.
  */
 case2.add_service = function() {
+
     var services = document.getElementById("syn_services");
-    services.innerHTML += "";
-    services.innerHTML += "<input type='text' id='syn_service_num" + case2.services +  "' value='100' size='2'/> services, ";
-    services.innerHTML += "<input type='text' id='syn_service_mem" + case2.services +  "' value='4.0' size='1'/>-";
-    services.innerHTML += "<input type='text' id='syn_service2mem" + case2.services +  "' value='4.0' size='1'/> GB / ";
-    services.innerHTML += "<input type='text' id='syn_service_cpu" + case2.services +  "' value='0.75' size='2'/> CPU %<br/>";
+    var zz = function(name, value, size, text_before, text_after, break_after) {
+        if (!!text_before) services.appendChild(document.createTextNode(text_before));
+        var n = document.createElement("input");
+        n.type = "text";
+        n.id = "" + name;
+        n.value = String(value);
+        n.size = size;
+        services.appendChild(n);
+        if (!!text_after) services.appendChild(document.createTextNode(text_after));
+        if (!!break_after) services.appendChild(document.createElement("br"));
+    };
+
+    zz("syn_service_num" + case2.services, 100, 2, "Number of services:", null, true);
+    zz("syn_service_mem" + case2.services, "2.0", 1, "Memory usage: uniform(", ",");
+    zz("syn_service2mem" + case2.services, "4.0", 1, null, ") GB ", true);
+    zz("syn_service_cpu" + case2.services, 0.75, 2, "CPU usage: ", " %", true);
     case2.services ++;
+
 }
 
 case2.add_warehouse_service = function() {
@@ -151,19 +164,19 @@ case2.load_from_java = function() {
     var machine_mem = [];
     var machine_cpu = [];
     var i;
-    
+
     if (case2.model === 'T') service_mem.push(document.getElementById("syn_timing").value);
     for(i = 0; i < case2.services; ++i) {
 	service_num.push(document.getElementById("syn_service_num" + i).value);
 	service_mem.push(document.getElementById("syn_service_mem" + i).value);
-	if (case2.model === 'S' || case2.model === 'T') 
+	if (case2.model === 'S' || case2.model === 'T')
 	    service_mem.push(document.getElementById("syn_service2mem" + i).value);
 	service_cpu.push(document.getElementById("syn_service_cpu" + i).value);
     }
     for(i = 0; i < case2.machines; ++i) {
 	machine_num.push(document.getElementById("syn_machine_num" + i).value);
 	machine_mem.push(document.getElementById("syn_machine_mem" + i).value);
-	if (case2.model === 'S' || case2.model === 'T') 
+	if (case2.model === 'S' || case2.model === 'T')
 	    machine_mem.push(document.getElementById("syn_machine2mem" + i).value);
 	machine_cpu.push(document.getElementById("syn_machine_cpu" + i).value);
     }
@@ -179,7 +192,7 @@ case2.submit_toggle = function() {
     var active_text = "Submit job to NEOS!";
     var inactive_text = "NEOS working..";
     var submit_button = document.getElementById("syn_submit_button");
-    
+
     if(submit_button.disabled !== true) {
 	submit_button.disabled = true;
 	submit_button.innerHTML = inactive_text;
