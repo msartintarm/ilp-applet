@@ -16,15 +16,15 @@ case3.describe = function(hardware_num) {
 	break;
     case 2:
 	hw_title.innerHTML = "DySER Architecture";
-	hw_describe.innerHTML = "An accelerator.";
+	hw_describe.innerHTML = "An accelerator integrated into the execution stage of a conventional processor.";
 	break;
     case 3:
 	hw_title.innerHTML = "PLUG Architecture";
-	hw_describe.innerHTML = "A weird architecture.";
+	hw_describe.innerHTML = "An accelerator for data-structure lookups in network processing.";
 	break;
     case 4:
 	hw_title.innerHTML = "TRIPS Architecture";
-	hw_describe.innerHTML = "An intended general-purpose architecture.";
+	hw_describe.innerHTML = "A tile-based, intended general-purpose architecture.";
 	break;
     default: break;
     }
@@ -57,7 +57,7 @@ case3.load = function(hardware_num) {
     if(hardware_loaded === false) {
 	case3.describe(hardware_num);
 	document.getElementById("syn_case3_content").style.display = "inline-block";
-	hardware_loaded = true;	
+	hardware_loaded = true;
     }
 
     var hw_files = document.getElementById("syn_hw_files");

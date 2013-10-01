@@ -34,7 +34,7 @@ h2 { text-align: center; }
 body {
     margin-right: auto;
     margin-left: auto;
-    background-color: #eeeeee;
+    background-color: #f4f4f4;
     font-family: Georgia, "Times New Roman", Times, serif;
     padding: 1% 5% 0% 5%;
 }
@@ -44,8 +44,8 @@ div.syn_main {
     text-align: justify;
     background-color: #eeeeee;
     border-style: inset;
-    border-width: 5px;
-    border-color: #999999;
+    border-width: 2px;
+    border-color: #d4d4d4;
 }
 
 div.syn_space {
@@ -68,6 +68,7 @@ div.syn_one_third{
 }
 
 div.syn_left_half, div.syn_right_half {
+    float: left;
     background-color: #e0e0e0;
     width:50%;
     text-align:center;
@@ -75,10 +76,7 @@ div.syn_left_half, div.syn_right_half {
     -moz-user-select: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
-}
-
-div.syn_left_half { float: left; }
-div.syn_right_half { float:right; }
+    float: left; border-right-style:none; }
 
 div#wrap {
     margin-right: auto;

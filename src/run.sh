@@ -47,7 +47,7 @@ Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
     else
 	echo 'For deployment.'
 	echo 'Permissions: all-permissions
-Codebase: neos-dev-1.neos-server.org
+Codebase: neos-dev-1.neos-server.org neos-guide.org
 Trusted-Library: true' >& manifest_general.txt
 	cp manifest_general.txt manifest_eclipse.txt
 
