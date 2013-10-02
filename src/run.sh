@@ -9,6 +9,13 @@ xmlrpc-common-3.1.3.jar \
 plugin.jar \
 ws-commons-util-1.0.2.jar "
 
+JAVA_DEPLOYED_ARCHIVES="\
+Commons-logging-1.1.jar \
+Xmlrpc-client-3.1.3.jar \
+Xmlrpc-common-3.1.3.jar \
+plugin-a.jar \
+Ws-commons-util-1.0.2.jar "
+
 JAVA_FILES="\
 NeosClient/*.java \
 org/neos/client/*.java "
@@ -30,7 +37,7 @@ else
 # Add new permissions to manifest for other JARs
 
     date
-    # Any command line args, we deploy
+    # Any command line args, we deploy.
     if [ "$#" -eq 0 ]
     then
 	echo 'For development. '
@@ -47,14 +54,14 @@ Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
     else
 	echo 'For deployment.'
 	echo 'Permissions: all-permissions
-Codebase: neos-dev-1.neos-server.org neos-guide.org
+Codebase: neos-dev-1.neos-server.org neos-guide.org www.neos-guide.org
 Trusted-Library: true' >& manifest_general.txt
 	cp manifest_general.txt manifest_eclipse.txt
 
 	echo 'Manifest-Version: 1.0
 Main-Class: NeosClient.Neos
 Created-By: Michael Sartin-Tarm
-Class-Path: ' ${JAVA_ARCHIVES//".jar"/"-a.jar"} >> manifest_eclipse.txt
+Class-Path: ' $JAVA_DEPLOYED_ARCHIVES >> manifest_eclipse.txt
 
 	../gen-html.sh
     fi
