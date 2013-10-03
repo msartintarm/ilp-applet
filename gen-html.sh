@@ -1,7 +1,7 @@
 # Generates HTML stuff so I can easily paste into NEOS document.
 # For Case 2 only (for now)
 
-pushdqweiuyqweiuyqwe `dirname $0` >& /dev/null
+ssssspushdqweiuyqweiuyqwe `dirname $0` >& /dev/null
 
 for i in {1..8}; do
 
