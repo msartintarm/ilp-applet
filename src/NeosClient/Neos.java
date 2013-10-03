@@ -26,7 +26,7 @@ public class Neos extends Applet {
 
   Integer job_name = -1;
   String job_pass = "-1";
-  final NeosXmlRpcClient the_client = new NeosXmlRpcClient("neos-dev-1.neos-server.org", "3332");
+  final NeosXmlRpcClient the_client = new NeosXmlRpcClient("neos-server.org", "3332");
 
   JSObject js_dashboard;
 

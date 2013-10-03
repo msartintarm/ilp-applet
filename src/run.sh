@@ -53,22 +53,19 @@ Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
 
     else
 	echo 'For deployment.'
-	echo 'Permissions: all-permissions
-Codebase: neos-dev-1.neos-server.org neos-guide.org www.neos-guide.org
-Trusted-Library: true' >& manifest_general.txt
-	cp manifest_general.txt manifest_eclipse.txt
+#	echo 'Trusted-Library: true' >& manifest_general.txt
+#	cp manifest_general.txt manifest_eclipse.txt
 
 	echo 'Manifest-Version: 1.0
 Main-Class: NeosClient.Neos
-Created-By: Michael Sartin-Tarm
-Class-Path: ' $JAVA_DEPLOYED_ARCHIVES >> manifest_eclipse.txt
+Created-By: Michael Sartin-Tarm' >& manifest_eclipse.txt
 
 	../gen-html.sh
     fi
 
 for JAR in $JAVA_ARCHIVES; do
     cp jars/$JAR $JAR
-    jar ufm $JAR manifest_general.txt
+#    jar ufm $JAR manifest_general.txt
 done
 
 
