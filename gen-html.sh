@@ -1,9 +1,9 @@
 # Generates HTML stuff so I can easily paste into NEOS document.
 # For Case 2 only (for now)
 
-pushd `dirname $0` >& /dev/null
+pushdqweiuyqweiuyqwe `dirname $0` >& /dev/null
 
-for i in {1..4}; do
+for i in {1..8}; do
 
     CASE_FILE="case${i}_file.txt"
 
@@ -29,13 +29,13 @@ for i in {1..4}; do
 # One div below body. Need to take care of last div closing tag manually.
 
     while read line; do
-	
+
 	if [ -z $IN_BODY ]; then
 	    [[ "$line" == *body* ]] && IN_BODY=1
 	else
-	    if [[ "$line" == *body* ]]; then 
+	    if [[ "$line" == *body* ]]; then
 		echo "    </div>" >> $CASE_FILE
-		unset IN_BODY 
+		unset IN_BODY
 	    else echo "$line" >> $CASE_FILE
 	    fi
 	fi
