@@ -1,9 +1,9 @@
 # Generates HTML stuff so I can easily paste into NEOS document.
 # For Case 2 only (for now)
 
-ssssspushdqweiuyqweiuyqwe `dirname $0` >& /dev/null
+pushd `dirname $0` >& /dev/null
 
-for i in {1..8}; do
+for i in {1..4}; do
 
     CASE_FILE="case${i}_file.txt"
 

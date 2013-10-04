@@ -293,7 +293,7 @@ public class Neos extends Applet {
     solver_params.add("milp");
     try {
       return (Object[]) the_client.execute("listSolversInCategory",
-                                           solver_params, 5000);
+                                           solver_params, 30000);
     } catch (XmlRpcException e) {
       System.err.println("Error finding solvers. " + e.toString());
       return null;
