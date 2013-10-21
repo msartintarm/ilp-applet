@@ -460,12 +460,11 @@ public class Neos extends Applet {
 			void getJobSolution() {
 				String result = getSolution(the_client, job_name, job_pass);
 				if (result != null && result.length() > 2) {
+					js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
 					System.out.println("\nFinal results: \n" + result);
 					if (case_num == 1) parseSolution1(result);
 					if (case_num == 2) parseSolution2(result);
 					if (case_num == 3) parseSolution3(result);
-
-					js_dashboard.call("update_element", new Object[] { "syn_solver_solution", result });
 				}
 			}
 
@@ -504,8 +503,11 @@ public class Neos extends Applet {
 
           js_dashboard.call("update_element", new Object[] {
               "syn_parsed_solution", "T.L: " + parsedT.toString() });
-          js_dashboard.call("case1_highlightGraph", null);
-
+          try {
+            js_dashboard.call("case1_highlightGraph", null);
+          } catch(netscape.javascript.JSException e) {
+            System.out.println("Case 1 Javascript libraries not found.");
+          }
         }
 
         // see if this line contains a solution!

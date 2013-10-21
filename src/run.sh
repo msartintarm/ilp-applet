@@ -42,24 +42,27 @@ else
     then
 	echo 'For development. '
 	echo 'Permissions: all-permissions
-Codebase: file://O:/applet  https://mywebspace.wisc.edu neos-dev-1.neos-server.org
+Codebase: file://O:/applet https://mywebspace.wisc.edu neos-dev-1.neos-server.org
+Caller-Allowable-Codebase: file://O:/applet neos-guide.org www.neos-guide.org neos-1.neos-server.org
 Trusted-Library: true' >& manifest_general.txt
 	cp manifest_general.txt manifest_eclipse.txt
 
 	echo 'Manifest-Version: 1.0
 Main-Class: NeosClient.Neos
-Created-By: Michael Sartin-Tarm
-Class-Path: ' $JAVA_ARCHIVES >> manifest_eclipse.txt
+Application-Name: ILP Case Study
+Created-By: Michael Sartin-Tarm' >> manifest_eclipse.txt
 
     else
 	echo 'For deployment. '
         echo 'Permissions: all-permissions
-Codebase: neos-guide.org www.neos-guide.org
+Codebase: neos-guide.org www.neos-guide.org neos-1.neos-server.org
+Caller-Allowable-Codebase: neos-guide.org www.neos-guide.org neos-1.neos-server.org
 Trusted-Library: true' >& manifest_general.txt
 	cp manifest_general.txt manifest_eclipse.txt
 
 	echo 'Manifest-Version: 1.0
 Main-Class: NeosClient.Neos
+Application-Name: ILP Case Study
 Created-By: Michael Sartin-Tarm' >> manifest_eclipse.txt
 
 	../gen-html.sh
